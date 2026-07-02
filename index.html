@@ -727,25 +727,6 @@
             background: var(--gray-bg);
             color: var(--primary);
         }
-        .room-card .room-delete-btn {
-            position: absolute;
-            bottom: 8px;
-            left: 12px;
-            background: none;
-            border: none;
-            color: var(--text-muted);
-            cursor: pointer;
-            font-size: 0.7rem;
-            padding: 4px 8px;
-            border-radius: 12px;
-            transition: var(--transition);
-            opacity: 0.5;
-        }
-        .room-card .room-delete-btn:hover {
-            background: rgba(239, 68, 68, 0.1);
-            color: var(--danger);
-            opacity: 1;
-        }
         .room-empty-state {
             grid-column: 1 / -1;
             text-align: center;
@@ -896,6 +877,7 @@
                 transform: scale(1.15) rotate(6deg);
             }
         }
+        /* سولينويد مع تموج مائي إضافي */
         .device-card .card-top .icon-wrap.solenoid-icon.state-on::after {
             content: '';
             position: absolute;
@@ -917,216 +899,157 @@
             }
         }
 
-        /* ── Professional Electrofan Animation ── */
-        .fan-container {
+        /* أنيميشن احترافي للصمام الكهربائي - تدفق السائل */
+        .solenoid-flow-container {
             position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 2.6rem;
-            height: 2.6rem;
+            width: 2.2rem;
+            height: 2.2rem;
         }
-        .fan-container .icon-wrap {
-            font-size: 2rem;
+        .solenoid-flow-container .icon-wrap {
+            font-size: 1.6rem;
             position: relative;
             z-index: 2;
-            color: var(--text-secondary);
         }
-        .fan-container .icon-wrap.state-on {
-            color: #06b6d4;
-        }
-        /* Fan blades - professional rotating effect */
-        .fan-container .fan-blade {
+        .solenoid-flow-container .flow-line {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-            pointer-events: none;
-        }
-        .fan-container .fan-blade.active {
-            opacity: 1;
-        }
-        .fan-container .fan-blade svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        .fan-container .fan-blade .blade-path {
-            fill: rgba(6, 182, 212, 0.15);
-            stroke: rgba(6, 182, 212, 0.3);
-            stroke-width: 0.5;
-            transform-origin: center;
-            animation: fan-spin 0.8s linear infinite;
-        }
-        .fan-container .fan-blade .blade-path.slow {
-            animation-duration: 1.2s;
-        }
-        .fan-container .fan-blade .blade-path.medium {
-            animation-duration: 0.8s;
-        }
-        .fan-container .fan-blade .blade-path.fast {
-            animation-duration: 0.4s;
-        }
-        @keyframes fan-spin {
-            0% {
-                transform: rotate(0deg);
-            }
-            100% {
-                transform: rotate(360deg);
-            }
-        }
-
-        /* Fan blade trails / glow */
-        .fan-container .fan-glow {
-            position: absolute;
-            width: 120%;
-            height: 120%;
-            top: -10%;
-            left: -10%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.08) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            z-index: 0;
-        }
-        .fan-container .fan-glow.active {
-            opacity: 1;
-            animation: fan-glow-pulse 1.5s ease-in-out infinite;
-        }
-        @keyframes fan-glow-pulse {
-            0%,
-            100% {
-                transform: scale(0.9);
-                opacity: 0.4;
-            }
-            50% {
-                transform: scale(1.1);
-                opacity: 0.8;
-            }
-        }
-
-        /* Speed indicator dots */
-        .fan-speed-indicator {
-            display: flex;
-            gap: 3px;
-            align-items: center;
-            margin-top: 2px;
-            justify-content: center;
-        }
-        .fan-speed-indicator .dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: var(--gray-bg);
-            transition: all 0.3s;
-        }
-        .fan-speed-indicator .dot.active {
+            width: 4px;
+            height: 4px;
             background: var(--primary);
-            box-shadow: 0 0 8px rgba(11, 61, 145, 0.3);
+            border-radius: 50%;
+            opacity: 0;
+            z-index: 1;
         }
-        .fan-speed-indicator .dot.active.speed-2 {
-            background: #06b6d4;
-            box-shadow: 0 0 8px rgba(6, 182, 212, 0.3);
+        .solenoid-flow-container .flow-line:nth-child(1) {
+            animation: flow-particle 1.8s ease-in-out infinite 0s;
+            top: 10%;
+            left: 10%;
         }
-        .fan-speed-indicator .dot.active.speed-3 {
-            background: #8b5cf6;
-            box-shadow: 0 0 8px rgba(139, 92, 246, 0.3);
+        .solenoid-flow-container .flow-line:nth-child(2) {
+            animation: flow-particle 1.8s ease-in-out infinite 0.4s;
+            top: 30%;
+            left: 80%;
+        }
+        .solenoid-flow-container .flow-line:nth-child(3) {
+            animation: flow-particle 1.8s ease-in-out infinite 0.8s;
+            top: 70%;
+            left: 20%;
+        }
+        .solenoid-flow-container .flow-line:nth-child(4) {
+            animation: flow-particle 1.8s ease-in-out infinite 1.2s;
+            top: 90%;
+            left: 70%;
+        }
+        @keyframes flow-particle {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: translate(8px, -8px) scale(1.2);
+            }
+            40% {
+                opacity: 0.8;
+                transform: translate(16px, -16px) scale(1);
+            }
+            60% {
+                opacity: 0.5;
+                transform: translate(24px, -24px) scale(0.8);
+            }
+            80% {
+                opacity: 0.2;
+                transform: translate(32px, -32px) scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(40px, -40px) scale(0);
+            }
         }
 
-        /* Detail page fan */
-        .detail-fan-container {
+        .device-card .card-top .solenoid-flow-container .icon-wrap.solenoid-icon.state-on {
+            color: #1e88e5;
+            animation: solenoid-pulse 1.2s ease-in-out infinite;
+        }
+        .device-card .card-top .solenoid-flow-container .icon-wrap.solenoid-icon.state-on~.flow-line {
+            background: #1e88e5;
+        }
+        .device-card .card-top .solenoid-flow-container .icon-wrap.solenoid-icon.state-off~.flow-line {
+            animation: none !important;
+            opacity: 0 !important;
+        }
+
+        /* تدفق السائل في صفحة التفاصيل */
+        .detail-solenoid-flow {
             position: relative;
             display: inline-block;
             padding: 1rem;
         }
-        .detail-fan-container .big-icon {
+        .detail-solenoid-flow .big-icon {
             font-size: 5rem;
             position: relative;
             z-index: 2;
         }
-        .detail-fan-container .detail-fan-blade {
+        .detail-solenoid-flow .flow-particle {
             position: absolute;
-            width: 120%;
-            height: 120%;
-            top: -10%;
-            left: -10%;
-            z-index: 1;
-            opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-        }
-        .detail-fan-container .detail-fan-blade.active {
-            opacity: 1;
-        }
-        .detail-fan-container .detail-fan-blade svg {
-            width: 100%;
-            height: 100%;
-            display: block;
-        }
-        .detail-fan-container .detail-fan-blade .blade-path {
-            fill: rgba(6, 182, 212, 0.1);
-            stroke: rgba(6, 182, 212, 0.2);
-            stroke-width: 0.8;
-            transform-origin: center;
-            animation: fan-spin 0.8s linear infinite;
-        }
-        .detail-fan-container .detail-fan-blade .blade-path.slow {
-            animation-duration: 1.2s;
-        }
-        .detail-fan-container .detail-fan-blade .blade-path.medium {
-            animation-duration: 0.8s;
-        }
-        .detail-fan-container .detail-fan-blade .blade-path.fast {
-            animation-duration: 0.4s;
-        }
-        .detail-fan-container .fan-glow {
-            position: absolute;
-            width: 150%;
-            height: 150%;
-            top: -25%;
-            left: -25%;
+            width: 12px;
+            height: 12px;
+            background: var(--primary);
             border-radius: 50%;
-            background: radial-gradient(circle, rgba(6, 182, 212, 0.06) 0%, transparent 70%);
             opacity: 0;
-            transition: opacity 0.5s ease;
-            pointer-events: none;
-            z-index: 0;
+            z-index: 1;
         }
-        .detail-fan-container .fan-glow.active {
-            opacity: 1;
-            animation: fan-glow-pulse 1.5s ease-in-out infinite;
+        .detail-solenoid-flow .flow-particle:nth-child(1) {
+            animation: detail-flow 2s ease-in-out infinite 0s;
+            top: 0%;
+            left: 50%;
+        }
+        .detail-solenoid-flow .flow-particle:nth-child(2) {
+            animation: detail-flow 2s ease-in-out infinite 0.5s;
+            top: 50%;
+            left: 100%;
+        }
+        .detail-solenoid-flow .flow-particle:nth-child(3) {
+            animation: detail-flow 2s ease-in-out infinite 1s;
+            top: 100%;
+            left: 50%;
+        }
+        .detail-solenoid-flow .flow-particle:nth-child(4) {
+            animation: detail-flow 2s ease-in-out infinite 1.5s;
+            top: 50%;
+            left: 0%;
+        }
+        @keyframes detail-flow {
+            0% {
+                opacity: 0;
+                transform: translate(0, 0) scale(0.5);
+            }
+            25% {
+                opacity: 1;
+                transform: translate(20px, -20px) scale(1.5);
+            }
+            50% {
+                opacity: 0.8;
+                transform: translate(40px, -40px) scale(1);
+            }
+            75% {
+                opacity: 0.4;
+                transform: translate(60px, -60px) scale(0.6);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(80px, -80px) scale(0);
+            }
         }
 
-        /* Speed selector in detail */
-        .fan-speed-selector {
-            display: flex;
-            gap: 8px;
-            align-items: center;
+        .detail-solenoid-flow .big-icon.state-on~.flow-particle {
+            background: #1e88e5;
         }
-        .fan-speed-selector .speed-btn {
-            padding: 6px 14px;
-            border-radius: 20px;
-            border: 1px solid var(--border-color);
-            background: var(--bg-primary);
-            color: var(--text-secondary);
-            cursor: pointer;
-            font-size: 0.75rem;
-            font-weight: 600;
-            transition: var(--transition);
-        }
-        .fan-speed-selector .speed-btn:hover {
-            border-color: var(--primary);
-            color: var(--primary);
-        }
-        .fan-speed-selector .speed-btn.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
+        .detail-solenoid-flow .big-icon.state-off~.flow-particle {
+            animation: none !important;
+            opacity: 0 !important;
         }
 
         @keyframes glow-pulse {
@@ -1508,38 +1431,6 @@
         }
         .modal-box .modal-actions-row>* {
             flex: 1;
-        }
-
-        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Add Room Modal
-           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-        .room-icon-picker-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 6px;
-            margin-top: 6px;
-        }
-        .room-icon-picker-grid .icon-option {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 8px;
-            border-radius: var(--border-radius-sm);
-            border: 2px solid var(--border-color);
-            cursor: pointer;
-            transition: var(--transition);
-            font-size: 1.2rem;
-            background: var(--bg-primary);
-            color: var(--text-secondary);
-        }
-        .room-icon-picker-grid .icon-option:hover {
-            border-color: var(--primary);
-            background: var(--primary-light);
-        }
-        .room-icon-picker-grid .icon-option.selected {
-            border-color: var(--primary);
-            background: var(--primary-light);
-            color: var(--primary);
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2466,7 +2357,7 @@
                 <button class="nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
                 <button class="nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
             </nav>
-            <div class="sidebar-footer">Smart General Electric™ · الإصدار 5.8.0</div>
+            <div class="sidebar-footer">Smart General Electric™ · الإصدار 5.7.0</div>
         </aside>
 
         <!-- Main Content -->
@@ -2520,7 +2411,6 @@
                     <button class="icon-btn" id="themeToggle"><i class="fas fa-moon"></i></button>
                     <button class="icon-btn" id="scanQrBtn"><i class="fas fa-qrcode"></i></button>
                     <button class="icon-btn primary" id="addDeviceBtn"><i class="fas fa-plus"></i></button>
-                    <button class="icon-btn primary" id="addRoomBtn" title="إضافة غرفة"><i class="fas fa-door-open"></i></button>
                 </div>
             </div>
 
@@ -2556,41 +2446,14 @@
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div class="modal-overlay" id="roomEditModal">
         <div class="modal-box">
-            <h3 class="modal-title"><i class="fas fa-edit"></i> تعديل الغرفة</h3>
+            <h3 class="modal-title"><i class="fas fa-edit"></i> تعديل اسم الغرفة</h3>
             <div class="form-group">
-                <label>اسم الغرفة</label>
+                <label>الاسم الجديد</label>
                 <input id="roomEditInput" placeholder="أدخل اسم الغرفة" />
-            </div>
-            <div class="form-group">
-                <label>الرمز (اختر أيقونة)</label>
-                <div class="room-icon-picker-grid" id="roomEditIconPicker"></div>
-                <input type="hidden" id="roomEditIcon" value="fa-home" />
             </div>
             <div class="modal-actions">
                 <button class="btn-secondary" id="roomEditCancel">إلغاء</button>
                 <button class="btn-primary" id="roomEditSave">💾 حفظ</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Add Room Modal
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-    <div class="modal-overlay" id="addRoomModal">
-        <div class="modal-box">
-            <h3 class="modal-title"><i class="fas fa-door-open"></i> إضافة غرفة جديدة</h3>
-            <div class="form-group">
-                <label>اسم الغرفة</label>
-                <input id="addRoomName" placeholder="مثل: المخزن، السطح، المرآب" />
-            </div>
-            <div class="form-group">
-                <label>الرمز (اختر أيقونة)</label>
-                <div class="room-icon-picker-grid" id="addRoomIconPicker"></div>
-                <input type="hidden" id="addRoomIcon" value="fa-home" />
-            </div>
-            <div class="modal-actions">
-                <button class="btn-secondary" id="addRoomCancel">إلغاء</button>
-                <button class="btn-primary" id="addRoomSubmit">➕ إضافة</button>
             </div>
         </div>
     </div>
@@ -2710,7 +2573,7 @@
             <button class="back-btn" id="roomDetailBack"><i class="fas fa-arrow-right"></i></button>
             <span class="room-title" id="roomDetailTitle">
                 <span id="roomDetailName"></span>
-                <button class="edit-room-btn" id="roomDetailEditBtn" title="تعديل الغرفة"><i class="fas fa-pen"></i></button>
+                <button class="edit-room-btn" id="roomDetailEditBtn" title="تعديل اسم الغرفة"><i class="fas fa-pen"></i></button>
             </span>
             <div class="room-actions">
                 <span class="count" id="roomDetailCount"></span>
@@ -2757,7 +2620,7 @@
             'use strict';
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  CONSTANTS – Device Types
+            //  CONSTANTS – Device Types (UPDATED with Solenoid)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             const DEVICE_TYPES = {
                 1: { name: 'باب جراج', icon: 'fa-door-open', color: '#3b82f6', hasBrightness: false, hasTemp: false,
@@ -2774,6 +2637,7 @@
                     hasSpeed: false, isDoor: false, topic: 'ac' },
                 7: { name: 'مضخة', icon: 'fa-water', color: '#3b82f6', hasBrightness: false, hasTemp: false,
                     hasSpeed: false, isDoor: false, topic: 'pump' },
+                // NEW: Solenoid / Electric Valve
                 8: { name: 'صمام كهربائي', icon: 'fa-shower', color: '#1e88e5', hasBrightness: false, hasTemp: false,
                     hasSpeed: false, isDoor: false, topic: 'valve' }
             };
@@ -2784,17 +2648,7 @@
                 'fa-thermometer-half', 'fa-microchip', 'fa-robot', 'fa-home',
                 'fa-chair', 'fa-bed', 'fa-utensils', 'fa-tree', 'fa-car',
                 'fa-shield-alt', 'fa-bolt', 'fa-wifi', 'fa-bluetooth-b',
-                'fa-shower', 'fa-tint'
-            ];
-
-            // Room icons for picker
-            const ROOM_ICONS = [
-                'fa-home', 'fa-couch', 'fa-bed', 'fa-utensils', 'fa-tree',
-                'fa-door-open', 'fa-chair', 'fa-shower', 'fa-tractor',
-                'fa-car', 'fa-warehouse', 'fa-store', 'fa-school',
-                'fa-building', 'fa-campground', 'fa-swimmer', 'fa-dumbbell',
-                'fa-music', 'fa-tv', 'fa-book', 'fa-paint-brush', 'fa-cogs',
-                'fa-leaf', 'fa-snowflake', 'fa-umbrella', 'fa-moon'
+                'fa-shower', 'fa-tint', 'fa-water' // إضافة أيقونات للصمام
             ];
 
             const K_MAX_RECONNECT = 5;
@@ -2864,7 +2718,6 @@
                 themeToggle: $('themeToggle'),
                 scanQrBtn: $('scanQrBtn'),
                 addDeviceBtn: $('addDeviceBtn'),
-                addRoomBtn: $('addRoomBtn'),
                 detailPage: $('deviceDetailPage'),
                 detailBackBtn: $('detailBackBtn'),
                 detailTitle: $('detailTitle'),
@@ -2880,20 +2733,6 @@
                 addDeviceRoom: $('addDeviceRoom'),
                 addModalCancel: $('addModalCancel'),
                 addModalSubmit: $('addModalSubmit'),
-                // Room add modal
-                addRoomModal: $('addRoomModal'),
-                addRoomName: $('addRoomName'),
-                addRoomIconPicker: $('addRoomIconPicker'),
-                addRoomIcon: $('addRoomIcon'),
-                addRoomCancel: $('addRoomCancel'),
-                addRoomSubmit: $('addRoomSubmit'),
-                // Room edit modal
-                roomEditModal: $('roomEditModal'),
-                roomEditInput: $('roomEditInput'),
-                roomEditIconPicker: $('roomEditIconPicker'),
-                roomEditIcon: $('roomEditIcon'),
-                roomEditCancel: $('roomEditCancel'),
-                roomEditSave: $('roomEditSave'),
                 addAutoModal: $('addAutoModal'),
                 autoName: $('autoName'),
                 autoTriggerDevice: $('autoTriggerDevice'),
@@ -2931,6 +2770,10 @@
                 roomDetailCount: $('roomDetailCount'),
                 roomDetailDevices: $('roomDetailDevices'),
                 roomDetailEmpty: $('roomDetailEmpty'),
+                roomEditModal: $('roomEditModal'),
+                roomEditInput: $('roomEditInput'),
+                roomEditCancel: $('roomEditCancel'),
+                roomEditSave: $('roomEditSave'),
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3173,7 +3016,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEFAULT DATA
+            //  DEFAULT DATA (with solenoid sample in Farm)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function getDefaultDevices() {
                 return [
@@ -3191,6 +3034,7 @@
                         online: true, lastHeartbeat: Date.now(), icon: 'fa-snowflake' },
                     { id: 'garden_pump', type: 7, room: 'الحديقة', name: 'مضخة الحديقة', status: false, online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-water' },
+                    // New solenoid example in Farm
                     { id: 'valve1', type: 8, room: 'المزرعة', name: 'صمام الري', status: false, online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-shower' },
                 ];
@@ -3296,7 +3140,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT
+            //  MQTT (with solenoid support)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateConnectionBanner() {
                 if (state.mqttStatus === 'connected') updateWifiStatus('connected', 'متصل');
@@ -3342,7 +3186,7 @@
                     5: 'fan',
                     6: 'ac',
                     7: 'pump',
-                    8: 'valve'
+                    8: 'valve' // solenoid
                 };
                 const base = topicMap[type] || 'device';
                 if (suffix === 'cmd') {
@@ -3730,7 +3574,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ACTIVITY LOG PANEL
+            //  ACTIVITY LOG PANEL (header only)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleLogPanel() {
                 state.logPanelOpen = !state.logPanelOpen;
@@ -3770,7 +3614,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ACTIONS
+            //  DEVICE ACTIONS (with solenoid)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleDevice(id) {
                 const dev = state.devices.find(d => d.id === id);
@@ -3834,7 +3678,7 @@
                     if (state.notifyStatusUpdates) {
                         notifyDeviceChange(dev, newState ? 'on' : 'off', dev.status ? 'on' : 'off');
                     }
-                } else if (type === 8) {
+                } else if (type === 8) { // Solenoid
                     const newState = !dev.status;
                     dev.status = newState;
                     sendMqttCommand(id, type, 'cmd', newState ? 'ON' : 'OFF');
@@ -3942,193 +3786,6 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ROOM MANAGEMENT
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function initRoomIconPickers() {
-                // Add room icon picker
-                const addPicker = dom.addRoomIconPicker;
-                addPicker.innerHTML = '';
-                ROOM_ICONS.forEach(icon => {
-                    const div = document.createElement('div');
-                    div.className = 'icon-option' + (icon === 'fa-home' ? ' selected' : '');
-                    div.dataset.icon = icon;
-                    div.innerHTML = `<i class="fas ${icon}"></i>`;
-                    div.addEventListener('click', function() {
-                        addPicker.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
-                        this.classList.add('selected');
-                        dom.addRoomIcon.value = this.dataset.icon;
-                    });
-                    addPicker.appendChild(div);
-                });
-                dom.addRoomIcon.value = 'fa-home';
-
-                // Edit room icon picker
-                const editPicker = dom.roomEditIconPicker;
-                editPicker.innerHTML = '';
-                ROOM_ICONS.forEach(icon => {
-                    const div = document.createElement('div');
-                    div.className = 'icon-option' + (icon === 'fa-home' ? ' selected' : '');
-                    div.dataset.icon = icon;
-                    div.innerHTML = `<i class="fas ${icon}"></i>`;
-                    div.addEventListener('click', function() {
-                        editPicker.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
-                        this.classList.add('selected');
-                        dom.roomEditIcon.value = this.dataset.icon;
-                    });
-                    editPicker.appendChild(div);
-                });
-                dom.roomEditIcon.value = 'fa-home';
-            }
-
-            function openAddRoomModal() {
-                dom.addRoomModal.classList.add('active');
-                dom.addRoomName.value = '';
-                dom.addRoomName.focus();
-                // Reset icon picker
-                const picker = dom.addRoomIconPicker;
-                picker.querySelectorAll('.icon-option').forEach(el => {
-                    el.classList.toggle('selected', el.dataset.icon === 'fa-home');
-                });
-                dom.addRoomIcon.value = 'fa-home';
-            }
-
-            function closeAddRoomModal() {
-                dom.addRoomModal.classList.remove('active');
-            }
-
-            function handleAddRoom() {
-                const name = dom.addRoomName.value.trim();
-                const icon = dom.addRoomIcon.value;
-                if (!name) { showToast('⚠️ أدخل اسم الغرفة', 'error'); return; }
-                if (state.rooms.includes(name)) { showToast('⚠️ هذه الغرفة موجودة بالفعل', 'error'); return; }
-                state.rooms.push(name);
-                saveRooms();
-                closeAddRoomModal();
-                updateUI();
-                Sound.success();
-                showToast(`✅ تم إضافة غرفة "${name}"`, 'success', '🏠');
-                addLog(`🏠 إضافة غرفة جديدة: ${name}`, 'success');
-                populateRoomDropdown();
-            }
-
-            function openRoomEditModal(roomName) {
-                state.roomToEdit = roomName;
-                dom.roomEditInput.value = roomName;
-                // Find current icon from room card or default
-                const roomCard = document.querySelector(`.room-card[data-room="${escHtml(roomName)}"]`);
-                let currentIcon = 'fa-home';
-                if (roomCard) {
-                    const iconEl = roomCard.querySelector('.room-icon i');
-                    if (iconEl) {
-                        const classes = iconEl.className.split(' ');
-                        const faClass = classes.find(c => c.startsWith('fa-'));
-                        if (faClass) currentIcon = faClass;
-                    }
-                }
-                const picker = dom.roomEditIconPicker;
-                picker.querySelectorAll('.icon-option').forEach(el => {
-                    el.classList.toggle('selected', el.dataset.icon === currentIcon);
-                });
-                dom.roomEditIcon.value = currentIcon;
-                dom.roomEditModal.classList.add('active');
-                dom.roomEditInput.focus();
-                dom.roomEditInput.select();
-            }
-
-            function closeRoomEditModal() {
-                dom.roomEditModal.classList.remove('active');
-                state.roomToEdit = null;
-            }
-
-            function saveRoomEdit() {
-                const newName = dom.roomEditInput.value.trim();
-                const oldName = state.roomToEdit;
-                const newIcon = dom.roomEditIcon.value;
-                if (!newName) { showToast('⚠️ أدخل اسم الغرفة', 'error'); return; }
-                if (newName === oldName) {
-                    // Just update icon if room exists
-                    updateRoomIcon(oldName, newIcon);
-                    closeRoomEditModal();
-                    return;
-                }
-                if (state.rooms.includes(newName)) { showToast('⚠️ هذا الاسم موجود بالفعل', 'error'); return; }
-                // Update room name in devices
-                let changed = false;
-                state.devices.forEach(d => {
-                    if (d.room === oldName) { d.room = newName;
-                        changed = true; }
-                });
-                const idx = state.rooms.indexOf(oldName);
-                if (idx !== -1) {
-                    state.rooms[idx] = newName;
-                    changed = true;
-                }
-                if (changed) {
-                    saveDevices();
-                    saveRooms();
-                    populateRoomDropdown();
-                    if (dom.roomOverlay.classList.contains('active') && state._currentRoom === oldName) {
-                        state._currentRoom = newName;
-                        renderRoomDetail(newName);
-                        dom.roomDetailName.textContent = newName;
-                    }
-                    updateUI();
-                    Sound.success();
-                    showToast(`✅ تم تحديث الغرفة إلى "${newName}"`, 'success', '🏠');
-                    addLog(`🏠 تحديث غرفة: ${oldName} → ${newName}`, 'success');
-                }
-                // Update icon for the room
-                updateRoomIcon(newName, newIcon);
-                closeRoomEditModal();
-            }
-
-            function updateRoomIcon(roomName, icon) {
-                const card = document.querySelector(`.room-card[data-room="${escHtml(roomName)}"]`);
-                if (card) {
-                    const iconEl = card.querySelector('.room-icon i');
-                    if (iconEl) {
-                        // Remove all fa- classes except 'fas'
-                        const classes = iconEl.className.split(' ');
-                        const newClasses = classes.filter(c => c === 'fas' || c === 'fa');
-                        iconEl.className = newClasses.join(' ') + ' ' + icon;
-                    }
-                }
-                // Save room icons to localStorage
-                try {
-                    const roomIcons = JSON.parse(localStorage.getItem('sge_room_icons') || '{}');
-                    roomIcons[roomName] = icon;
-                    localStorage.setItem('sge_room_icons', JSON.stringify(roomIcons));
-                } catch (_) {}
-            }
-
-            function getRoomIcon(roomName) {
-                try {
-                    const roomIcons = JSON.parse(localStorage.getItem('sge_room_icons') || '{}');
-                    return roomIcons[roomName] || 'fa-home';
-                } catch (_) { return 'fa-home'; }
-            }
-
-            function deleteRoom(roomName) {
-                if (!confirm(`هل أنت متأكد من حذف الغرفة "${roomName}"؟ سيتم نقل أجهزتها إلى "جميع الغرف".`)) return;
-                // Move devices to "جميع الغرف"
-                state.devices.forEach(d => {
-                    if (d.room === roomName) d.room = 'جميع الغرف';
-                });
-                const idx = state.rooms.indexOf(roomName);
-                if (idx !== -1) state.rooms.splice(idx, 1);
-                saveDevices();
-                saveRooms();
-                populateRoomDropdown();
-                if (dom.roomOverlay.classList.contains('active') && state._currentRoom === roomName) {
-                    closeRoomDetail();
-                }
-                updateUI();
-                Sound.delete();
-                showToast(`🗑️ تم حذف الغرفة "${roomName}"`, 'warning', '🗑️');
-                addLog(`🗑️ حذف غرفة: ${roomName}`, 'warning');
-            }
-
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  DEVICE SETTINGS with custom icon picker
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDeviceSettings(deviceId) {
@@ -4213,7 +3870,7 @@
                 document.querySelectorAll('[data-action="pick-icon"]').forEach(el => {
                     el.addEventListener('click', function() {
                         document.querySelectorAll('[data-action="pick-icon"]').forEach(e => e.classList.remove(
-                            'selected'));
+                        'selected'));
                         this.classList.add('selected');
                         document.getElementById('selectedIcon').value = this.dataset.icon;
                     });
@@ -4460,7 +4117,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE
+            //  DETAIL PAGE (with solenoid support)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(deviceId) {
                 state.activeDeviceId = deviceId;
@@ -4523,19 +4180,14 @@
                             <div class="ctrl-row"><span class="label">اللون</span><div class="color-preview large" id="detailColor" data-id="${dev.id}" style="background:${dev.color||'#ffaa33'};"></div></div>
                         `;
                 } else if (dev.type === 5) {
-                    // Professional fan detail with speed selector
                     controlsHtml = `
-                            <div class="ctrl-row"><span class="label">التحكم</span>
-                                <button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button>
-                                <span>${isOn?'تشغيل':'إيقاف'}</span>
-                            </div>
-                            <div class="ctrl-row">
-                                <span class="label">السرعة</span>
-                                <div class="fan-speed-selector">
-                                    <button class="speed-btn ${dev.speed===1?'active':''}" data-speed="1" data-id="${dev.id}">منخفضة</button>
-                                    <button class="speed-btn ${dev.speed===2?'active':''}" data-speed="2" data-id="${dev.id}">متوسطة</button>
-                                    <button class="speed-btn ${dev.speed===3?'active':''}" data-speed="3" data-id="${dev.id}">عالية</button>
-                                </div>
+                            <div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>
+                            <div class="ctrl-row"><span class="label">السرعة</span>
+                                <select id="detailSpeed" data-id="${dev.id}" style="padding:8px 12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
+                                    <option value="1" ${dev.speed===1?'selected':''}>سرعة 1</option>
+                                    <option value="2" ${dev.speed===2?'selected':''}>سرعة 2</option>
+                                    <option value="3" ${dev.speed===3?'selected':''}>سرعة 3</option>
+                                </select>
                             </div>
                         `;
                 } else if (dev.type === 6) {
@@ -4544,6 +4196,7 @@
                             <div class="ctrl-row"><span class="label">درجة الحرارة</span><input type="range" class="slider large" min="16" max="30" value="${dev.temp||22}" id="detailTemp" data-id="${dev.id}" /><span>${dev.temp||22}°C</span></div>
                         `;
                 } else if (dev.type === 2 || dev.type === 4 || dev.type === 7 || dev.type === 8) {
+                    // Solenoid and simple devices get just a toggle
                     controlsHtml =
                         `<div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>`;
                 }
@@ -4552,32 +4205,23 @@
                 if (dev.type === 8) bigIconClasses.push('solenoid-icon');
                 if (isOn) bigIconClasses.push('state-on');
 
-                // Professional fan detail with SVG blades
-                let fanBladeHtml = '';
-                if (dev.type === 5) {
-                    const speedClass = dev.speed === 1 ? 'slow' : dev.speed === 2 ? 'medium' : 'fast';
-                    fanBladeHtml = `
-                            <div class="detail-fan-container">
-                                <div class="${bigIconClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}" style="cursor:pointer;">${iconHtml}</div>
-                                <div class="detail-fan-blade ${isOn ? 'active' : ''}">
-                                    <svg viewBox="0 0 100 100">
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L20 10 Q10 30 20 50 Z" />
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L80 10 Q90 30 80 50 Z" />
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L80 90 Q90 70 80 50 Z" />
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L20 90 Q10 70 20 50 Z" />
-                                        <circle cx="50" cy="50" r="10" fill="rgba(6,182,212,0.15)" stroke="rgba(6,182,212,0.2)" stroke-width="1" />
-                                    </svg>
-                                </div>
-                                <div class="fan-glow ${isOn ? 'active' : ''}"></div>
-                            </div>
+                // Solenoid flow particles for detail page
+                let flowParticles = '';
+                if (dev.type === 8) {
+                    flowParticles = `
+                            <span class="flow-particle"></span>
+                            <span class="flow-particle"></span>
+                            <span class="flow-particle"></span>
+                            <span class="flow-particle"></span>
                         `;
                 }
 
                 dom.detailBody.innerHTML = `
                         <div class="detail-device-card">
-                            ${dev.type === 5 ? fanBladeHtml : `
+                            <div class="detail-solenoid-flow">
                                 <div class="${bigIconClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}" style="cursor:pointer;">${iconHtml}</div>
-                            `}
+                                ${flowParticles}
+                            </div>
                             <div class="big-name">${dev.name}</div>
                             <div class="big-status">${statusText}</div>
                             <div style="margin-top:12px;">
@@ -4615,28 +4259,6 @@
                 const toggle = document.getElementById('detailToggle');
                 if (toggle) toggle.addEventListener('click', () => toggleDevice(toggle.dataset.id));
 
-                // Fan speed buttons in detail
-                document.querySelectorAll('.fan-speed-selector .speed-btn').forEach(btn => {
-                    btn.addEventListener('click', function() {
-                        const id = this.dataset.id;
-                        const speed = parseInt(this.dataset.speed);
-                        setFanSpeed(id, speed);
-                        // Update UI immediately
-                        document.querySelectorAll('.fan-speed-selector .speed-btn').forEach(b => b.classList.remove(
-                            'active'));
-                        this.classList.add('active');
-                        // Update fan blade speed
-                        const dev = state.devices.find(d => d.id === id);
-                        if (dev && dev.type === 5) {
-                            const speedClass = speed === 1 ? 'slow' : speed === 2 ? 'medium' : 'fast';
-                            document.querySelectorAll('.blade-path').forEach(el => {
-                                el.className = 'blade-path ' + (dev.status ? speedClass : '');
-                            });
-                            renderDetailPage(id);
-                        }
-                    });
-                });
-
                 const bright = document.getElementById('detailBrightness');
                 if (bright) bright.addEventListener('input', () => { setBrightness(bright.dataset.id, bright.value);
                     renderDetailPage(bright.dataset.id); });
@@ -4644,6 +4266,10 @@
                 const temp = document.getElementById('detailTemp');
                 if (temp) temp.addEventListener('input', () => { setTemp(temp.dataset.id, temp.value);
                     renderDetailPage(temp.dataset.id); });
+
+                const speed = document.getElementById('detailSpeed');
+                if (speed) speed.addEventListener('change', () => { setFanSpeed(speed.dataset.id, speed.value);
+                    renderDetailPage(speed.dataset.id); });
 
                 const colorEl = document.getElementById('detailColor');
                 if (colorEl) colorEl.addEventListener('click', () => { pickColor(colorEl.dataset.id);
@@ -4701,7 +4327,6 @@
                         if (e.target.closest('.toggle-switch') || e.target.closest('.slider-mini') ||
                             e.target.closest('.color-dot') || e.target.closest('.door-btn') ||
                             e.target.closest('[data-action="toggle-icon"]') ||
-                            e.target.closest('.fan-container') ||
                             e.target.closest('[data-action="settings-device"]') ||
                             e.target.closest('.settings-btn') ||
                             e.target.closest('[data-action="delete-device"]') ||
@@ -4712,45 +4337,68 @@
                 attachDeviceControls(dom.roomDetailDevices);
                 setTimeout(() => {
                     devicesInRoom.forEach(d => { if (d.type === 1) drawDoorOnCard(d.id); });
-                    // Also init fan animations for fans in room
-                    devicesInRoom.forEach(d => { if (d.type === 5) initFanAnimation(d.id); });
                 }, 100);
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  FAN ANIMATION INIT
+            //  ROOM NAME EDITING
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function initFanAnimation(deviceId) {
-                const dev = state.devices.find(d => d.id === deviceId);
-                if (!dev || dev.type !== 5) return;
-                const isOn = dev.status === true;
-                const speed = dev.speed || 1;
-                const speedClass = speed === 1 ? 'slow' : speed === 2 ? 'medium' : 'fast';
-                const fanContainer = document.querySelector(`.fan-container[data-id="${deviceId}"]`);
-                if (fanContainer) {
-                    const blades = fanContainer.querySelector('.fan-blade');
-                    if (blades) {
-                        blades.classList.toggle('active', isOn);
-                        const paths = blades.querySelectorAll('.blade-path');
-                        paths.forEach(p => {
-                            p.className = 'blade-path ' + (isOn ? speedClass : '');
-                        });
+            function openRoomEditModal(roomName) {
+                state.roomToEdit = roomName;
+                dom.roomEditInput.value = roomName;
+                dom.roomEditModal.classList.add('active');
+                dom.roomEditInput.focus();
+                dom.roomEditInput.select();
+            }
+
+            function closeRoomEditModal() {
+                dom.roomEditModal.classList.remove('active');
+                state.roomToEdit = null;
+            }
+
+            function saveRoomEdit() {
+                const newName = dom.roomEditInput.value.trim();
+                const oldName = state.roomToEdit;
+                if (!newName) { showToast('⚠️ أدخل اسم الغرفة', 'error'); return; }
+                if (newName === oldName) { closeRoomEditModal(); return; }
+                if (state.rooms.includes(newName) && newName !== oldName) {
+                    showToast('⚠️ هذا الاسم موجود بالفعل', 'error');
+                    return;
+                }
+                let changed = false;
+                state.devices.forEach(d => {
+                    if (d.room === oldName) { d.room = newName;
+                        changed = true; }
+                });
+                if (changed) {
+                    const idx = state.rooms.indexOf(oldName);
+                    if (idx !== -1) state.rooms[idx] = newName;
+                    else state.rooms.push(newName);
+                    saveDevices();
+                    saveRooms();
+                    populateRoomDropdown();
+                    closeRoomEditModal();
+                    if (dom.roomOverlay.classList.contains('active')) {
+                        renderRoomDetail(newName);
+                        dom.roomDetailName.textContent = newName;
                     }
-                    const glow = fanContainer.querySelector('.fan-glow');
-                    if (glow) glow.classList.toggle('active', isOn);
+                    updateUI();
+                    Sound.success();
+                    showToast(`✅ تم تغيير اسم الغرفة إلى "${newName}"`, 'success');
+                    addLog(`🏠 تغيير اسم الغرفة: ${oldName} → ${newName}`, 'success');
+                } else {
+                    closeRoomEditModal();
+                    showToast('⚠️ لا توجد أجهزة في هذه الغرفة', 'warning');
                 }
             }
 
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  POPULATE ROOM DROPDOWN
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function populateRoomDropdown() {
                 const select = dom.addDeviceRoom;
                 select.innerHTML = state.rooms.map(r => `<option value="${r}">${r}</option>`).join('');
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE CARD HTML (with professional fan animation)
+            //  DEVICE CARD HTML (with solenoid flow animation)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDeviceCardHtml(device) {
                 const typeInfo = DEVICE_TYPES[device.type] || DEVICE_TYPES[2];
@@ -4766,35 +4414,7 @@
                 if (isOn) wrapClasses.push('state-on');
 
                 let iconHtml = '';
-                let extraControls = '';
-
-                if (device.type === 5) {
-                    // Professional fan with SVG blades
-                    const speedClass = isOn ? (device.speed === 1 ? 'slow' : device.speed === 2 ? 'medium' : 'fast') : '';
-                    iconHtml = `
-                            <span class="fan-container" data-id="${device.id}" data-action="toggle-icon">
-                                <span class="${wrapClasses.join(' ')}" style="position:relative; z-index:2;"><i class="fas ${customIcon}"></i></span>
-                                <span class="fan-blade ${isOn ? 'active' : ''}">
-                                    <svg viewBox="0 0 100 100">
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L20 10 Q10 30 20 50 Z" />
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L80 10 Q90 30 80 50 Z" />
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L80 90 Q90 70 80 50 Z" />
-                                        <path class="blade-path ${isOn ? speedClass : ''}" d="M50 50 L20 90 Q10 70 20 50 Z" />
-                                        <circle cx="50" cy="50" r="10" fill="rgba(6,182,212,0.1)" stroke="rgba(6,182,212,0.15)" stroke-width="1" />
-                                    </svg>
-                                </span>
-                                <span class="fan-glow ${isOn ? 'active' : ''}"></span>
-                            </span>
-                        `;
-                    // Speed indicator dots
-                    const dots = [1, 2, 3].map(s => {
-                        const active = isOn && s <= (device.speed || 1);
-                        const cls = active ? 'active' : '';
-                        const speedCls = s === 1 ? '' : s === 2 ? 'speed-2' : 'speed-3';
-                        return `<span class="dot ${cls} ${speedCls}"></span>`;
-                    }).join('');
-                    extraControls = `<div class="fan-speed-indicator">${dots}</div>`;
-                } else if (device.type === 8) {
+                if (device.type === 8) {
                     // Solenoid with flow container
                     iconHtml = `
                             <span class="solenoid-flow-container" data-action="toggle-icon" data-id="${device.id}">
@@ -4856,6 +4476,7 @@
                                 <input type="range" class="slider-mini" min="16" max="30" value="${device.temp||22}" data-id="${device.id}" data-action="temp" style="flex:1;" />
                             </div>`;
                 } else if (device.type === 2 || device.type === 4 || device.type === 7 || device.type === 8) {
+                    // Simple toggle for solenoid and others
                     controls =
                         `<div class="controls"><button class="toggle-switch ${isOn?'active':''}" data-id="${device.id}"></button></div>`;
                 }
@@ -4863,14 +4484,10 @@
                     `<span class="vacation-badge">🏖️ إجازة</span>` :
                     '';
                 const dotClass = isOnline ? 'online' : 'offline';
-
-                // For fan, we need to handle click on fan-container too
-                const fanClickAttr = device.type === 5 ? `data-action="toggle-icon"` : '';
-
                 return `
                         <div class="device-card" data-id="${device.id}">
                             <div class="card-top">
-                                <span class="icon-wrap-slot" ${fanClickAttr}>${iconHtml}</span>
+                                <span class="icon-wrap-slot">${iconHtml}</span>
                                 <div class="badge-group">
                                     <span class="room-badge">${device.room}</span>
                                     <span class="status-dot ${dotClass}" title="${isOnline ? '🟢 متصل بالخادم' : '🔴 غير متصل بالخادم'}"></span>
@@ -4880,7 +4497,6 @@
                             </div>
                             <div class="device-name">${device.name}</div>
                             <div class="device-status" style="color:${statusColor};">${statusText}</div>
-                            ${extraControls}
                             ${extraHtml}
                             ${controls}
                         </div>
@@ -4891,16 +4507,8 @@
             //  ATTACH DEVICE CONTROLS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function attachDeviceControls(container) {
+                // For solenoid, we need to handle click on the container as well
                 container.querySelectorAll('[data-action="toggle-icon"]').forEach(el => {
-                    if (el.dataset.id) {
-                        el.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            toggleDevice(el.dataset.id);
-                        });
-                    }
-                });
-                // Fan containers also trigger toggle
-                container.querySelectorAll('.fan-container').forEach(el => {
                     if (el.dataset.id) {
                         el.addEventListener('click', (e) => {
                             e.stopPropagation();
@@ -4961,7 +4569,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  RENDER PAGES
+            //  RENDER PAGES (only updated for automations modal)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDashboard() {
                 const scenesHtml = state.scenes.slice(0, 5).map(s =>
@@ -4980,7 +4588,7 @@
                     roomsHtml =
                         `<div class="room-empty-state"><i class="fas fa-door-open"></i>لا توجد غرف<br><small>أضف أجهزة لإنشاء غرف</small></div>`;
                 } else {
-                    const defaultIcons = {
+                    const roomIcons = {
                         'غرفة المعيشة': 'fa-couch',
                         'غرفة النوم': 'fa-bed',
                         'المطبخ': 'fa-utensils',
@@ -4996,13 +4604,11 @@
                         const count = devices.length;
                         const previewIcons = devices.slice(0, 4).map(d => d.icon || DEVICE_TYPES[d.type]?.icon ||
                             'fa-microchip');
-                        const icon = getRoomIcon(room) || defaultIcons[room] || 'fa-home';
+                        const icon = roomIcons[room] || 'fa-home';
                         const onlineCount = devices.filter(d => d.online !== false).length;
-                        const isDefault = ['جميع الغرف', 'غرفة المعيشة', 'غرفة النوم', 'المطبخ', 'الحديقة', 'المدخل', 'المكتب', 'الحمام', 'المزرcea'].includes(room);
                         return `
                                 <div class="room-card" data-room="${escHtml(room)}">
-                                    <button class="room-edit-btn" data-action="edit-room" data-room="${escHtml(room)}" title="تعديل الغرفة"><i class="fas fa-pen"></i></button>
-                                    ${!isDefault ? `<button class="room-delete-btn" data-action="delete-room" data-room="${escHtml(room)}" title="حذف الغرفة"><i class="fas fa-trash"></i></button>` : ''}
+                                    <button class="room-edit-btn" data-action="edit-room" data-room="${escHtml(room)}" title="تعديل اسم الغرفة"><i class="fas fa-pen"></i></button>
                                     <span class="room-icon"><i class="fas ${icon}"></i></span>
                                     <div class="room-name">${escHtml(room)}</div>
                                     <div class="room-count">${count} جهاز · ${onlineCount} متصل</div>
@@ -5018,9 +4624,7 @@
                 return `
                             <div class="section-header"><span class="title">⚡ مشاهد سريعة</span><span class="see-all" data-page="scenes">عرض الكل</span></div>
                             <div class="scenes-scroll">${scenesHtml}</div>
-                            <div class="section-header"><span class="title">🏠 الغرف</span>
-                                <span class="see-all" id="addRoomFromDashBtn">➕ إضافة غرفة</span>
-                            </div>
+                            <div class="section-header"><span class="title">🏠 الغرف</span><span class="see-all" data-page="devices">عرض الأجهزة</span></div>
                             <div class="rooms-grid">${roomsHtml}</div>
                         `;
             }
@@ -5055,6 +4659,9 @@
                         `;
             }
 
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  AUTOMATIONS PAGE
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderAutomationsPage() {
                 const total = state.automations.length;
                 const enabled = state.automations.filter(a => a.enabled).length;
@@ -5123,6 +4730,42 @@
                         `;
             }
 
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  ADD AUTOMATION MODAL (professional modal)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function showAutoForm() {
+                const deviceOptions = state.devices.map(d =>
+                    `<option value="${d.id}">${d.name} (${d.id})</option>`).join('');
+                dom.autoTriggerDevice.innerHTML = deviceOptions;
+                dom.autoActionDevice.innerHTML = deviceOptions;
+                dom.autoName.value = '';
+                dom.autoTriggerCondition.value = 'on';
+                dom.autoActionCommand.value = 'on';
+                dom.addAutoModal.classList.add('active');
+                dom.autoName.focus();
+            }
+
+            function closeAutoForm() {
+                dom.addAutoModal.classList.remove('active');
+            }
+
+            function handleAddAuto() {
+                const name = dom.autoName.value.trim();
+                const triggerDevice = dom.autoTriggerDevice.value;
+                const triggerCondition = dom.autoTriggerCondition.value;
+                const actionDevice = dom.autoActionDevice.value;
+                const actionCommand = dom.autoActionCommand.value;
+
+                if (!name) { showToast('⚠️ أدخل اسم الأتمتة', 'error'); return; }
+                if (!triggerDevice || !actionDevice) { showToast('⚠️ اختر الأجهزة', 'error'); return; }
+
+                addAutomation(name, triggerDevice, triggerCondition, actionDevice, actionCommand);
+                closeAutoForm();
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  SETTINGS PAGE
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderSettingsPage() {
                 return `
                             <div class="settings-card">
@@ -5175,11 +4818,106 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 5.8.0<br>
+                                    الإصدار 5.7.0<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
                         `;
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  ATTACH EVENTS (main)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function attachCardEvents(container) {
+                // Room cards
+                container.querySelectorAll('.room-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('.room-edit-btn')) return;
+                        const room = card.dataset.room;
+                        if (room) openRoomDetail(room);
+                    });
+                });
+                container.querySelectorAll('.room-edit-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const room = btn.dataset.room;
+                        if (room) openRoomEditModal(room);
+                    });
+                });
+                container.querySelectorAll('[data-action="open-room"]').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const room = el.dataset.room;
+                        if (room) openRoomDetail(room);
+                    });
+                });
+
+                // Device cards
+                container.querySelectorAll('.device-card').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        if (e.target.closest('.toggle-switch') || e.target.closest('.slider-mini') ||
+                            e.target.closest('.color-dot') || e.target.closest('.door-btn') ||
+                            e.target.closest('[data-action="toggle-icon"]') ||
+                            e.target.closest('.solenoid-flow-container') ||
+                            e.target.closest('[data-action="settings-device"]') ||
+                            e.target.closest('.settings-btn') ||
+                            e.target.closest('[data-action="delete-device"]') || e.target.closest(
+                            '.delete-btn') || e.target.closest('select')) return;
+                        openDetailPage(card.dataset.id);
+                    });
+                });
+
+                attachDeviceControls(container);
+
+                // Scene actions
+                container.querySelectorAll('[data-action="scene"]').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        runScene(el.dataset.id);
+                    });
+                });
+                container.querySelectorAll('[data-action="delete-scene"]').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = el.dataset.id;
+                        if (id) deleteScene(id);
+                    });
+                });
+                container.querySelectorAll('[data-action="auto-toggle"]').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = el.dataset.id;
+                        if (id) toggleAutomation(id);
+                    });
+                });
+                container.querySelectorAll('[data-action="delete-auto"]').forEach(el => {
+                    el.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = el.dataset.id;
+                        if (id) deleteAutomation(id);
+                    });
+                });
+                container.querySelectorAll('[data-page]').forEach(el => {
+                    el.addEventListener('click', () => {
+                        const page = el.dataset.page;
+                        if (page) navigateTo(page);
+                    });
+                });
+
+                const addSceneBtn = document.getElementById('addSceneBtn');
+                if (addSceneBtn) addSceneBtn.addEventListener('click', showSceneForm);
+                const addAutoBtn = document.getElementById('addAutoBtn');
+                if (addAutoBtn) addAutoBtn.addEventListener('click', showAutoForm);
+                const settingsSave = document.getElementById('settingsSaveBtn');
+                if (settingsSave) settingsSave.addEventListener('click', saveSettings);
+                const soundToggle = document.getElementById('soundToggleBtn');
+                if (soundToggle) soundToggle.addEventListener('click', toggleSound);
+                const notifyToggle = document.getElementById('notifyStatusToggleBtn');
+                if (notifyToggle) notifyToggle.addEventListener('click', toggleNotifyStatus);
+                const clearData = document.getElementById('clearDataBtn');
+                if (clearData) clearData.addEventListener('click', clearAllData);
+                const testConnBtn = document.getElementById('testConnBtn');
+                if (testConnBtn) testConnBtn.addEventListener('click', testConnection);
+                dom.vacationOffBtn.addEventListener('click', toggleVacation);
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -5417,7 +5155,7 @@
                     ['sge_devices', 'sge_scenes', 'sge_automations', 'sge_logs', 'sge_rooms',
                         'sge_active_device', 'sge_schedules', 'sge_alarms', 'sge_notifications',
                         'sge_server', 'sge_username', 'sge_password', 'sge_theme', 'sge_sound', 'sge_notify',
-                        'sge_vacation', 'sge_room_icons'
+                        'sge_vacation'
                     ].forEach(k => localStorage.removeItem(k));
                     location.reload();
                 } catch (_) { showToast('❌ حدث خطأ', 'error'); }
@@ -5561,39 +5299,6 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD AUTOMATION MODAL
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function showAutoForm() {
-                const deviceOptions = state.devices.map(d =>
-                    `<option value="${d.id}">${d.name} (${d.id})</option>`).join('');
-                dom.autoTriggerDevice.innerHTML = deviceOptions;
-                dom.autoActionDevice.innerHTML = deviceOptions;
-                dom.autoName.value = '';
-                dom.autoTriggerCondition.value = 'on';
-                dom.autoActionCommand.value = 'on';
-                dom.addAutoModal.classList.add('active');
-                dom.autoName.focus();
-            }
-
-            function closeAutoForm() {
-                dom.addAutoModal.classList.remove('active');
-            }
-
-            function handleAddAuto() {
-                const name = dom.autoName.value.trim();
-                const triggerDevice = dom.autoTriggerDevice.value;
-                const triggerCondition = dom.autoTriggerCondition.value;
-                const actionDevice = dom.autoActionDevice.value;
-                const actionCommand = dom.autoActionCommand.value;
-
-                if (!name) { showToast('⚠️ أدخل اسم الأتمتة', 'error'); return; }
-                if (!triggerDevice || !actionDevice) { showToast('⚠️ اختر الأجهزة', 'error'); return; }
-
-                addAutomation(name, triggerDevice, triggerCondition, actionDevice, actionCommand);
-                closeAutoForm();
-            }
-
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  VACATION UI
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateVacationUI() {
@@ -5635,28 +5340,11 @@
                     el.classList.toggle('active', el.dataset.page === page);
                 });
                 if (page === 'settings') updateDiagnosticPanel();
-                setTimeout(() => {
-                    drawAllDoors();
-                    // Init fan animations
-                    state.devices.forEach(d => { if (d.type === 5) initFanAnimation(d.id); });
-                }, 200);
+                setTimeout(() => { drawAllDoors(); }, 200);
                 updateLogBadge();
                 if (dom.roomOverlay.classList.contains('active') && state._currentRoom) {
                     renderRoomDetail(state._currentRoom);
                 }
-
-                // Add room from dashboard button
-                const addRoomDash = document.getElementById('addRoomFromDashBtn');
-                if (addRoomDash) addRoomDash.addEventListener('click', openAddRoomModal);
-
-                // Room delete buttons
-                document.querySelectorAll('[data-action="delete-room"]').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const room = btn.dataset.room;
-                        if (room) deleteRoom(room);
-                    });
-                });
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -5664,7 +5352,6 @@
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function init() {
                 loadAll();
-                initRoomIconPickers();
                 updateUI();
                 setTimeout(connectMQTT, 800);
                 startHeartbeatMonitor();
@@ -5717,29 +5404,7 @@
                 dom.addModalCancel.addEventListener('click', closeAddModal);
                 dom.addModalSubmit.addEventListener('click', handleAddDevice);
 
-                // Room add modal
-                dom.addRoomBtn.addEventListener('click', openAddRoomModal);
-                dom.addRoomCancel.addEventListener('click', closeAddRoomModal);
-                dom.addRoomSubmit.addEventListener('click', handleAddRoom);
-                dom.addRoomModal.addEventListener('click', (e) => {
-                    if (e.target === dom.addRoomModal) closeAddRoomModal();
-                });
-                dom.addRoomName.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') handleAddRoom();
-                });
-
-                // Room edit modal
-                dom.roomEditCancel.addEventListener('click', closeRoomEditModal);
-                dom.roomEditSave.addEventListener('click', saveRoomEdit);
-                dom.roomEditModal.addEventListener('click', (e) => {
-                    if (e.target === dom.roomEditModal) closeRoomEditModal();
-                });
-                dom.roomEditInput.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') saveRoomEdit();
-                    if (e.key === 'Escape') closeRoomEditModal();
-                });
-
-                // Automation modal
+                // Automation modal events
                 dom.addAutoCancel.addEventListener('click', closeAutoForm);
                 dom.addAutoSubmit.addEventListener('click', handleAddAuto);
                 dom.addAutoModal.addEventListener('click', (e) => {
@@ -5760,6 +5425,16 @@
                 });
                 dom.roomOverlay.addEventListener('click', (e) => {
                     if (e.target === dom.roomOverlay) closeRoomDetail();
+                });
+
+                dom.roomEditCancel.addEventListener('click', closeRoomEditModal);
+                dom.roomEditSave.addEventListener('click', saveRoomEdit);
+                dom.roomEditModal.addEventListener('click', (e) => {
+                    if (e.target === dom.roomEditModal) closeRoomEditModal();
+                });
+                dom.roomEditInput.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') saveRoomEdit();
+                    if (e.key === 'Escape') closeRoomEditModal();
                 });
 
                 dom.qrClose.addEventListener('click', closeQrScanner);
@@ -5805,7 +5480,6 @@
                         closeRoomDetail();
                         closeRoomEditModal();
                         closeAutoForm();
-                        closeAddRoomModal();
                     }
                     if (dom.detailPage.classList.contains('active')) {
                         const dev = state.devices.find(d => d.id === state.activeDeviceId);
@@ -5824,8 +5498,8 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v5.8.0 – Professional Electrofan Animation + Room Management');
-                console.log(`📦 ${state.devices.length} devices, ${state.rooms.length} rooms`);
+                console.log('⚡ Smart General Electric v5.7.0 – Farm room added, Solenoid flow animation improved');
+                console.log(`📦 ${state.devices.length} devices`);
             }
 
             // ── Expose to global scope ──
@@ -5846,8 +5520,6 @@
             window.openRoomDetail = openRoomDetail;
             window.closeRoomDetail = closeRoomDetail;
             window.openRoomEditModal = openRoomEditModal;
-            window.openAddRoomModal = openAddRoomModal;
-            window.closeAddRoomModal = closeAddRoomModal;
             window.showAutoForm = showAutoForm;
             window.closeAutoForm = closeAutoForm;
 
