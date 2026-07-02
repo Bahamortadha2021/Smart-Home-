@@ -202,6 +202,7 @@
             background: var(--surface);
             box-shadow: var(--card-shadow);
             border: 1px solid var(--border-color);
+            transition: all 0.3s;
         }
         .wifi-status .icon.online {
             color: var(--wifi-online);
@@ -863,191 +864,206 @@
             text-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
             animation: glow-pulse 1.5s ease-in-out infinite;
         }
-        /* Solenoid animation */
-        .device-card .card-top .icon-wrap.solenoid-icon.state-on {
-            color: #1e88e5;
-            animation: solenoid-pulse 1.2s ease-in-out infinite;
+        /* Water Faucet Animation - Professional Flow */
+        .device-card .card-top .icon-wrap.water-faucet {
+            position: relative;
+            display: inline-block;
         }
-        @keyframes solenoid-pulse {
+        .device-card .card-top .icon-wrap.water-faucet.state-on {
+            color: #1e88e5;
+            animation: faucet-pulse 1.8s ease-in-out infinite;
+        }
+        @keyframes faucet-pulse {
             0%,
             100% {
                 transform: scale(1) rotate(0deg);
+                text-shadow: 0 0 10px rgba(30, 136, 229, 0.3);
             }
             50% {
-                transform: scale(1.15) rotate(6deg);
+                transform: scale(1.05) rotate(-3deg);
+                text-shadow: 0 0 30px rgba(30, 136, 229, 0.6);
             }
         }
-        /* سولينويد مع تموج مائي إضافي */
-        .device-card .card-top .icon-wrap.solenoid-icon.state-on::after {
-            content: '';
+        /* Water droplets */
+        .device-card .card-top .water-drop {
             position: absolute;
-            border-radius: 50%;
-            background: rgba(30, 136, 229, 0.15);
-            width: 100%;
-            height: 100%;
-            animation: solenoid-ripple 1.5s infinite;
+            width: 6px;
+            height: 10px;
+            background: #1e88e5;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
             pointer-events: none;
         }
-        @keyframes solenoid-ripple {
-            0% {
-                transform: scale(0.8);
-                opacity: 0.6;
-            }
-            100% {
-                transform: scale(1.8);
-                opacity: 0;
-            }
+        .device-card .card-top .water-drop:nth-child(1) {
+            animation: drop-fall 1.2s ease-in infinite 0.0s;
+            left: 30%;
+            top: 20%;
         }
-
-        /* أنيميشن احترافي للصمام الكهربائي - تدفق السائل */
-        .solenoid-flow-container {
-            position: relative;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 2.2rem;
-            height: 2.2rem;
-        }
-        .solenoid-flow-container .icon-wrap {
-            font-size: 1.6rem;
-            position: relative;
-            z-index: 2;
-        }
-        .solenoid-flow-container .flow-line {
-            position: absolute;
-            width: 4px;
-            height: 4px;
-            background: var(--primary);
-            border-radius: 50%;
-            opacity: 0;
-            z-index: 1;
-        }
-        .solenoid-flow-container .flow-line:nth-child(1) {
-            animation: flow-particle 1.8s ease-in-out infinite 0s;
+        .device-card .card-top .water-drop:nth-child(2) {
+            animation: drop-fall 1.4s ease-in infinite 0.3s;
+            left: 60%;
             top: 10%;
-            left: 10%;
         }
-        .solenoid-flow-container .flow-line:nth-child(2) {
-            animation: flow-particle 1.8s ease-in-out infinite 0.4s;
+        .device-card .card-top .water-drop:nth-child(3) {
+            animation: drop-fall 1.0s ease-in infinite 0.6s;
+            left: 15%;
+            top: 40%;
+        }
+        .device-card .card-top .water-drop:nth-child(4) {
+            animation: drop-fall 1.6s ease-in infinite 0.9s;
+            left: 75%;
             top: 30%;
-            left: 80%;
         }
-        .solenoid-flow-container .flow-line:nth-child(3) {
-            animation: flow-particle 1.8s ease-in-out infinite 0.8s;
-            top: 70%;
-            left: 20%;
+        .device-card .card-top .water-drop:nth-child(5) {
+            animation: drop-fall 1.3s ease-in infinite 0.2s;
+            left: 45%;
+            top: 60%;
         }
-        .solenoid-flow-container .flow-line:nth-child(4) {
-            animation: flow-particle 1.8s ease-in-out infinite 1.2s;
-            top: 90%;
-            left: 70%;
-        }
-        @keyframes flow-particle {
+        @keyframes drop-fall {
             0% {
                 opacity: 0;
-                transform: translate(0, 0) scale(0.5);
+                transform: translateY(0) scale(0.5);
             }
             20% {
                 opacity: 1;
-                transform: translate(8px, -8px) scale(1.2);
+                transform: translateY(8px) scale(1.2);
             }
             40% {
-                opacity: 0.8;
-                transform: translate(16px, -16px) scale(1);
+                opacity: 0.9;
+                transform: translateY(16px) scale(1);
             }
             60% {
-                opacity: 0.5;
-                transform: translate(24px, -24px) scale(0.8);
+                opacity: 0.6;
+                transform: translateY(28px) scale(0.8);
             }
             80% {
-                opacity: 0.2;
-                transform: translate(32px, -32px) scale(0.5);
+                opacity: 0.3;
+                transform: translateY(38px) scale(0.5);
             }
             100% {
                 opacity: 0;
-                transform: translate(40px, -40px) scale(0);
+                transform: translateY(50px) scale(0);
             }
         }
-
-        .device-card .card-top .solenoid-flow-container .icon-wrap.solenoid-icon.state-on {
-            color: #1e88e5;
-            animation: solenoid-pulse 1.2s ease-in-out infinite;
+        /* Water splash ring */
+        .device-card .card-top .water-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(30, 136, 229, 0.4);
+            width: 0;
+            height: 0;
+            pointer-events: none;
+            opacity: 0;
         }
-        .device-card .card-top .solenoid-flow-container .icon-wrap.solenoid-icon.state-on~.flow-line {
-            background: #1e88e5;
+        .device-card .card-top .water-ring:nth-child(6) {
+            animation: ring-expand 2s ease-out infinite 0s;
+            left: 25%;
+            top: 25%;
         }
-        .device-card .card-top .solenoid-flow-container .icon-wrap.solenoid-icon.state-off~.flow-line {
+        .device-card .card-top .water-ring:nth-child(7) {
+            animation: ring-expand 2.2s ease-out infinite 0.5s;
+            left: 55%;
+            top: 45%;
+        }
+        @keyframes ring-expand {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% {
+                width: 80px;
+                height: 80px;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.5);
+            }
+        }
+        .device-card .card-top .icon-wrap.water-faucet.state-off .water-drop,
+        .device-card .card-top .icon-wrap.water-faucet.state-off .water-ring {
             animation: none !important;
             opacity: 0 !important;
         }
 
-        /* تدفق السائل في صفحة التفاصيل */
-        .detail-solenoid-flow {
+        /* ── Big icon detail page water animation ── */
+        .detail-water-container {
             position: relative;
             display: inline-block;
-            padding: 1rem;
         }
-        .detail-solenoid-flow .big-icon {
+        .detail-water-container .big-icon {
             font-size: 5rem;
             position: relative;
             z-index: 2;
         }
-        .detail-solenoid-flow .flow-particle {
+        .detail-water-container .big-icon.water-faucet.state-on {
+            color: #1e88e5;
+            animation: faucet-pulse 1.8s ease-in-out infinite;
+        }
+        .detail-water-container .water-particle {
             position: absolute;
-            width: 12px;
-            height: 12px;
-            background: var(--primary);
-            border-radius: 50%;
+            width: 10px;
+            height: 16px;
+            background: #1e88e5;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
             opacity: 0;
-            z-index: 1;
+            pointer-events: none;
         }
-        .detail-solenoid-flow .flow-particle:nth-child(1) {
-            animation: detail-flow 2s ease-in-out infinite 0s;
-            top: 0%;
-            left: 50%;
+        .detail-water-container .water-particle:nth-child(1) {
+            animation: detail-drop 1.5s ease-in infinite 0s;
+            left: 20%;
+            top: 30%;
         }
-        .detail-solenoid-flow .flow-particle:nth-child(2) {
-            animation: detail-flow 2s ease-in-out infinite 0.5s;
+        .detail-water-container .water-particle:nth-child(2) {
+            animation: detail-drop 1.8s ease-in infinite 0.4s;
+            left: 55%;
+            top: 15%;
+        }
+        .detail-water-container .water-particle:nth-child(3) {
+            animation: detail-drop 1.3s ease-in infinite 0.8s;
+            left: 75%;
             top: 50%;
-            left: 100%;
         }
-        .detail-solenoid-flow .flow-particle:nth-child(3) {
-            animation: detail-flow 2s ease-in-out infinite 1s;
-            top: 100%;
-            left: 50%;
+        .detail-water-container .water-particle:nth-child(4) {
+            animation: detail-drop 1.6s ease-in infinite 0.2s;
+            left: 40%;
+            top: 70%;
         }
-        .detail-solenoid-flow .flow-particle:nth-child(4) {
-            animation: detail-flow 2s ease-in-out infinite 1.5s;
-            top: 50%;
-            left: 0%;
+        .detail-water-container .water-particle:nth-child(5) {
+            animation: detail-drop 2.0s ease-in infinite 0.6s;
+            left: 10%;
+            top: 60%;
         }
-        @keyframes detail-flow {
+        .detail-water-container .water-particle:nth-child(6) {
+            animation: detail-drop 1.4s ease-in infinite 1.0s;
+            left: 65%;
+            top: 80%;
+        }
+        @keyframes detail-drop {
             0% {
                 opacity: 0;
-                transform: translate(0, 0) scale(0.5);
+                transform: translateY(0) scale(0.5) rotate(0deg);
             }
             25% {
                 opacity: 1;
-                transform: translate(20px, -20px) scale(1.5);
+                transform: translateY(15px) scale(1.3) rotate(5deg);
             }
             50% {
                 opacity: 0.8;
-                transform: translate(40px, -40px) scale(1);
+                transform: translateY(35px) scale(1) rotate(-3deg);
             }
             75% {
                 opacity: 0.4;
-                transform: translate(60px, -60px) scale(0.6);
+                transform: translateY(60px) scale(0.6) rotate(3deg);
             }
             100% {
                 opacity: 0;
-                transform: translate(80px, -80px) scale(0);
+                transform: translateY(90px) scale(0) rotate(0deg);
             }
         }
-
-        .detail-solenoid-flow .big-icon.state-on~.flow-particle {
-            background: #1e88e5;
-        }
-        .detail-solenoid-flow .big-icon.state-off~.flow-particle {
+        .detail-water-container .big-icon.water-faucet.state-off~.water-particle {
             animation: none !important;
             opacity: 0 !important;
         }
@@ -1763,9 +1779,9 @@
             text-shadow: 0 0 40px rgba(255, 193, 7, 0.4);
             animation: glow-pulse 1.5s ease-in-out infinite;
         }
-        .detail-device-card .big-icon.state-on.solenoid-icon {
+        .detail-device-card .big-icon.state-on.water-faucet {
             color: #1e88e5;
-            animation: solenoid-pulse 1.2s ease-in-out infinite;
+            animation: faucet-pulse 1.8s ease-in-out infinite;
         }
         .detail-device-card .big-name {
             font-size: 1.8rem;
@@ -2337,6 +2353,19 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           Room Add Modal
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        #addRoomModal .modal-box {
+            max-width: 480px;
+        }
+        #addRoomModal .modal-title i {
+            color: var(--primary);
+        }
+        #addRoomModal .icon-picker-grid {
+            grid-template-columns: repeat(6, 1fr);
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
            Log container removed from main page – keep only in header
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .log-container {
@@ -2357,7 +2386,7 @@
                 <button class="nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
                 <button class="nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
             </nav>
-            <div class="sidebar-footer">Smart General Electric™ · الإصدار 5.7.0</div>
+            <div class="sidebar-footer">Smart General Electric™ · الإصدار 5.9.0</div>
         </aside>
 
         <!-- Main Content -->
@@ -2466,7 +2495,7 @@
             <h3 class="modal-title">➕ إضافة جهاز جديد</h3>
             <div class="form-group">
                 <label>معرف الجهاز (Device ID)</label>
-                <input id="addDeviceId" placeholder="مثل: valve1" />
+                <input id="addDeviceId" placeholder="مثل: water1" />
                 <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">يجب أن يطابق المعرف في جهاز ESP01</div>
             </div>
             <div class="form-group">
@@ -2479,7 +2508,7 @@
                     <option value="5">🌀 مروحة (Fan)</option>
                     <option value="6">❄️ مكيف (AC)</option>
                     <option value="7">💧 مضخة (Pump)</option>
-                    <option value="8">🚿 صمام كهربائي (Solenoid)</option>
+                    <option value="8">🚿 حنفية ماء (Water Faucet)</option>
                 </select>
             </div>
             <div class="form-group">
@@ -2502,7 +2531,7 @@
             <div class="auto-form-grid">
                 <div class="form-group full-width">
                     <label><i class="fas fa-tag"></i> اسم الأتمتة</label>
-                    <input id="autoName" placeholder="مثل: تشغيل الصمام عند الفتح" />
+                    <input id="autoName" placeholder="مثل: تشغيل الماء عند الحركة" />
                 </div>
                 <div class="form-group">
                     <label><i class="fas fa-play-circle"></i> الجهاز المشغّل</label>
@@ -2534,6 +2563,30 @@
             <div class="modal-actions" style="display:flex; gap:10px; margin-top:8px;">
                 <button class="btn-secondary" id="addAutoCancel">إلغاء</button>
                 <button class="btn-primary" id="addAutoSubmit"><i class="fas fa-plus-circle"></i> إضافة</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    Add Room Modal
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="modal-overlay" id="addRoomModal">
+        <div class="modal-box">
+            <h3 class="modal-title"><i class="fas fa-plus-circle"></i> إضافة غرفة جديدة</h3>
+            <div class="form-group">
+                <label>اسم الغرفة</label>
+                <input id="addRoomName" placeholder="مثل: غرفة الضيوف" />
+            </div>
+            <div class="form-group">
+                <label>الرمز المخصص</label>
+                <div class="icon-picker-grid" id="roomIconPicker">
+                    <!-- سيتم ملؤها بواسطة JavaScript -->
+                </div>
+                <input type="hidden" id="selectedRoomIcon" value="fa-home" />
+            </div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="addRoomCancel">إلغاء</button>
+                <button class="btn-primary" id="addRoomSubmit">➕ إضافة</button>
             </div>
         </div>
     </div>
@@ -2620,7 +2673,7 @@
             'use strict';
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  CONSTANTS – Device Types (UPDATED with Solenoid)
+            //  CONSTANTS – Device Types (UPDATED with Water Faucet)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             const DEVICE_TYPES = {
                 1: { name: 'باب جراج', icon: 'fa-door-open', color: '#3b82f6', hasBrightness: false, hasTemp: false,
@@ -2637,9 +2690,9 @@
                     hasSpeed: false, isDoor: false, topic: 'ac' },
                 7: { name: 'مضخة', icon: 'fa-water', color: '#3b82f6', hasBrightness: false, hasTemp: false,
                     hasSpeed: false, isDoor: false, topic: 'pump' },
-                // NEW: Solenoid / Electric Valve
-                8: { name: 'صمام كهربائي', icon: 'fa-shower', color: '#1e88e5', hasBrightness: false, hasTemp: false,
-                    hasSpeed: false, isDoor: false, topic: 'valve' }
+                // Water Faucet (replaces electrofan)
+                8: { name: 'حنفية ماء', icon: 'fa-faucet', color: '#1e88e5', hasBrightness: false, hasTemp: false,
+                    hasSpeed: false, isDoor: false, topic: 'faucet' }
             };
 
             const ICON_OPTIONS = [
@@ -2648,7 +2701,14 @@
                 'fa-thermometer-half', 'fa-microchip', 'fa-robot', 'fa-home',
                 'fa-chair', 'fa-bed', 'fa-utensils', 'fa-tree', 'fa-car',
                 'fa-shield-alt', 'fa-bolt', 'fa-wifi', 'fa-bluetooth-b',
-                'fa-shower', 'fa-tint', 'fa-water' // إضافة أيقونات للصمام
+                'fa-shower', 'fa-tint', 'fa-faucet'
+            ];
+
+            const ROOM_ICONS = [
+                'fa-home', 'fa-couch', 'fa-bed', 'fa-utensils', 'fa-tree',
+                'fa-door-open', 'fa-chair', 'fa-shower', 'fa-tractor', 'fa-car',
+                'fa-tv', 'fa-music', 'fa-book', 'fa-briefcase', 'fa-gem',
+                'fa-palette', 'fa-crown', 'fa-moon', 'fa-sun', 'fa-star'
             ];
 
             const K_MAX_RECONNECT = 5;
@@ -2702,6 +2762,13 @@
                 editingDeviceId: null,
                 heartbeatInterval: null,
                 roomToEdit: null,
+                // Connection management
+                reconnectTimer: null,
+                isReconnecting: false,
+                connectionStable: false,
+                lastConnectionChange: Date.now(),
+                connectionNotifyCooldown: 30000, // 30 seconds cooldown between connection notifications
+                lastConnectionNotify: 0,
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2741,6 +2808,12 @@
                 autoActionCommand: $('autoActionCommand'),
                 addAutoCancel: $('addAutoCancel'),
                 addAutoSubmit: $('addAutoSubmit'),
+                addRoomModal: $('addRoomModal'),
+                addRoomName: $('addRoomName'),
+                roomIconPicker: $('roomIconPicker'),
+                selectedRoomIcon: $('selectedRoomIcon'),
+                addRoomCancel: $('addRoomCancel'),
+                addRoomSubmit: $('addRoomSubmit'),
                 deviceSettingsModal: $('deviceSettingsModal'),
                 deviceSettingsBody: $('deviceSettingsBody'),
                 qrOverlay: $('qrOverlay'),
@@ -3016,7 +3089,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEFAULT DATA (with solenoid sample in Farm)
+            //  DEFAULT DATA (with water faucet example)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function getDefaultDevices() {
                 return [
@@ -3034,9 +3107,9 @@
                         online: true, lastHeartbeat: Date.now(), icon: 'fa-snowflake' },
                     { id: 'garden_pump', type: 7, room: 'الحديقة', name: 'مضخة الحديقة', status: false, online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-water' },
-                    // New solenoid example in Farm
-                    { id: 'valve1', type: 8, room: 'المزرعة', name: 'صمام الري', status: false, online: true,
-                        lastHeartbeat: Date.now(), icon: 'fa-shower' },
+                    // Water Faucet example in Farm
+                    { id: 'faucet1', type: 8, room: 'المزرعة', name: 'حنفية المزرعة', status: false, online: true,
+                        lastHeartbeat: Date.now(), icon: 'fa-faucet' },
                 ];
             }
 
@@ -3048,7 +3121,7 @@
                             action: 'off' }] },
                     { id: 'away', name: 'مغادرة المنزل', icon: 'fa-car', actions: [{ deviceId: 'living_room',
                             action: 'off' }, { deviceId: 'living_ac', action: 'off' }] },
-                    { id: 'farm_irrigation', name: 'ري المزرعة', icon: 'fa-tint', actions: [{ deviceId: 'valve1',
+                    { id: 'farm_water', name: 'ري المزرعة', icon: 'fa-tint', actions: [{ deviceId: 'faucet1',
                             action: 'on' }] },
                 ];
             }
@@ -3117,11 +3190,19 @@
                             if (!dev.online) {
                                 const icon = DEVICE_TYPES[dev.type]?.icon || '📦';
                                 addLog(`🔴 ${dev.name} غير متصل (انقطاع النبضات)`, 'error', true);
-                                addNotification(`🔴 ${dev.name} غير متصل`, 'لم يتم استقبال نبضة قلب', '🔴', 'error');
-                                Sound.offline();
+                                // Only notify if the device was previously online
+                                if (wasOnline) {
+                                    addNotification(`🔴 ${dev.name} غير متصل`, 'لم يتم استقبال نبضة قلب', '🔴', 'error');
+                                    Sound.offline();
+                                }
                             } else {
                                 const icon = DEVICE_TYPES[dev.type]?.icon || '📦';
                                 addLog(`🟢 ${dev.name} عاد إلى الاتصال`, 'success', true);
+                                // Only notify if the device was previously offline
+                                if (!wasOnline) {
+                                    addNotification(`🟢 ${dev.name} عاد إلى الاتصال`, 'تم استقبال نبضة قلب', '🟢', 'success');
+                                    Sound.success();
+                                }
                             }
                         }
                     }
@@ -3140,7 +3221,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT (with solenoid support)
+            //  MQTT (with enhanced connection management)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateConnectionBanner() {
                 if (state.mqttStatus === 'connected') updateWifiStatus('connected', 'متصل');
@@ -3186,7 +3267,7 @@
                     5: 'fan',
                     6: 'ac',
                     7: 'pump',
-                    8: 'valve' // solenoid
+                    8: 'faucet' // water faucet
                 };
                 const base = topicMap[type] || 'device';
                 if (suffix === 'cmd') {
@@ -3206,7 +3287,9 @@
             }
 
             function connectMQTT() {
-                if (state.mqttStatus === 'connecting') { addDiagnostic('⏳ جاري الاتصال بالفعل...', 'warning'); return; }
+                if (state.mqttStatus === 'connecting') { return; }
+                if (state.isReconnecting) { return; }
+
                 if (!state.serverHost) {
                     state.lastError = 'الخادم غير محدد';
                     state.mqttStatus = 'disconnected';
@@ -3214,18 +3297,21 @@
                     addDiagnostic('❌ الخادم غير محدد', 'error');
                     return;
                 }
+
                 state.mqttStatus = 'connecting';
                 state.lastError = '';
                 updateConnectionBanner();
                 state.connectionAttempts++;
                 addDiagnostic(`🔄 محاولة الاتصال #${state.connectionAttempts} بـ ${state.serverHost}`, 'info');
-                addLog('جاري الاتصال بخادم MQTT...', 'info');
+
                 for (const key in state.mqttClients) {
                     try { state.mqttClients[key].end(); } catch (_) {}
                 }
                 state.mqttClients = {};
+
                 const isSecure = window.location.protocol === 'https:';
                 state.usingSecure = isSecure;
+
                 const protocols = [];
                 const alt = state.brokerAlternatives.find(b => b.host === state.serverHost);
                 if (alt) {
@@ -3245,6 +3331,7 @@
                         protocols.push({ port: 8884, secure: true });
                     }
                 }
+
                 tryConnectWithProtocol(protocols, 0);
             }
 
@@ -3254,17 +3341,20 @@
                     state.lastError = 'فشلت جميع محاولات الاتصال';
                     updateConnectionBanner();
                     addDiagnostic('❌ فشلت جميع محاولات الاتصال', 'error');
-                    addLog('❌ فشل الاتصال بجميع الخوادم', 'error');
+                    // Don't log to toast, only diagnostic
                     scheduleReconnect();
                     return;
                 }
+
                 const proto = protocols[index];
                 const protocol = proto.secure ? 'wss' : 'ws';
                 const port = proto.port;
                 const wsUrl = `${protocol}://${state.serverHost}:${port}/mqtt`;
+
                 addDiagnostic(`🔗 محاولة ${protocol}://${state.serverHost}:${port}/mqtt`, 'info');
-                addLog(`🔗 محاولة الاتصال بـ ${protocol}://${state.serverHost}:${port}`, 'info');
-                const clientId = 'SGE_' + Date.now().toString(36);
+
+                const clientId = 'SGE_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 4);
+
                 try {
                     const client = mqtt.connect(wsUrl, {
                         clientId,
@@ -3274,24 +3364,43 @@
                         clean: true,
                         connectTimeout: 10000,
                     });
+
                     let connectTimer = setTimeout(() => {
                         if (state.mqttStatus === 'connecting') {
                             addDiagnostic(`⏱️ انتهت مهلة الاتصال بـ ${protocol}://${state.serverHost}:${port}`,
-                            'warning');
+                                'warning');
                             client.end(true);
                             tryConnectWithProtocol(protocols, index + 1);
                         }
                     }, 12000);
+
                     client.on('connect', () => {
                         clearTimeout(connectTimer);
+                        const wasDisconnected = state.mqttStatus !== 'connected';
                         state.mqttStatus = 'connected';
                         state.reconnectAttempt = 0;
                         state.lastError = '';
                         state.usingSecure = proto.secure;
+                        state.isReconnecting = false;
+                        state.connectionStable = true;
+                        state.lastConnectionChange = Date.now();
+
                         addDiagnostic(`✅ متصل بنجاح عبر ${protocol}://${state.serverHost}:${port}`, 'success');
-                        addLog('✅ متصل بخادم MQTT', 'success');
+
+                        // Only show notification if we were disconnected and cooldown passed
+                        if (wasDisconnected) {
+                            const now = Date.now();
+                            if (now - state.lastConnectionNotify > state.connectionNotifyCooldown) {
+                                showToast('✅ تم الاتصال بالخادم', 'success', '📡');
+                                state.lastConnectionNotify = now;
+                            }
+                            // Always log but don't spam toast
+                            addLog('✅ متصل بخادم MQTT', 'success', true);
+                        }
+
                         updateConnectionBanner();
                         Sound.connected();
+
                         state.devices.forEach(dev => {
                             const statusTopic = getDeviceTopic(dev.id, dev.type, 'status');
                             client.subscribe(statusTopic, { qos: 1 });
@@ -3306,10 +3415,12 @@
                         state.mqttClients['main'] = client;
                         updateUI();
                     });
+
                     client.on('message', (topic, payload) => {
                         const msg = payload.toString();
                         handleMqttMessage(topic, msg);
                     });
+
                     client.on('error', (err) => {
                         clearTimeout(connectTimer);
                         const errMsg = err.message || String(err);
@@ -3319,22 +3430,33 @@
                         } else {
                             state.lastError = errMsg;
                             state.mqttStatus = 'disconnected';
+                            state.connectionStable = false;
                             updateConnectionBanner();
-                            Sound.disconnected();
+                            // Only sound if not already disconnected
+                            if (state.mqttStatus === 'disconnected') {
+                                Sound.disconnected();
+                            }
                             scheduleReconnect();
                         }
                     });
+
                     client.on('close', () => {
                         clearTimeout(connectTimer);
                         if (state.mqttStatus !== 'disconnected') {
                             state.mqttStatus = 'disconnected';
+                            state.connectionStable = false;
+                            state.lastConnectionChange = Date.now();
                             addDiagnostic('🔌 انقطع الاتصال', 'warning');
-                            addLog('🔌 انقطع الاتصال بالخادم', 'warning');
+                            // Only log once
+                            if (state.mqttStatus === 'disconnected') {
+                                addLog('🔌 انقطع الاتصال بالخادم', 'warning', true);
+                            }
                             updateConnectionBanner();
                             Sound.disconnected();
                             scheduleReconnect();
                         }
                     });
+
                 } catch (e) {
                     const errMsg = e.message || String(e);
                     addDiagnostic(`❌ استثناء: ${errMsg}`, 'error');
@@ -3382,7 +3504,7 @@
                         notifyDeviceChange(device, device.open ? 'open' : 'closed', oldState);
                     }
                 } else if (sub === 'light/status' || sub === 'plug/status' || sub === 'fan/status' ||
-                    sub === 'ac/status' || sub === 'pump/status' || sub === 'valve/status') {
+                    sub === 'ac/status' || sub === 'pump/status' || sub === 'faucet/status') {
                     oldState = device.status ? 'on' : 'off';
                     if (msg === 'ON') { device.status = true;
                         updated = true; } else if (msg === 'OFF') { device.status = false;
@@ -3430,6 +3552,9 @@
             }
 
             function scheduleReconnect() {
+                if (state.isReconnecting) return;
+                state.isReconnecting = true;
+
                 if (state.reconnectAttempt >= K_MAX_RECONNECT) {
                     addDiagnostic('⚠️ تجاوز الحد الأقصى لمحاولات إعادة الاتصال', 'error');
                     state.reconnectAttempt = 0;
@@ -3442,19 +3567,27 @@
                         saveConfig(state.serverHost, state.username, state.password);
                         const settingsServer = document.getElementById('settingsServer');
                         if (settingsServer) settingsServer.value = state.serverHost;
+                        state.isReconnecting = false;
                         setTimeout(connectMQTT, 2000);
                         return;
                     }
+                    state.isReconnecting = false;
                     setTimeout(connectMQTT, 60000);
                     return;
                 }
-                let delay = Math.min(Math.max(K_RECONNECT_DELAY * Math.pow(2, state.reconnectAttempt), 5), 120);
+
+                let delay = Math.min(Math.max(K_RECONNECT_DELAY * Math.pow(2, state.reconnectAttempt), 5), 60);
                 state.reconnectAttempt++;
                 addDiagnostic(`🔄 إعادة الاتصال خلال ${delay} ث (محاولة ${state.reconnectAttempt}/${K_MAX_RECONNECT})`,
                     'warning');
-                addLog(`🔄 إعادة الاتصال خلال ${delay} ث`, 'warning');
+                // Only log to console, not toast
                 updateConnectionBanner();
-                setTimeout(connectMQTT, delay * 1000);
+
+                if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
+                state.reconnectTimer = setTimeout(() => {
+                    state.isReconnecting = false;
+                    connectMQTT();
+                }, delay * 1000);
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3489,7 +3622,8 @@
                     Sound.notification();
                     lastNotifSoundTime = nowMs;
                 }
-                showToast(desc, type, icon, true);
+                // Don't show toast for every notification, only if not silent
+                if (!silent) showToast(desc, type, icon, true);
             }
 
             function updateNotifBadge() {
@@ -3614,7 +3748,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ACTIONS (with solenoid)
+            //  DEVICE ACTIONS (with water faucet)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleDevice(id) {
                 const dev = state.devices.find(d => d.id === id);
@@ -3633,7 +3767,8 @@
                     if (state.notifyStatusUpdates) {
                         notifyDeviceChange(dev, newState ? 'open' : 'closed', dev.open ? 'open' : 'closed');
                     }
-                } else if (type === 2 || type === 4 || type === 7) {
+                } else if (type === 2 || type === 4 || type === 7 || type === 8) {
+                    // Simple on/off for devices including water faucet
                     const newState = !dev.status;
                     dev.status = newState;
                     sendMqttCommand(id, type, 'cmd', newState ? 'ON' : 'OFF');
@@ -3675,18 +3810,6 @@
                     const label = newState ? 'تشغيل' : 'إيقاف';
                     addLog(`❄️ ${dev.name}: ${label}`, 'success');
                     showToast(`❄️ ${label} ${dev.name}`, 'info', '❄️');
-                    if (state.notifyStatusUpdates) {
-                        notifyDeviceChange(dev, newState ? 'on' : 'off', dev.status ? 'on' : 'off');
-                    }
-                } else if (type === 8) { // Solenoid
-                    const newState = !dev.status;
-                    dev.status = newState;
-                    sendMqttCommand(id, type, 'cmd', newState ? 'ON' : 'OFF');
-                    newState ? Sound.toggleOn() : Sound.toggleOff();
-                    const label = newState ? 'تشغيل' : 'إيقاف';
-                    const icon = '🚿';
-                    addLog(`${icon} ${dev.name}: ${label}`, 'success');
-                    showToast(`${icon} ${label} ${dev.name}`, 'info', icon);
                     if (state.notifyStatusUpdates) {
                         notifyDeviceChange(dev, newState ? 'on' : 'off', dev.status ? 'on' : 'off');
                     }
@@ -4117,7 +4240,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE (with solenoid support)
+            //  DETAIL PAGE (with water faucet support)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(deviceId) {
                 state.activeDeviceId = deviceId;
@@ -4196,31 +4319,33 @@
                             <div class="ctrl-row"><span class="label">درجة الحرارة</span><input type="range" class="slider large" min="16" max="30" value="${dev.temp||22}" id="detailTemp" data-id="${dev.id}" /><span>${dev.temp||22}°C</span></div>
                         `;
                 } else if (dev.type === 2 || dev.type === 4 || dev.type === 7 || dev.type === 8) {
-                    // Solenoid and simple devices get just a toggle
+                    // Simple toggle for water faucet and others
                     controlsHtml =
                         `<div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>`;
                 }
                 const bigIconClasses = ['big-icon'];
                 if (dev.type === 3) bigIconClasses.push('light-bulb');
-                if (dev.type === 8) bigIconClasses.push('solenoid-icon');
+                if (dev.type === 8) bigIconClasses.push('water-faucet');
                 if (isOn) bigIconClasses.push('state-on');
 
-                // Solenoid flow particles for detail page
-                let flowParticles = '';
+                // Water particles for detail view
+                let waterParticles = '';
                 if (dev.type === 8) {
-                    flowParticles = `
-                            <span class="flow-particle"></span>
-                            <span class="flow-particle"></span>
-                            <span class="flow-particle"></span>
-                            <span class="flow-particle"></span>
+                    waterParticles = `
+                            <span class="water-particle"></span>
+                            <span class="water-particle"></span>
+                            <span class="water-particle"></span>
+                            <span class="water-particle"></span>
+                            <span class="water-particle"></span>
+                            <span class="water-particle"></span>
                         `;
                 }
 
                 dom.detailBody.innerHTML = `
                         <div class="detail-device-card">
-                            <div class="detail-solenoid-flow">
+                            <div class="detail-water-container">
                                 <div class="${bigIconClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}" style="cursor:pointer;">${iconHtml}</div>
-                                ${flowParticles}
+                                ${waterParticles}
                             </div>
                             <div class="big-name">${dev.name}</div>
                             <div class="big-status">${statusText}</div>
@@ -4392,13 +4517,58 @@
                 }
             }
 
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  ADD ROOM
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function openAddRoomModal() {
+                dom.addRoomModal.classList.add('active');
+                dom.addRoomName.value = '';
+                // Populate icon picker
+                const picker = dom.roomIconPicker;
+                picker.innerHTML = '';
+                const defaultIcon = 'fa-home';
+                ROOM_ICONS.forEach(icon => {
+                    const div = document.createElement('div');
+                    div.className = 'icon-option' + (icon === defaultIcon ? ' selected' : '');
+                    div.dataset.icon = icon;
+                    div.innerHTML = `<i class="fas ${icon}"></i>`;
+                    div.addEventListener('click', function() {
+                        picker.querySelectorAll('.icon-option').forEach(el => el.classList.remove('selected'));
+                        this.classList.add('selected');
+                        dom.selectedRoomIcon.value = this.dataset.icon;
+                    });
+                    picker.appendChild(div);
+                });
+                dom.selectedRoomIcon.value = defaultIcon;
+                dom.addRoomName.focus();
+            }
+
+            function closeAddRoomModal() {
+                dom.addRoomModal.classList.remove('active');
+            }
+
+            function handleAddRoom() {
+                const name = dom.addRoomName.value.trim();
+                const icon = dom.selectedRoomIcon.value;
+                if (!name) { showToast('⚠️ أدخل اسم الغرفة', 'error'); return; }
+                if (state.rooms.includes(name)) { showToast('⚠️ هذه الغرفة موجودة بالفعل', 'error'); return; }
+                state.rooms.push(name);
+                saveRooms();
+                populateRoomDropdown();
+                closeAddRoomModal();
+                updateUI();
+                Sound.success();
+                showToast(`✅ تم إضافة غرفة "${name}"`, 'success');
+                addLog(`🏠 إضافة غرفة: ${name} (${icon})`, 'success');
+            }
+
             function populateRoomDropdown() {
                 const select = dom.addDeviceRoom;
                 select.innerHTML = state.rooms.map(r => `<option value="${r}">${r}</option>`).join('');
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE CARD HTML (with solenoid flow animation)
+            //  DEVICE CARD HTML (with water faucet animation)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDeviceCardHtml(device) {
                 const typeInfo = DEVICE_TYPES[device.type] || DEVICE_TYPES[2];
@@ -4410,19 +4580,22 @@
                 const customIcon = device.icon || typeInfo.icon;
                 const wrapClasses = ['icon-wrap'];
                 if (device.type === 3) wrapClasses.push('light-bulb');
-                if (device.type === 8) wrapClasses.push('solenoid-icon');
+                if (device.type === 8) wrapClasses.push('water-faucet');
                 if (isOn) wrapClasses.push('state-on');
 
                 let iconHtml = '';
                 if (device.type === 8) {
-                    // Solenoid with flow container
+                    // Water Faucet with droplets
                     iconHtml = `
-                            <span class="solenoid-flow-container" data-action="toggle-icon" data-id="${device.id}">
-                                <span class="${wrapClasses.join(' ')}" style="position:relative; z-index:2;"><i class="fas ${customIcon}"></i></span>
-                                <span class="flow-line"></span>
-                                <span class="flow-line"></span>
-                                <span class="flow-line"></span>
-                                <span class="flow-line"></span>
+                            <span class="${wrapClasses.join(' ')}" data-action="toggle-icon" data-id="${device.id}" style="position:relative;">
+                                <i class="fas ${customIcon}"></i>
+                                <span class="water-drop"></span>
+                                <span class="water-drop"></span>
+                                <span class="water-drop"></span>
+                                <span class="water-drop"></span>
+                                <span class="water-drop"></span>
+                                <span class="water-ring"></span>
+                                <span class="water-ring"></span>
                             </span>
                         `;
                 } else {
@@ -4476,7 +4649,7 @@
                                 <input type="range" class="slider-mini" min="16" max="30" value="${device.temp||22}" data-id="${device.id}" data-action="temp" style="flex:1;" />
                             </div>`;
                 } else if (device.type === 2 || device.type === 4 || device.type === 7 || device.type === 8) {
-                    // Simple toggle for solenoid and others
+                    // Simple toggle for water faucet and others
                     controls =
                         `<div class="controls"><button class="toggle-switch ${isOn?'active':''}" data-id="${device.id}"></button></div>`;
                 }
@@ -4507,16 +4680,7 @@
             //  ATTACH DEVICE CONTROLS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function attachDeviceControls(container) {
-                // For solenoid, we need to handle click on the container as well
                 container.querySelectorAll('[data-action="toggle-icon"]').forEach(el => {
-                    if (el.dataset.id) {
-                        el.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            toggleDevice(el.dataset.id);
-                        });
-                    }
-                });
-                container.querySelectorAll('.solenoid-flow-container').forEach(el => {
                     if (el.dataset.id) {
                         el.addEventListener('click', (e) => {
                             e.stopPropagation();
@@ -4569,7 +4733,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  RENDER PAGES (only updated for automations modal)
+            //  RENDER PAGES
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDashboard() {
                 const scenesHtml = state.scenes.slice(0, 5).map(s =>
@@ -4586,7 +4750,7 @@
                 let roomsHtml = '';
                 if (roomNames.length === 0) {
                     roomsHtml =
-                        `<div class="room-empty-state"><i class="fas fa-door-open"></i>لا توجد غرف<br><small>أضف أجهزة لإنشاء غرف</small></div>`;
+                        `<div class="room-empty-state"><i class="fas fa-door-open"></i>لا توجد غرف<br><small>أضف غرفة جديدة أو أضف أجهزة لإنشاء غرف</small></div>`;
                 } else {
                     const roomIcons = {
                         'غرفة المعيشة': 'fa-couch',
@@ -4624,7 +4788,10 @@
                 return `
                             <div class="section-header"><span class="title">⚡ مشاهد سريعة</span><span class="see-all" data-page="scenes">عرض الكل</span></div>
                             <div class="scenes-scroll">${scenesHtml}</div>
-                            <div class="section-header"><span class="title">🏠 الغرف</span><span class="see-all" data-page="devices">عرض الأجهزة</span></div>
+                            <div class="section-header">
+                                <span class="title">🏠 الغرف</span>
+                                <span class="see-all" id="addRoomBtn">➕ إضافة غرفة</span>
+                            </div>
                             <div class="rooms-grid">${roomsHtml}</div>
                         `;
             }
@@ -4818,7 +4985,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 5.7.0<br>
+                                    الإصدار 5.9.0<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -4857,7 +5024,6 @@
                         if (e.target.closest('.toggle-switch') || e.target.closest('.slider-mini') ||
                             e.target.closest('.color-dot') || e.target.closest('.door-btn') ||
                             e.target.closest('[data-action="toggle-icon"]') ||
-                            e.target.closest('.solenoid-flow-container') ||
                             e.target.closest('[data-action="settings-device"]') ||
                             e.target.closest('.settings-btn') ||
                             e.target.closest('[data-action="delete-device"]') || e.target.closest(
@@ -4907,6 +5073,9 @@
                 if (addSceneBtn) addSceneBtn.addEventListener('click', showSceneForm);
                 const addAutoBtn = document.getElementById('addAutoBtn');
                 if (addAutoBtn) addAutoBtn.addEventListener('click', showAutoForm);
+                const addRoomBtn = document.getElementById('addRoomBtn');
+                if (addRoomBtn) addRoomBtn.addEventListener('click', openAddRoomModal);
+
                 const settingsSave = document.getElementById('settingsSaveBtn');
                 if (settingsSave) settingsSave.addEventListener('click', saveSettings);
                 const soundToggle = document.getElementById('soundToggleBtn');
@@ -5404,6 +5573,16 @@
                 dom.addModalCancel.addEventListener('click', closeAddModal);
                 dom.addModalSubmit.addEventListener('click', handleAddDevice);
 
+                // Room add modal events
+                dom.addRoomCancel.addEventListener('click', closeAddRoomModal);
+                dom.addRoomSubmit.addEventListener('click', handleAddRoom);
+                dom.addRoomModal.addEventListener('click', (e) => {
+                    if (e.target === dom.addRoomModal) closeAddRoomModal();
+                });
+                dom.addRoomName.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter') handleAddRoom();
+                });
+
                 // Automation modal events
                 dom.addAutoCancel.addEventListener('click', closeAutoForm);
                 dom.addAutoSubmit.addEventListener('click', handleAddAuto);
@@ -5480,6 +5659,7 @@
                         closeRoomDetail();
                         closeRoomEditModal();
                         closeAutoForm();
+                        closeAddRoomModal();
                     }
                     if (dom.detailPage.classList.contains('active')) {
                         const dev = state.devices.find(d => d.id === state.activeDeviceId);
@@ -5498,7 +5678,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v5.7.0 – Farm room added, Solenoid flow animation improved');
+                console.log('⚡ Smart General Electric v5.9.0 – Water Faucet animation with flow particles & improved connection management');
                 console.log(`📦 ${state.devices.length} devices`);
             }
 
@@ -5522,6 +5702,8 @@
             window.openRoomEditModal = openRoomEditModal;
             window.showAutoForm = showAutoForm;
             window.closeAutoForm = closeAutoForm;
+            window.openAddRoomModal = openAddRoomModal;
+            window.closeAddRoomModal = closeAddRoomModal;
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
             else init();
