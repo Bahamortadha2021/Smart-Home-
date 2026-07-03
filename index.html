@@ -992,6 +992,7 @@
             opacity: 0 !important;
         }
 
+        /* ── Big icon detail page water animation ── */
         .detail-water-container {
             position: relative;
             display: inline-block;
@@ -1069,6 +1070,58 @@
         .detail-water-container .big-icon.water-faucet.state-off~.water-particle {
             animation: none !important;
             opacity: 0 !important;
+        }
+
+        /* ── Enhanced Light Glow ── */
+        .device-card .card-top .icon-wrap.light-bulb.state-on {
+            color: #ffc107;
+            text-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+            animation: glow-pulse 1.5s ease-in-out infinite;
+        }
+        .detail-device-card .big-icon.light-bulb.state-on {
+            color: #ffc107;
+            text-shadow: 0 0 40px rgba(255, 193, 7, 0.4), 0 0 80px rgba(255, 193, 7, 0.2);
+            animation: glow-pulse-detail 1.5s ease-in-out infinite;
+        }
+        @keyframes glow-pulse-detail {
+            0%,
+            100% {
+                text-shadow: 0 0 30px rgba(255, 193, 7, 0.3), 0 0 60px rgba(255, 193, 7, 0.1);
+            }
+            50% {
+                text-shadow: 0 0 60px rgba(255, 193, 7, 0.6), 0 0 120px rgba(255, 193, 7, 0.3);
+            }
+        }
+        /* ── Garage Door Canvas Responsive ── */
+        .detail-door-canvas {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            aspect-ratio: 1.2 / 1;
+            display: block;
+            position: relative;
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-sm);
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            padding: 4px;
+        }
+        .detail-door-canvas canvas {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: calc(var(--border-radius-sm) - 4px);
+            display: block;
+            background: transparent;
+        }
+        @media (max-width: 768px) {
+            .detail-door-canvas {
+                max-width: 300px;
+            }
+        }
+        @media (max-width: 480px) {
+            .detail-door-canvas {
+                max-width: 240px;
+            }
         }
 
         @keyframes glow-pulse {
@@ -1771,7 +1824,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Detail Page Overlay
+           Detail Page Overlay (improved)
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .page-overlay {
             display: none;
@@ -1793,6 +1846,7 @@
             margin-bottom: 24px;
             padding-bottom: 16px;
             border-bottom: 1px solid var(--border-color);
+            flex-wrap: wrap;
         }
         .detail-header .back-btn {
             background: none;
@@ -1847,6 +1901,7 @@
             padding: 32px 24px;
             text-align: center;
             border: 1px solid var(--border-color);
+            position: relative;
         }
         .detail-device-card .big-icon {
             font-size: 5rem;
@@ -1858,7 +1913,7 @@
         .detail-device-card .big-icon.state-on.light-bulb {
             color: #ffc107;
             text-shadow: 0 0 40px rgba(255, 193, 7, 0.4);
-            animation: glow-pulse 1.5s ease-in-out infinite;
+            animation: glow-pulse-detail 1.5s ease-in-out infinite;
         }
         .detail-device-card .big-icon.state-on.water-faucet {
             color: #1e88e5;
@@ -2186,6 +2241,14 @@
             .automation-stats {
                 grid-template-columns: repeat(3, 1fr);
             }
+            .detail-door-canvas {
+                max-width: 350px;
+            }
+        }
+        @media (max-width: 768px) {
+            .detail-door-canvas {
+                max-width: 280px;
+            }
         }
         @media (max-width: 480px) {
             .devices-grid {
@@ -2217,7 +2280,7 @@
                 max-width: 120px;
             }
             .detail-door-canvas {
-                max-width: 200px;
+                max-width: 220px;
             }
             #notifPanel,
             #logPanel {
@@ -2277,6 +2340,9 @@
                 max-width: 340px;
                 padding: 16px;
             }
+            .detail-device-card .big-icon {
+                font-size: 3.5rem;
+            }
         }
         @media (max-width: 380px) {
             .devices-grid {
@@ -2290,6 +2356,9 @@
             }
             .automation-stats {
                 grid-template-columns: 1fr;
+            }
+            .detail-door-canvas {
+                max-width: 180px;
             }
         }
 
@@ -2490,7 +2559,7 @@
                 <button class="nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
                 <button class="nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
             </nav>
-            <div class="sidebar-footer">Smart General Electric™ · الإصدار 6.3.0</div>
+            <div class="sidebar-footer">Smart General Electric™ · الإصدار 6.4.0</div>
         </aside>
 
         <!-- Main Content -->
@@ -2729,7 +2798,7 @@
     </div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Device Detail Page
+    Device Detail Page (improved)
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div class="page-overlay" id="deviceDetailPage">
         <div class="detail-header">
@@ -3299,13 +3368,9 @@
             }
 
             function getRoomSlug(roomName) {
-                // Return the English slug for the room
                 if (ROOM_SLUGS[roomName]) return ROOM_SLUGS[roomName];
-                // Fallback: generate slug from Arabic name (replace spaces, transliterate roughly)
                 let slug = roomName.replace(/\s+/g, '_');
-                // Remove non-alphanumeric chars
                 slug = slug.replace(/[^a-zA-Z0-9_\u0600-\u06FF]/g, '');
-                // If still empty, use 'room'
                 if (!slug) slug = 'room';
                 return slug;
             }
@@ -3319,7 +3384,6 @@
                 let uniquePart = generateRandomString(8);
                 let candidate = `${prefix}/${roomSlug}/${uniquePart}`;
 
-                // Ensure uniqueness
                 let attempts = 0;
                 while (state.devices.some(d => d.id === candidate) && attempts < 10) {
                     uniquePart = generateRandomString(8);
@@ -4404,7 +4468,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DOOR ANIMATION
+            //  DOOR ANIMATION (improved for detail page)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function animateDoor(deviceId, targetProgress) {
                 const key = 'door_' + deviceId;
@@ -4439,6 +4503,7 @@
                 const color = dev?.doorColor || '#3b82f6';
                 const canvases = document.querySelectorAll(`canvas[data-device-id="${deviceId}"]`);
                 if (canvases.length === 0) {
+                    // If canvases not yet rendered, try again after a short delay
                     setTimeout(() => {
                         const retry = document.querySelectorAll(`canvas[data-device-id="${deviceId}"]`);
                         retry.forEach(c => drawDoorCanvas(c, progress, color));
@@ -4449,14 +4514,22 @@
             }
 
             function drawDoorCanvas(canvas, progress, accentColor) {
-                let parentWidth = canvas.parentElement?.clientWidth || canvas.parentElement?.offsetWidth || 200;
-                if (parentWidth < 10) parentWidth = 200;
+                // Responsive sizing: get container width
+                const container = canvas.parentElement;
+                let containerWidth = container?.clientWidth || 300;
+                // Limit max size for detail page, but make it fill container
                 const dpr = window.devicePixelRatio || 1;
-                const aspect = 1.2;
-                const w = parentWidth * dpr;
-                const h = (parentWidth / aspect) * dpr;
-                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
-                    canvas.height = h; }
+                const aspect = 1.2; // width/height ratio
+                let w = containerWidth * dpr;
+                let h = (containerWidth / aspect) * dpr;
+                // Ensure minimum size
+                if (w < 100 * dpr) w = 100 * dpr;
+                if (h < 100 * dpr) h = 100 * dpr;
+
+                if (canvas.width !== w || canvas.height !== h) {
+                    canvas.width = w;
+                    canvas.height = h;
+                }
                 const ctx = canvas.getContext('2d');
                 ctx.clearRect(0, 0, w, h);
                 const pad = 20 * dpr;
@@ -4464,6 +4537,7 @@
                 ctx.strokeStyle = accent + '99';
                 ctx.lineWidth = 3 * dpr;
                 ctx.strokeRect(pad, pad, w - 2 * pad, h - 2 * pad);
+                // Top bar
                 ctx.fillStyle = '#FF8F00';
                 ctx.beginPath();
                 ctx.moveTo(w / 2, 0);
@@ -4489,6 +4563,7 @@
                     ctx.lineTo(w - pad - 1 * dpr, clipY);
                     ctx.stroke();
                 }
+                // Glow effect when open
                 if (progress > 0.3) {
                     const alpha = progress * 0.8;
                     const grad = ctx.createRadialGradient(w / 2, 14 * dpr, 2 * dpr, w / 2, 14 * dpr, 8 * dpr + 20 * dpr *
@@ -4533,7 +4608,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE (with water faucet support + QR)
+            //  DETAIL PAGE (improved with responsive door and enhanced glow)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(deviceId) {
                 state.activeDeviceId = deviceId;
@@ -4569,13 +4644,14 @@
                                 <canvas data-device-id="${dev.id}"></canvas>
                             </div>
                         `;
+                    // Draw the canvas after DOM update
                     setTimeout(() => {
                         const canvas = document.querySelector(`.detail-door-canvas canvas[data-device-id="${dev.id}"]`);
                         if (canvas) drawDoorCanvas(canvas, currentProgress, doorColor);
                     }, 50);
                     controlsHtml = `
                             <div class="ctrl-row" style="justify-content:center;">
-                                <div class="detail-door-controls">
+                                <div class="detail-door-controls" style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center;">
                                     <button class="door-btn door-btn-open" data-id="${dev.id}" data-cmd="OPEN"><span class="emoji">🔼</span><span class="label">فتح</span></button>
                                     <button class="door-btn door-btn-stop" data-id="${dev.id}" data-cmd="STOP"><span class="emoji">⏹</span><span class="label">إيقاف</span></button>
                                     <button class="door-btn door-btn-close" data-id="${dev.id}" data-cmd="CLOSE"><span class="emoji">🔽</span><span class="label">إغلاق</span></button>
@@ -4584,16 +4660,16 @@
                             <div class="ctrl-row" style="justify-content:center;gap:16px;">
                                 <span style="font-size:1rem;font-weight:600;color:${dev.open ? 'var(--success)' : 'var(--danger)'}">${dev.open ? '🟢 مفتوح' : '🔴 مغلق'}</span>
                             </div>
-                            <div class="detail-color-picker">
+                            <div class="detail-color-picker" style="text-align:center;">
                                 <span>🎨 لون الباب</span>
-                                <input type="color" id="doorColorPicker" value="${doorColor}" data-id="${dev.id}" />
+                                <input type="color" id="doorColorPicker" value="${doorColor}" data-id="${dev.id}" style="margin-right:8px;cursor:pointer;" />
                             </div>
                         `;
                 } else if (dev.type === 3) {
                     controlsHtml = `
                             <div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>
                             <div class="ctrl-row"><span class="label">السطوع</span><input type="range" class="slider large" min="0" max="100" value="${dev.brightness||50}" id="detailBrightness" data-id="${dev.id}" /><span>${dev.brightness||50}%</span></div>
-                            <div class="ctrl-row"><span class="label">اللون</span><div class="color-preview large" id="detailColor" data-id="${dev.id}" style="background:${dev.color||'#ffaa33'};"></div></div>
+                            <div class="ctrl-row"><span class="label">اللون</span><div class="color-preview large" id="detailColor" data-id="${dev.id}" style="background:${dev.color||'#ffaa33'}; width:40px; height:40px; border-radius:50%; border:2px solid var(--border-color); cursor:pointer;"></div></div>
                         `;
                 } else if (dev.type === 5) {
                     controlsHtml = `
@@ -4653,6 +4729,7 @@
                         </div>
                     `;
 
+                // Event listeners for controls
                 const iconToggle = document.querySelector('.big-icon[data-action="toggle-icon"]');
                 if (iconToggle) iconToggle.addEventListener('click', () => toggleDevice(iconToggle.dataset.id));
 
@@ -4692,6 +4769,7 @@
                 if (colorEl) colorEl.addEventListener('click', () => { pickColor(colorEl.dataset.id);
                     setTimeout(() => renderDetailPage(colorEl.dataset.id), 100); });
 
+                // Re-draw door canvas on resize
                 const detailCanvas = document.querySelector('.detail-door-canvas canvas');
                 if (detailCanvas) {
                     const obs = new ResizeObserver(() => {
@@ -4793,6 +4871,11 @@
                     const idx = state.rooms.indexOf(oldName);
                     if (idx !== -1) state.rooms[idx] = newName;
                     else state.rooms.push(newName);
+                    // Update room slugs mapping
+                    const slug = newName.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\u0600-\u06FF]/g, '');
+                    if (slug && !ROOM_SLUGS[newName]) {
+                        ROOM_SLUGS[newName] = slug;
+                    }
                     saveDevices();
                     saveRooms();
                     populateRoomDropdown();
@@ -4846,7 +4929,6 @@
                 if (!name) { showToast('⚠️ أدخل اسم الغرفة', 'error'); return; }
                 if (state.rooms.includes(name)) { showToast('⚠️ هذه الغرفة موجودة بالفعل', 'error'); return; }
                 state.rooms.push(name);
-                // Add to room slugs mapping
                 const slug = name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\u0600-\u06FF]/g, '');
                 if (slug && !ROOM_SLUGS[name]) {
                     ROOM_SLUGS[name] = slug;
@@ -5303,7 +5385,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 6.3.0<br>
+                                    الإصدار 6.4.0<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -6053,7 +6135,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v6.3.0 – English ID format & QR code generation');
+                console.log('⚡ Smart General Electric v6.4.0 – Enhanced detail page animations & responsive garage door');
                 console.log(`📦 ${state.devices.length} devices`);
             }
 
