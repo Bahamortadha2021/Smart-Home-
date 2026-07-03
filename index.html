@@ -742,7 +742,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Room Detail Overlay
+           Room Detail Overlay (improved)
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .room-overlay {
             display: none;
@@ -807,6 +807,11 @@
             display: flex;
             gap: 8px;
             margin-right: auto;
+            align-items: center;
+        }
+        .room-overlay .room-header .room-actions .btn-small {
+            font-size: 0.75rem;
+            padding: 6px 14px;
         }
         .room-overlay .room-devices-grid {
             display: grid;
@@ -2173,6 +2178,14 @@
             .automation-card .auto-toggle-wrap {
                 align-self: flex-start;
             }
+            .room-overlay .room-header {
+                flex-wrap: wrap;
+            }
+            .room-overlay .room-header .room-actions {
+                margin-right: 0;
+                width: 100%;
+                justify-content: flex-start;
+            }
         }
         @media (max-width: 380px) {
             .devices-grid {
@@ -2386,7 +2399,7 @@
                 <button class="nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
                 <button class="nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
             </nav>
-            <div class="sidebar-footer">Smart General Electric™ · الإصدار 5.9.0</div>
+            <div class="sidebar-footer">Smart General Electric™ · الإصدار 6.0.0</div>
         </aside>
 
         <!-- Main Content -->
@@ -2619,7 +2632,7 @@
     </div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Room Detail Overlay
+    Room Detail Overlay (improved)
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div class="room-overlay" id="roomDetailOverlay">
         <div class="room-header">
@@ -2629,6 +2642,7 @@
                 <button class="edit-room-btn" id="roomDetailEditBtn" title="تعديل اسم الغرفة"><i class="fas fa-pen"></i></button>
             </span>
             <div class="room-actions">
+                <button class="btn-small primary" id="addDeviceInRoomBtn" data-room="">➕ إضافة جهاز</button>
                 <span class="count" id="roomDetailCount"></span>
             </div>
         </div>
@@ -2847,6 +2861,8 @@
                 roomEditInput: $('roomEditInput'),
                 roomEditCancel: $('roomEditCancel'),
                 roomEditSave: $('roomEditSave'),
+                // Room add device button
+                addDeviceInRoomBtn: $('addDeviceInRoomBtn'),
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4415,7 +4431,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ROOM DETAIL OVERLAY
+            //  ROOM DETAIL OVERLAY (improved with add device button)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openRoomDetail(roomName) {
                 state._currentRoom = roomName;
@@ -4433,6 +4449,7 @@
                 const devicesInRoom = state.devices.filter(d => d.room === roomName);
                 dom.roomDetailName.textContent = roomName;
                 dom.roomDetailCount.textContent = `${devicesInRoom.length} جهاز`;
+                dom.addDeviceInRoomBtn.dataset.room = roomName;
 
                 if (devicesInRoom.length === 0) {
                     dom.roomDetailDevices.innerHTML = '';
@@ -4565,6 +4582,21 @@
             function populateRoomDropdown() {
                 const select = dom.addDeviceRoom;
                 select.innerHTML = state.rooms.map(r => `<option value="${r}">${r}</option>`).join('');
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  ADD DEVICE FROM ROOM VIEW
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function openAddDeviceInRoom(room) {
+                if (!room) return;
+                // Pre-select the room in the add modal dropdown
+                populateRoomDropdown();
+                dom.addDeviceRoom.value = room;
+                // Open the modal
+                dom.addModal.classList.add('active');
+                dom.addDeviceId.value = '';
+                dom.addDeviceType.value = '2';
+                dom.addDeviceId.focus();
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4985,7 +5017,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 5.9.0<br>
+                                    الإصدار 6.0.0<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -5087,6 +5119,15 @@
                 const testConnBtn = document.getElementById('testConnBtn');
                 if (testConnBtn) testConnBtn.addEventListener('click', testConnection);
                 dom.vacationOffBtn.addEventListener('click', toggleVacation);
+
+                // Room add device button (inside room overlay)
+                dom.addDeviceInRoomBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const room = this.dataset.room;
+                    if (room) {
+                        openAddDeviceInRoom(room);
+                    }
+                });
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -5408,13 +5449,16 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD DEVICE
+            //  ADD DEVICE (with optional room pre-selection)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function openAddModal() {
+            function openAddModal(room) {
                 dom.addModal.classList.add('active');
+                populateRoomDropdown();
+                if (room) {
+                    dom.addDeviceRoom.value = room;
+                }
                 dom.addDeviceId.value = '';
                 dom.addDeviceType.value = '2';
-                populateRoomDropdown();
                 dom.addDeviceId.focus();
             }
 
@@ -5569,7 +5613,8 @@
                 });
 
                 dom.scanQrBtn.addEventListener('click', showQrScanner);
-                dom.addDeviceBtn.addEventListener('click', openAddModal);
+                // Add device button in header uses openAddModal without room
+                dom.addDeviceBtn.addEventListener('click', () => openAddModal(null));
                 dom.addModalCancel.addEventListener('click', closeAddModal);
                 dom.addModalSubmit.addEventListener('click', handleAddDevice);
 
@@ -5660,6 +5705,7 @@
                         closeRoomEditModal();
                         closeAutoForm();
                         closeAddRoomModal();
+                        closeAddModal();
                     }
                     if (dom.detailPage.classList.contains('active')) {
                         const dev = state.devices.find(d => d.id === state.activeDeviceId);
@@ -5678,7 +5724,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v5.9.0 – Water Faucet animation with flow particles & improved connection management');
+                console.log('⚡ Smart General Electric v6.0.0 – Room view with add device button & water faucet animation');
                 console.log(`📦 ${state.devices.length} devices`);
             }
 
@@ -5704,6 +5750,7 @@
             window.closeAutoForm = closeAutoForm;
             window.openAddRoomModal = openAddRoomModal;
             window.closeAddRoomModal = closeAddRoomModal;
+            window.openAddDeviceInRoom = openAddDeviceInRoom;
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
             else init();
