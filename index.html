@@ -14,6 +14,8 @@
     </script>
     <script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js">
+    </script>
     <style>
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
            CSS Variables – Light / Dark Themes
@@ -869,7 +871,6 @@
             text-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
             animation: glow-pulse 1.5s ease-in-out infinite;
         }
-        /* Water Faucet Animation - Professional Flow */
         .device-card .card-top .icon-wrap.water-faucet {
             position: relative;
             display: inline-block;
@@ -889,7 +890,6 @@
                 text-shadow: 0 0 30px rgba(30, 136, 229, 0.6);
             }
         }
-        /* Water droplets */
         .device-card .card-top .water-drop {
             position: absolute;
             width: 6px;
@@ -950,7 +950,6 @@
                 transform: translateY(50px) scale(0);
             }
         }
-        /* Water splash ring */
         .device-card .card-top .water-ring {
             position: absolute;
             border-radius: 50%;
@@ -993,7 +992,6 @@
             opacity: 0 !important;
         }
 
-        /* ── Big icon detail page water animation ── */
         .detail-water-container {
             position: relative;
             display: inline-block;
@@ -1140,6 +1138,20 @@
             transition: var(--transition);
         }
         .device-card .card-top .settings-btn:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+        .device-card .card-top .qr-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 6px;
+            transition: var(--transition);
+        }
+        .device-card .card-top .qr-btn:hover {
             color: var(--primary);
             background: var(--primary-light);
         }
@@ -1455,6 +1467,56 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           QR Code Modal
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        #qrCodeModal .modal-box {
+            max-width: 400px;
+            text-align: center;
+        }
+        #qrCodeModal .qr-code-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            background: white;
+            border-radius: var(--border-radius-sm);
+            margin: 10px 0;
+        }
+        #qrCodeModal .qr-code-container canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        #qrCodeModal .qr-info {
+            margin: 10px 0;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+        #qrCodeModal .qr-info strong {
+            color: var(--text-primary);
+        }
+        #qrCodeModal .qr-info .id-display {
+            direction: ltr;
+            font-family: monospace;
+            background: var(--bg-primary);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        #qrCodeModal .download-btn {
+            margin-top: 10px;
+            padding: 8px 20px;
+            border: none;
+            border-radius: var(--border-radius-sm);
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        #qrCodeModal .download-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
            Automations Page – Professional Redesign
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .automation-stats {
@@ -1758,6 +1820,20 @@
         .detail-header .delete-btn-header:hover {
             background: rgba(239, 68, 68, 0.1);
         }
+        .detail-header .qr-btn-header {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 6px 12px;
+            border-radius: 20px;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+        .detail-header .qr-btn-header:hover {
+            background: var(--primary-light);
+        }
         .detail-body {
             max-width: 600px;
             margin: 0 auto;
@@ -1797,6 +1873,17 @@
             font-weight: 500;
             margin-top: 4px;
             color: var(--text-secondary);
+        }
+        .detail-device-card .device-id-display {
+            margin-top: 8px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            background: var(--bg-primary);
+            padding: 4px 12px;
+            border-radius: 20px;
+            display: inline-block;
+            direction: ltr;
+            font-family: monospace;
         }
         .detail-controls {
             background: var(--surface);
@@ -1935,7 +2022,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           QR Overlay
+           QR Overlay (for scanning)
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         #qrOverlay {
             display: none;
@@ -2186,6 +2273,10 @@
                 width: 100%;
                 justify-content: flex-start;
             }
+            #qrCodeModal .modal-box {
+                max-width: 340px;
+                padding: 16px;
+            }
         }
         @media (max-width: 380px) {
             .devices-grid {
@@ -2399,7 +2490,7 @@
                 <button class="nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
                 <button class="nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
             </nav>
-            <div class="sidebar-footer">Smart General Electric™ · الإصدار 6.0.0</div>
+            <div class="sidebar-footer">Smart General Electric™ · الإصدار 6.3.0</div>
         </aside>
 
         <!-- Main Content -->
@@ -2484,6 +2575,21 @@
     </div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    QR Code Modal
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <div class="modal-overlay" id="qrCodeModal">
+        <div class="modal-box">
+            <h3 class="modal-title"><i class="fas fa-qrcode"></i> رمز QR للجهاز</h3>
+            <div class="qr-code-container" id="qrCodeContainer"></div>
+            <div class="qr-info" id="qrCodeInfo"></div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="qrModalClose">إغلاق</button>
+                <button class="btn-primary" id="qrDownloadBtn"><i class="fas fa-download"></i> تحميل</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
     Room Edit Modal
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div class="modal-overlay" id="roomEditModal">
@@ -2501,15 +2607,18 @@
     </div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    Add Device Modal
+    Add Device Modal (with auto ID generation - English format)
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div class="modal-overlay" id="addModal">
         <div class="modal-box">
             <h3 class="modal-title">➕ إضافة جهاز جديد</h3>
             <div class="form-group">
                 <label>معرف الجهاز (Device ID)</label>
-                <input id="addDeviceId" placeholder="مثل: water1" />
-                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">يجب أن يطابق المعرف في جهاز ESP01</div>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <input id="addDeviceId" placeholder="مثل: garage/all_rooms/B9ABdV9s" style="flex:1;direction:ltr;font-family:monospace;" />
+                    <button class="btn-small primary" id="generateIdBtn" style="white-space:nowrap;padding:8px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:600;cursor:pointer;">🔄 توليد</button>
+                </div>
+                <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">الصيغة: <span style="direction:ltr;font-family:monospace;">نوع/اسم_الغرفة_بالانجليزية/8أحرف_عشوائية</span></div>
             </div>
             <div class="form-group">
                 <label>نوع الجهاز</label>
@@ -2626,6 +2735,7 @@
         <div class="detail-header">
             <button class="back-btn" id="detailBackBtn"><i class="fas fa-arrow-right"></i></button>
             <span class="title" id="detailTitle">تفاصيل الجهاز</span>
+            <button class="qr-btn-header" id="detailQrBtn" title="عرض رمز QR"><i class="fas fa-qrcode"></i> QR</button>
             <button class="delete-btn-header" id="detailDeleteBtn"><i class="fas fa-trash"></i> حذف</button>
         </div>
         <div class="detail-body" id="detailBody"></div>
@@ -2651,7 +2761,7 @@
     </div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    QR Overlay
+    QR Overlay (for scanning)
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <div id="qrOverlay">
         <div class="qr-box">
@@ -2687,26 +2797,38 @@
             'use strict';
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  CONSTANTS – Device Types (UPDATED with Water Faucet)
+            //  CONSTANTS – Device Types
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             const DEVICE_TYPES = {
                 1: { name: 'باب جراج', icon: 'fa-door-open', color: '#3b82f6', hasBrightness: false, hasTemp: false,
-                    hasSpeed: false, isDoor: true, topic: 'garage' },
+                    hasSpeed: false, isDoor: true, topic: 'garage', prefix: 'garage' },
                 2: { name: 'مصباح عادي', icon: 'fa-lightbulb', color: '#fbbf24', hasBrightness: false, hasTemp: false,
-                    hasSpeed: false, isDoor: false, topic: 'light' },
+                    hasSpeed: false, isDoor: false, topic: 'light', prefix: 'light' },
                 3: { name: 'مصباح قابل للتعتيم', icon: 'fa-lightbulb', color: '#fbbf24', hasBrightness: true, hasTemp: false,
-                    hasSpeed: false, isDoor: false, topic: 'light' },
+                    hasSpeed: false, isDoor: false, topic: 'light', prefix: 'dimmable' },
                 4: { name: 'مقبس', icon: 'fa-plug', color: '#10b981', hasBrightness: false, hasTemp: false, hasSpeed: false,
-                    isDoor: false, topic: 'plug' },
+                    isDoor: false, topic: 'plug', prefix: 'plug' },
                 5: { name: 'مروحة', icon: 'fa-fan', color: '#06b6d4', hasBrightness: false, hasTemp: false, hasSpeed: true,
-                    isDoor: false, topic: 'fan' },
+                    isDoor: false, topic: 'fan', prefix: 'fan' },
                 6: { name: 'مكيف', icon: 'fa-snowflake', color: '#8b5cf6', hasBrightness: false, hasTemp: true,
-                    hasSpeed: false, isDoor: false, topic: 'ac' },
+                    hasSpeed: false, isDoor: false, topic: 'ac', prefix: 'ac' },
                 7: { name: 'مضخة', icon: 'fa-water', color: '#3b82f6', hasBrightness: false, hasTemp: false,
-                    hasSpeed: false, isDoor: false, topic: 'pump' },
-                // Water Faucet (replaces electrofan)
+                    hasSpeed: false, isDoor: false, topic: 'pump', prefix: 'pump' },
                 8: { name: 'حنفية ماء', icon: 'fa-faucet', color: '#1e88e5', hasBrightness: false, hasTemp: false,
-                    hasSpeed: false, isDoor: false, topic: 'faucet' }
+                    hasSpeed: false, isDoor: false, topic: 'faucet', prefix: 'faucet' }
+            };
+
+            // Room name to English slug mapping
+            const ROOM_SLUGS = {
+                'جميع الغرف': 'all_rooms',
+                'غرفة المعيشة': 'living_room',
+                'غرفة النوم': 'bedroom',
+                'المطبخ': 'kitchen',
+                'الحديقة': 'garden',
+                'المدخل': 'entrance',
+                'المكتب': 'office',
+                'الحمام': 'bathroom',
+                'المزرعة': 'farm'
             };
 
             const ICON_OPTIONS = [
@@ -2776,13 +2898,14 @@
                 editingDeviceId: null,
                 heartbeatInterval: null,
                 roomToEdit: null,
-                // Connection management
                 reconnectTimer: null,
                 isReconnecting: false,
                 connectionStable: false,
                 lastConnectionChange: Date.now(),
-                connectionNotifyCooldown: 30000, // 30 seconds cooldown between connection notifications
+                connectionNotifyCooldown: 30000,
                 lastConnectionNotify: 0,
+                qrCodeInstance: null,
+                currentQrDeviceId: null,
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2804,6 +2927,7 @@
                 detailTitle: $('detailTitle'),
                 detailBody: $('detailBody'),
                 detailDeleteBtn: $('detailDeleteBtn'),
+                detailQrBtn: $('detailQrBtn'),
                 deleteModal: $('deleteModal'),
                 deleteConfirm: $('deleteConfirm'),
                 deleteCancel: $('deleteCancel'),
@@ -2814,6 +2938,7 @@
                 addDeviceRoom: $('addDeviceRoom'),
                 addModalCancel: $('addModalCancel'),
                 addModalSubmit: $('addModalSubmit'),
+                generateIdBtn: $('generateIdBtn'),
                 addAutoModal: $('addAutoModal'),
                 autoName: $('autoName'),
                 autoTriggerDevice: $('autoTriggerDevice'),
@@ -2830,6 +2955,11 @@
                 addRoomSubmit: $('addRoomSubmit'),
                 deviceSettingsModal: $('deviceSettingsModal'),
                 deviceSettingsBody: $('deviceSettingsBody'),
+                qrCodeModal: $('qrCodeModal'),
+                qrCodeContainer: $('qrCodeContainer'),
+                qrCodeInfo: $('qrCodeInfo'),
+                qrModalClose: $('qrModalClose'),
+                qrDownloadBtn: $('qrDownloadBtn'),
                 qrOverlay: $('qrOverlay'),
                 qrClose: $('qrClose'),
                 qrReader: $('qr-reader'),
@@ -2861,7 +2991,6 @@
                 roomEditInput: $('roomEditInput'),
                 roomEditCancel: $('roomEditCancel'),
                 roomEditSave: $('roomEditSave'),
-                // Room add device button
                 addDeviceInRoomBtn: $('addDeviceInRoomBtn'),
             };
 
@@ -3105,48 +3234,193 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEFAULT DATA (with water faucet example)
+            //  DEFAULT DATA (with English ID format)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function getDefaultDevices() {
                 return [
-                    { id: 'garage1', type: 1, room: 'المدخل', name: 'باب الجراج', status: false, open: false, online: true,
+                    { id: 'garage/entrance/aB3xY7zW', type: 1, room: 'المدخل', name: 'باب الجراج', status: false,
+                        open: false, online: true,
                         doorColor: '#3b82f6', lastHeartbeat: Date.now(), icon: 'fa-door-open' },
-                    { id: 'living_room', type: 3, room: 'غرفة المعيشة', name: 'لمبة المعيشة', status: false, brightness: 70,
+                    { id: 'dimmable/living_room/pQ9fL2dM', type: 3, room: 'غرفة المعيشة', name: 'لمبة المعيشة',
+                        status: false, brightness: 70,
                         color: '#ffaa33', online: true, lastHeartbeat: Date.now(), icon: 'fa-lightbulb' },
-                    { id: 'bedroom', type: 2, room: 'غرفة النوم', name: 'لمبة النوم', status: false, online: true,
+                    { id: 'light/bedroom/rT5hG8kL', type: 2, room: 'غرفة النوم', name: 'لمبة النوم', status: false,
+                        online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-lightbulb' },
-                    { id: 'kitchen', type: 4, room: 'المطبخ', name: 'مقبس المطبخ', status: false, online: true,
+                    { id: 'plug/kitchen/sK3wR4nX', type: 4, room: 'المطبخ', name: 'مقبس المطبخ', status: false,
+                        online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-plug' },
-                    { id: 'office_fan', type: 5, room: 'المكتب', name: 'مروحة المكتب', status: false, speed: 1, online: true,
+                    { id: 'fan/office/jM7vP2cB', type: 5, room: 'المكتب', name: 'مروحة المكتب', status: false,
+                        speed: 1, online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-fan' },
-                    { id: 'living_ac', type: 6, room: 'غرفة المعيشة', name: 'مكيف الصالة', status: false, temp: 22,
+                    { id: 'ac/living_room/qW1rT6eY', type: 6, room: 'غرفة المعيشة', name: 'مكيف الصالة', status: false,
+                        temp: 22,
                         online: true, lastHeartbeat: Date.now(), icon: 'fa-snowflake' },
-                    { id: 'garden_pump', type: 7, room: 'الحديقة', name: 'مضخة الحديقة', status: false, online: true,
+                    { id: 'pump/garden/zX9cV4bN', type: 7, room: 'الحديقة', name: 'مضخة الحديقة', status: false,
+                        online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-water' },
-                    // Water Faucet example in Farm
-                    { id: 'faucet1', type: 8, room: 'المزرعة', name: 'حنفية المزرعة', status: false, online: true,
+                    { id: 'faucet/farm/fH2kL9pS', type: 8, room: 'المزرعة', name: 'حنفية المزرعة', status: false,
+                        online: true,
                         lastHeartbeat: Date.now(), icon: 'fa-faucet' },
                 ];
             }
 
             function getDefaultScenes() {
                 return [
-                    { id: 'morning', name: 'صباح الخير', icon: 'fa-sun', actions: [{ deviceId: 'living_room',
+                    { id: 'morning', name: 'صباح الخير', icon: 'fa-sun', actions: [{ deviceId: 'dimmable/living_room/pQ9fL2dM',
                             action: 'on', brightness: 80 }] },
-                    { id: 'night', name: 'وضع النوم', icon: 'fa-moon', actions: [{ deviceId: 'living_room',
+                    { id: 'night', name: 'وضع النوم', icon: 'fa-moon', actions: [{ deviceId: 'dimmable/living_room/pQ9fL2dM',
                             action: 'off' }] },
-                    { id: 'away', name: 'مغادرة المنزل', icon: 'fa-car', actions: [{ deviceId: 'living_room',
-                            action: 'off' }, { deviceId: 'living_ac', action: 'off' }] },
-                    { id: 'farm_water', name: 'ري المزرعة', icon: 'fa-tint', actions: [{ deviceId: 'faucet1',
+                    { id: 'away', name: 'مغادرة المنزل', icon: 'fa-car', actions: [{ deviceId: 'dimmable/living_room/pQ9fL2dM',
+                            action: 'off' }, { deviceId: 'ac/living_room/qW1rT6eY', action: 'off' }] },
+                    { id: 'farm_water', name: 'ري المزرعة', icon: 'fa-tint', actions: [{ deviceId: 'faucet/farm/fH2kL9pS',
                             action: 'on' }] },
                 ];
             }
 
             function getDefaultAutomations() {
                 return [
-                    { id: 'door_notify', name: 'تنبيه فتح الباب', enabled: true, trigger: { deviceId: 'garage1',
-                            condition: 'open' }, action: { deviceId: 'living_room', command: 'on' } },
+                    { id: 'door_notify', name: 'تنبيه فتح الباب', enabled: true, trigger: { deviceId: 'garage/entrance/aB3xY7zW',
+                            condition: 'open' }, action: { deviceId: 'dimmable/living_room/pQ9fL2dM',
+                            command: 'on' } },
                 ];
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  DEVICE ID GENERATOR (ENGLISH FORMAT)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function generateRandomString(length = 8) {
+                const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+                let result = '';
+                for (let i = 0; i < length; i++) {
+                    result += chars.charAt(Math.floor(Math.random() * chars.length));
+                }
+                return result;
+            }
+
+            function getRoomSlug(roomName) {
+                // Return the English slug for the room
+                if (ROOM_SLUGS[roomName]) return ROOM_SLUGS[roomName];
+                // Fallback: generate slug from Arabic name (replace spaces, transliterate roughly)
+                let slug = roomName.replace(/\s+/g, '_');
+                // Remove non-alphanumeric chars
+                slug = slug.replace(/[^a-zA-Z0-9_\u0600-\u06FF]/g, '');
+                // If still empty, use 'room'
+                if (!slug) slug = 'room';
+                return slug;
+            }
+
+            function generateDeviceId(type, room) {
+                const typeInfo = DEVICE_TYPES[type];
+                if (!typeInfo) return 'device/room/' + generateRandomString(8);
+                const prefix = typeInfo.prefix || 'device';
+                const roomSlug = room ? getRoomSlug(room) : 'room';
+
+                let uniquePart = generateRandomString(8);
+                let candidate = `${prefix}/${roomSlug}/${uniquePart}`;
+
+                // Ensure uniqueness
+                let attempts = 0;
+                while (state.devices.some(d => d.id === candidate) && attempts < 10) {
+                    uniquePart = generateRandomString(8);
+                    candidate = `${prefix}/${roomSlug}/${uniquePart}`;
+                    attempts++;
+                }
+
+                return candidate;
+            }
+
+            function generateIdForType(type, room) {
+                return generateDeviceId(type, room || 'جميع الغرف');
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  QR CODE GENERATION
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function generateQRCodeData(device) {
+                const data = [
+                    'SGE',
+                    device.id,
+                    device.type,
+                    device.room || '',
+                    state.serverHost || 'broker.hivemq.com',
+                    state.username || '',
+                    state.password || ''
+                ].join('|');
+                return data;
+            }
+
+            function showQRCodeModal(deviceId) {
+                const device = state.devices.find(d => d.id === deviceId);
+                if (!device) {
+                    showToast('⚠️ الجهاز غير موجود', 'error');
+                    return;
+                }
+
+                state.currentQrDeviceId = deviceId;
+                dom.qrCodeContainer.innerHTML = '';
+                const qrData = generateQRCodeData(device);
+
+                dom.qrCodeInfo.innerHTML = `
+                        <strong>${device.name}</strong><br>
+                        المعرف: <span class="id-display">${device.id}</span><br>
+                        النوع: ${DEVICE_TYPES[device.type]?.name || 'غير معروف'}<br>
+                        الغرفة: ${device.room || 'غير محددة'}
+                    `;
+
+                try {
+                    const qrContainer = dom.qrCodeContainer;
+                    if (typeof QRCode !== 'undefined') {
+                        const qr = new QRCode(qrContainer, {
+                            text: qrData,
+                            width: 220,
+                            height: 220,
+                            colorDark: '#0b3d91',
+                            colorLight: '#ffffff',
+                            correctLevel: QRCode.CorrectLevel.H
+                        });
+                        state.qrCodeInstance = qr;
+                    } else {
+                        qrContainer.innerHTML = `
+                                <div style="padding:20px;background:white;border-radius:8px;border:2px dashed var(--border-color);">
+                                    <i class="fas fa-qrcode" style="font-size:4rem;color:var(--primary);"></i>
+                                    <div style="margin-top:10px;font-size:0.8rem;color:var(--text-muted);word-break:break-all;direction:ltr;font-family:monospace;">
+                                        ${qrData}
+                                    </div>
+                                </div>
+                            `;
+                    }
+                    dom.qrCodeModal.classList.add('active');
+                } catch (e) {
+                    console.error('QR generation error:', e);
+                    dom.qrCodeContainer.innerHTML =
+                        `<div style="padding:20px;color:var(--danger);">⚠️ تعذر إنشاء رمز QR: ${e.message}</div>`;
+                    dom.qrCodeModal.classList.add('active');
+                }
+            }
+
+            function closeQRCodeModal() {
+                dom.qrCodeModal.classList.remove('active');
+                state.currentQrDeviceId = null;
+                state.qrCodeInstance = null;
+            }
+
+            function downloadQRCode() {
+                const container = dom.qrCodeContainer;
+                const canvas = container.querySelector('canvas');
+                if (canvas) {
+                    try {
+                        const link = document.createElement('a');
+                        link.download = `QR_${state.currentQrDeviceId || 'device'}.png`;
+                        link.href = canvas.toDataURL('image/png');
+                        link.click();
+                        showToast('✅ تم تحميل رمز QR', 'success', '📥');
+                    } catch (e) {
+                        showToast('⚠️ تعذر تحميل رمز QR', 'error');
+                    }
+                } else {
+                    showToast('⚠️ لا يوجد رمز QR للتحميل', 'warning');
+                }
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3206,7 +3480,6 @@
                             if (!dev.online) {
                                 const icon = DEVICE_TYPES[dev.type]?.icon || '📦';
                                 addLog(`🔴 ${dev.name} غير متصل (انقطاع النبضات)`, 'error', true);
-                                // Only notify if the device was previously online
                                 if (wasOnline) {
                                     addNotification(`🔴 ${dev.name} غير متصل`, 'لم يتم استقبال نبضة قلب', '🔴', 'error');
                                     Sound.offline();
@@ -3214,7 +3487,6 @@
                             } else {
                                 const icon = DEVICE_TYPES[dev.type]?.icon || '📦';
                                 addLog(`🟢 ${dev.name} عاد إلى الاتصال`, 'success', true);
-                                // Only notify if the device was previously offline
                                 if (!wasOnline) {
                                     addNotification(`🟢 ${dev.name} عاد إلى الاتصال`, 'تم استقبال نبضة قلب', '🟢', 'success');
                                     Sound.success();
@@ -3283,7 +3555,7 @@
                     5: 'fan',
                     6: 'ac',
                     7: 'pump',
-                    8: 'faucet' // water faucet
+                    8: 'faucet'
                 };
                 const base = topicMap[type] || 'device';
                 if (suffix === 'cmd') {
@@ -3357,7 +3629,6 @@
                     state.lastError = 'فشلت جميع محاولات الاتصال';
                     updateConnectionBanner();
                     addDiagnostic('❌ فشلت جميع محاولات الاتصال', 'error');
-                    // Don't log to toast, only diagnostic
                     scheduleReconnect();
                     return;
                 }
@@ -3403,14 +3674,12 @@
 
                         addDiagnostic(`✅ متصل بنجاح عبر ${protocol}://${state.serverHost}:${port}`, 'success');
 
-                        // Only show notification if we were disconnected and cooldown passed
                         if (wasDisconnected) {
                             const now = Date.now();
                             if (now - state.lastConnectionNotify > state.connectionNotifyCooldown) {
                                 showToast('✅ تم الاتصال بالخادم', 'success', '📡');
                                 state.lastConnectionNotify = now;
                             }
-                            // Always log but don't spam toast
                             addLog('✅ متصل بخادم MQTT', 'success', true);
                         }
 
@@ -3448,7 +3717,6 @@
                             state.mqttStatus = 'disconnected';
                             state.connectionStable = false;
                             updateConnectionBanner();
-                            // Only sound if not already disconnected
                             if (state.mqttStatus === 'disconnected') {
                                 Sound.disconnected();
                             }
@@ -3463,7 +3731,6 @@
                             state.connectionStable = false;
                             state.lastConnectionChange = Date.now();
                             addDiagnostic('🔌 انقطع الاتصال', 'warning');
-                            // Only log once
                             if (state.mqttStatus === 'disconnected') {
                                 addLog('🔌 انقطع الاتصال بالخادم', 'warning', true);
                             }
@@ -3596,7 +3863,6 @@
                 state.reconnectAttempt++;
                 addDiagnostic(`🔄 إعادة الاتصال خلال ${delay} ث (محاولة ${state.reconnectAttempt}/${K_MAX_RECONNECT})`,
                     'warning');
-                // Only log to console, not toast
                 updateConnectionBanner();
 
                 if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
@@ -3638,7 +3904,6 @@
                     Sound.notification();
                     lastNotifSoundTime = nowMs;
                 }
-                // Don't show toast for every notification, only if not silent
                 if (!silent) showToast(desc, type, icon, true);
             }
 
@@ -3784,7 +4049,6 @@
                         notifyDeviceChange(dev, newState ? 'open' : 'closed', dev.open ? 'open' : 'closed');
                     }
                 } else if (type === 2 || type === 4 || type === 7 || type === 8) {
-                    // Simple on/off for devices including water faucet
                     const newState = !dev.status;
                     dev.status = newState;
                     sendMqttCommand(id, type, 'cmd', newState ? 'ON' : 'OFF');
@@ -3925,7 +4189,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE SETTINGS with custom icon picker
+            //  DEVICE SETTINGS with custom icon picker + QR button
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDeviceSettings(deviceId) {
                 state.editingDeviceId = deviceId;
@@ -3961,9 +4225,14 @@
                 iconPickerHtml += `<input type="hidden" id="selectedIcon" value="${currentIcon}" />`;
 
                 dom.deviceSettingsBody.innerHTML = `
-                        <div class="form-group">
-                            <label>معرف الجهاز (Device ID) <span style="color:var(--danger);">⚠️ تغييره يؤثر على الاتصال</span></label>
-                            <input id="editDeviceId" value="${escHtml(dev.id)}" placeholder="معرف فريد" style="direction:ltr;" />
+                        <div class="form-group" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                            <div style="flex:1;min-width:200px;">
+                                <label>معرف الجهاز (Device ID) <span style="color:var(--danger);">⚠️ تغييره يؤثر على الاتصال</span></label>
+                                <input id="editDeviceId" value="${escHtml(dev.id)}" placeholder="مثل: garage/all_rooms/B9ABdV9s" style="direction:ltr;font-family:monospace;" />
+                            </div>
+                            <div style="display:flex;gap:6px;margin-top:20px;">
+                                <button class="btn-small primary" id="editQrBtn" style="padding:6px 12px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:600;cursor:pointer;white-space:nowrap;"><i class="fas fa-qrcode"></i> QR</button>
+                            </div>
                             <div class="id-change-warning" id="idChangeWarning">
                                 <i class="fas fa-exclamation-triangle"></i>
                                 تغيير المعرف سيتطلب إعادة تهيئة الجهاز الفيزيائي لاستخدام المعرف الجديد.
@@ -4005,6 +4274,14 @@
                             <button class="btn-secondary" id="editDeviceCancel" style="width:100%;">إلغاء</button>
                         </div>
                     `;
+
+                const qrBtn = document.getElementById('editQrBtn');
+                if (qrBtn) {
+                    qrBtn.addEventListener('click', () => {
+                        closeDeviceSettings();
+                        showQRCodeModal(dev.id);
+                    });
+                }
 
                 document.querySelectorAll('[data-action="pick-icon"]').forEach(el => {
                     el.addEventListener('click', function() {
@@ -4256,7 +4533,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE (with water faucet support)
+            //  DETAIL PAGE (with water faucet support + QR)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(deviceId) {
                 state.activeDeviceId = deviceId;
@@ -4335,7 +4612,6 @@
                             <div class="ctrl-row"><span class="label">درجة الحرارة</span><input type="range" class="slider large" min="16" max="30" value="${dev.temp||22}" id="detailTemp" data-id="${dev.id}" /><span>${dev.temp||22}°C</span></div>
                         `;
                 } else if (dev.type === 2 || dev.type === 4 || dev.type === 7 || dev.type === 8) {
-                    // Simple toggle for water faucet and others
                     controlsHtml =
                         `<div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>`;
                 }
@@ -4344,7 +4620,6 @@
                 if (dev.type === 8) bigIconClasses.push('water-faucet');
                 if (isOn) bigIconClasses.push('state-on');
 
-                // Water particles for detail view
                 let waterParticles = '';
                 if (dev.type === 8) {
                     waterParticles = `
@@ -4365,6 +4640,7 @@
                             </div>
                             <div class="big-name">${dev.name}</div>
                             <div class="big-status">${statusText}</div>
+                            <div class="device-id-display">🆔 ${dev.id}</div>
                             <div style="margin-top:12px;">
                                 <span class="status-badge ${dev.online!==false?'online':'offline'}">${dev.online!==false?'🟢 متصل':'🔴 غير متصل'}</span>
                                 ${state.vacationMode ? '<span class="vacation-badge" style="font-size:0.65rem;">🏖️ إجازة</span>' : ''}
@@ -4469,6 +4745,7 @@
                         if (e.target.closest('.toggle-switch') || e.target.closest('.slider-mini') ||
                             e.target.closest('.color-dot') || e.target.closest('.door-btn') ||
                             e.target.closest('[data-action="toggle-icon"]') ||
+                            e.target.closest('[data-action="qr-device"]') ||
                             e.target.closest('[data-action="settings-device"]') ||
                             e.target.closest('.settings-btn') ||
                             e.target.closest('[data-action="delete-device"]') ||
@@ -4540,7 +4817,6 @@
             function openAddRoomModal() {
                 dom.addRoomModal.classList.add('active');
                 dom.addRoomName.value = '';
-                // Populate icon picker
                 const picker = dom.roomIconPicker;
                 picker.innerHTML = '';
                 const defaultIcon = 'fa-home';
@@ -4570,6 +4846,11 @@
                 if (!name) { showToast('⚠️ أدخل اسم الغرفة', 'error'); return; }
                 if (state.rooms.includes(name)) { showToast('⚠️ هذه الغرفة موجودة بالفعل', 'error'); return; }
                 state.rooms.push(name);
+                // Add to room slugs mapping
+                const slug = name.replace(/\s+/g, '_').replace(/[^a-zA-Z0-9_\u0600-\u06FF]/g, '');
+                if (slug && !ROOM_SLUGS[name]) {
+                    ROOM_SLUGS[name] = slug;
+                }
                 saveRooms();
                 populateRoomDropdown();
                 closeAddRoomModal();
@@ -4589,18 +4870,16 @@
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAddDeviceInRoom(room) {
                 if (!room) return;
-                // Pre-select the room in the add modal dropdown
                 populateRoomDropdown();
                 dom.addDeviceRoom.value = room;
-                // Open the modal
+                const type = parseInt(dom.addDeviceType.value);
+                dom.addDeviceId.value = generateDeviceId(type, room);
                 dom.addModal.classList.add('active');
-                dom.addDeviceId.value = '';
-                dom.addDeviceType.value = '2';
                 dom.addDeviceId.focus();
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE CARD HTML (with water faucet animation)
+            //  DEVICE CARD HTML (with water faucet animation + QR button)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDeviceCardHtml(device) {
                 const typeInfo = DEVICE_TYPES[device.type] || DEVICE_TYPES[2];
@@ -4617,7 +4896,6 @@
 
                 let iconHtml = '';
                 if (device.type === 8) {
-                    // Water Faucet with droplets
                     iconHtml = `
                             <span class="${wrapClasses.join(' ')}" data-action="toggle-icon" data-id="${device.id}" style="position:relative;">
                                 <i class="fas ${customIcon}"></i>
@@ -4681,7 +4959,6 @@
                                 <input type="range" class="slider-mini" min="16" max="30" value="${device.temp||22}" data-id="${device.id}" data-action="temp" style="flex:1;" />
                             </div>`;
                 } else if (device.type === 2 || device.type === 4 || device.type === 7 || device.type === 8) {
-                    // Simple toggle for water faucet and others
                     controls =
                         `<div class="controls"><button class="toggle-switch ${isOn?'active':''}" data-id="${device.id}"></button></div>`;
                 }
@@ -4697,6 +4974,7 @@
                                     <span class="room-badge">${device.room}</span>
                                     <span class="status-dot ${dotClass}" title="${isOnline ? '🟢 متصل بالخادم' : '🔴 غير متصل بالخادم'}"></span>
                                     ${vacationBadge}
+                                    <button class="qr-btn" data-action="qr-device" data-id="${device.id}" title="رمز QR"><i class="fas fa-qrcode"></i></button>
                                     <button class="settings-btn" data-action="settings-device" data-id="${device.id}" title="إعدادات"><i class="fas fa-sliders-h"></i></button>
                                 </div>
                             </div>
@@ -4717,6 +4995,14 @@
                         el.addEventListener('click', (e) => {
                             e.stopPropagation();
                             toggleDevice(el.dataset.id);
+                        });
+                    }
+                });
+                container.querySelectorAll('[data-action="qr-device"]').forEach(el => {
+                    if (el.dataset.id) {
+                        el.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            showQRCodeModal(el.dataset.id);
                         });
                     }
                 });
@@ -5017,7 +5303,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 6.0.0<br>
+                                    الإصدار 6.3.0<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -5056,6 +5342,7 @@
                         if (e.target.closest('.toggle-switch') || e.target.closest('.slider-mini') ||
                             e.target.closest('.color-dot') || e.target.closest('.door-btn') ||
                             e.target.closest('[data-action="toggle-icon"]') ||
+                            e.target.closest('[data-action="qr-device"]') ||
                             e.target.closest('[data-action="settings-device"]') ||
                             e.target.closest('.settings-btn') ||
                             e.target.closest('[data-action="delete-device"]') || e.target.closest(
@@ -5120,13 +5407,19 @@
                 if (testConnBtn) testConnBtn.addEventListener('click', testConnection);
                 dom.vacationOffBtn.addEventListener('click', toggleVacation);
 
-                // Room add device button (inside room overlay)
                 dom.addDeviceInRoomBtn.addEventListener('click', function(e) {
                     e.stopPropagation();
                     const room = this.dataset.room;
                     if (room) {
                         openAddDeviceInRoom(room);
                     }
+                });
+
+                // QR Modal events
+                dom.qrModalClose.addEventListener('click', closeQRCodeModal);
+                dom.qrDownloadBtn.addEventListener('click', downloadQRCode);
+                dom.qrCodeModal.addEventListener('click', (e) => {
+                    if (e.target === dom.qrCodeModal) closeQRCodeModal();
                 });
             }
 
@@ -5412,44 +5705,47 @@
             function handleQrData(data) {
                 const parts = data.split('|');
                 if (parts.length < 2) return showToast('❌ تنسيق QR غير صحيح', 'error');
-                const id = parts[0].trim();
-                const server = parts[1].trim() || 'broker.hivemq.com';
-                const user = parts.length > 2 ? parts[2].trim() : '';
-                const pass = parts.length > 3 ? parts[3].trim() : '';
-                saveConfig(server, user, pass);
-                if (!state.devices.find(d => d.id === id)) {
-                    state.devices.push({
-                        id,
-                        name: id,
-                        type: 2,
-                        room: 'جديد',
-                        status: false,
-                        brightness: 70,
-                        color: '#ffaa33',
-                        online: false,
-                        open: false,
-                        temp: 22,
-                        speed: 1,
-                        lastHeartbeat: null,
-                        icon: 'fa-microchip',
-                    });
-                    saveDevices();
-                    addNotification(`➕ إضافة جهاز`, `تم إضافة "${id}"`, '📦', 'success');
-                    addLog(`📱 تم إضافة جهاز ${id} عبر QR`, 'success');
+                const id = parts[1]?.trim() || '';
+                const type = parseInt(parts[2]) || 2;
+                const room = parts[3]?.trim() || 'جديد';
+                const server = parts[4]?.trim() || 'broker.hivemq.com';
+                const user = parts[5]?.trim() || '';
+                const pass = parts[6]?.trim() || '';
+                if (parts[0] === 'SGE' && id) {
+                    if (!state.devices.find(d => d.id === id)) {
+                        const typeInfo = DEVICE_TYPES[type] || DEVICE_TYPES[2];
+                        state.devices.push({
+                            id: id,
+                            type: type,
+                            room: room,
+                            name: id.split('/').pop() || id,
+                            status: false,
+                            online: false,
+                            brightness: 50,
+                            color: '#ffaa33',
+                            temp: 22,
+                            speed: 1,
+                            open: false,
+                            doorColor: '#3b82f6',
+                            lastHeartbeat: null,
+                            icon: typeInfo.icon,
+                        });
+                        saveDevices();
+                        addNotification(`➕ إضافة جهاز`, `تم إضافة "${id}" عبر QR`, '📦', 'success');
+                        addLog(`📱 تم إضافة جهاز ${id} عبر QR`, 'success');
+                        showToast(`✅ تم إضافة ${id}`, 'success');
+                        updateUI();
+                        return;
+                    } else {
+                        showToast(`⚠️ الجهاز ${id} موجود بالفعل`, 'warning');
+                    }
+                } else {
+                    showToast('⚠️ بيانات QR غير صالحة', 'error');
                 }
-                state.activeDeviceId = id;
-                saveActiveDevice();
-                showToast('✅ تم التحديث عبر QR', 'success');
-                for (const key in state.mqttClients) try { state.mqttClients[key].end(); } catch (_) {}
-                state.mqttClients = {};
-                state.mqttStatus = 'disconnected';
-                state.reconnectAttempt = 0;
-                setTimeout(connectMQTT, 500);
-                updateUI();
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD DEVICE (with optional room pre-selection)
+            //  ADD DEVICE (with auto ID generation - English format)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAddModal(room) {
                 dom.addModal.classList.add('active');
@@ -5457,25 +5753,37 @@
                 if (room) {
                     dom.addDeviceRoom.value = room;
                 }
-                dom.addDeviceId.value = '';
-                dom.addDeviceType.value = '2';
+                const type = parseInt(dom.addDeviceType.value);
+                const selectedRoom = dom.addDeviceRoom.value;
+                dom.addDeviceId.value = generateDeviceId(type, selectedRoom);
                 dom.addDeviceId.focus();
             }
 
             function closeAddModal() { dom.addModal.classList.remove('active'); }
 
             function handleAddDevice() {
-                const id = dom.addDeviceId.value.trim();
+                let id = dom.addDeviceId.value.trim();
                 const type = parseInt(dom.addDeviceType.value);
                 const room = dom.addDeviceRoom.value;
                 if (!id) return showToast('⚠️ أدخل معرف الجهاز', 'error');
-                if (state.devices.some(d => d.id === id)) return showToast('⚠️ هذا المعرف موجود بالفعل', 'error');
+
+                if (state.devices.some(d => d.id === id)) {
+                    const newId = generateDeviceId(type, room);
+                    if (!state.devices.some(d => d.id === newId)) {
+                        id = newId;
+                        dom.addDeviceId.value = id;
+                        showToast(`⚠️ المعرف موجود، تم توليد ${id}`, 'warning');
+                    } else {
+                        return showToast('⚠️ هذا المعرف موجود بالفعل، حاول مرة أخرى', 'error');
+                    }
+                }
+
                 const typeInfo = DEVICE_TYPES[type] || DEVICE_TYPES[2];
                 const newDev = {
                     id: id,
                     type: type,
                     room: room,
-                    name: id,
+                    name: id.split('/').pop() || id,
                     status: false,
                     online: false,
                     brightness: 50,
@@ -5613,12 +5921,30 @@
                 });
 
                 dom.scanQrBtn.addEventListener('click', showQrScanner);
-                // Add device button in header uses openAddModal without room
+
                 dom.addDeviceBtn.addEventListener('click', () => openAddModal(null));
                 dom.addModalCancel.addEventListener('click', closeAddModal);
                 dom.addModalSubmit.addEventListener('click', handleAddDevice);
 
-                // Room add modal events
+                dom.addDeviceType.addEventListener('change', () => {
+                    const type = parseInt(dom.addDeviceType.value);
+                    const room = dom.addDeviceRoom.value;
+                    dom.addDeviceId.value = generateDeviceId(type, room);
+                });
+
+                dom.addDeviceRoom.addEventListener('change', () => {
+                    const type = parseInt(dom.addDeviceType.value);
+                    const room = dom.addDeviceRoom.value;
+                    dom.addDeviceId.value = generateDeviceId(type, room);
+                });
+
+                dom.generateIdBtn.addEventListener('click', () => {
+                    const type = parseInt(dom.addDeviceType.value);
+                    const room = dom.addDeviceRoom.value;
+                    dom.addDeviceId.value = generateDeviceId(type, room);
+                    Sound.tap();
+                });
+
                 dom.addRoomCancel.addEventListener('click', closeAddRoomModal);
                 dom.addRoomSubmit.addEventListener('click', handleAddRoom);
                 dom.addRoomModal.addEventListener('click', (e) => {
@@ -5628,7 +5954,6 @@
                     if (e.key === 'Enter') handleAddRoom();
                 });
 
-                // Automation modal events
                 dom.addAutoCancel.addEventListener('click', closeAutoForm);
                 dom.addAutoSubmit.addEventListener('click', handleAddAuto);
                 dom.addAutoModal.addEventListener('click', (e) => {
@@ -5641,6 +5966,9 @@
                 dom.detailBackBtn.addEventListener('click', closeDetailPage);
                 dom.detailDeleteBtn.addEventListener('click', () => {
                     if (state.activeDeviceId) deleteDevice(state.activeDeviceId);
+                });
+                dom.detailQrBtn.addEventListener('click', () => {
+                    if (state.activeDeviceId) showQRCodeModal(state.activeDeviceId);
                 });
 
                 dom.roomDetailBack.addEventListener('click', closeRoomDetail);
@@ -5706,6 +6034,7 @@
                         closeAutoForm();
                         closeAddRoomModal();
                         closeAddModal();
+                        closeQRCodeModal();
                     }
                     if (dom.detailPage.classList.contains('active')) {
                         const dev = state.devices.find(d => d.id === state.activeDeviceId);
@@ -5724,7 +6053,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v6.0.0 – Room view with add device button & water faucet animation');
+                console.log('⚡ Smart General Electric v6.3.0 – English ID format & QR code generation');
                 console.log(`📦 ${state.devices.length} devices`);
             }
 
@@ -5751,6 +6080,9 @@
             window.openAddRoomModal = openAddRoomModal;
             window.closeAddRoomModal = closeAddRoomModal;
             window.openAddDeviceInRoom = openAddDeviceInRoom;
+            window.showQRCodeModal = showQRCodeModal;
+            window.closeQRCodeModal = closeQRCodeModal;
+            window.generateDeviceId = generateDeviceId;
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
             else init();
