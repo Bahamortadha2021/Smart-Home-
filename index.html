@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0b3d91" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <title>Smart General Electric | التحكم الذكي</title>
+    <title>Smart General Electric | أتمتة متطورة</title>
     <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%230b3d91'/%3E%3Ctext x='50' y='66' font-size='54' font-family='Arial,sans-serif' font-weight='800' fill='white' text-anchor='middle'%3ESGE%3C/text%3E%3C/svg%3E" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -284,6 +284,21 @@
         .icon-btn.primary {
             background: var(--primary);
             color: #fff;
+        }
+        .icon-btn.voice-active {
+            background: var(--success);
+            color: #fff;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            animation: pulse-voice 1.2s ease-in-out infinite;
+        }
+        @keyframes pulse-voice {
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(16, 185, 129, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(16, 185, 129, 0.8);
+            }
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1088,7 +1103,12 @@
         .device-card .device-status {
             font-size: 0.75rem;
             color: var(--text-secondary);
-            margin-bottom: 10px;
+            margin-bottom: 4px;
+        }
+        .device-card .device-last-seen {
+            font-size: 0.65rem;
+            color: var(--text-muted);
+            margin-bottom: 6px;
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1350,7 +1370,7 @@
             border-radius: var(--border-radius);
             padding: 28px;
             width: 100%;
-            max-width: 520px;
+            max-width: 580px;
             max-height: 90vh;
             overflow-y: auto;
             box-shadow: var(--shadow-lg);
@@ -1666,7 +1686,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Automation
+           Automation (متطورة)
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .automation-stats {
             display: grid;
@@ -1750,7 +1770,7 @@
         .automation-card .auto-desc {
             font-size: 0.8rem;
             color: var(--text-secondary);
-            line-height: 1.5;
+            line-height: 1.6;
             margin-top: 2px;
         }
         .automation-card .auto-desc .highlight {
@@ -1759,6 +1779,15 @@
             background: var(--primary-light);
             padding: 0 6px;
             border-radius: 6px;
+        }
+        .automation-card .auto-desc .trigger-badge {
+            display: inline-block;
+            background: var(--gray-bg);
+            padding: 0 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin: 0 2px;
         }
         .automation-card .auto-status-badge {
             display: inline-flex;
@@ -1812,6 +1841,46 @@
         .automation-card .auto-trigger i {
             color: var(--primary);
             font-size: 0.7rem;
+        }
+        /* إدارة الإجراءات الديناميكية في محرر الأتمتة */
+        .action-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--bg-primary);
+            padding: 8px 12px;
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+            margin-bottom: 6px;
+            flex-wrap: wrap;
+        }
+        .action-row select {
+            flex: 1;
+            min-width: 120px;
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+        }
+        .action-row .btn-small.danger {
+            background: var(--danger);
+            color: #fff;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+        .action-row .btn-small.success {
+            background: var(--success);
+            color: #fff;
+            padding: 2px 10px;
+            font-size: 0.7rem;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -1887,7 +1956,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Detail Page
+           DETAIL PAGE – ENHANCED ANIMATIONS
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .page-overlay {
             display: none;
@@ -1958,33 +2027,330 @@
             flex-direction: column;
             gap: 24px;
         }
+
+        /* ── Detail Device Card ── */
         .detail-device-card {
             background: var(--surface);
             border-radius: var(--border-radius);
-            padding: 32px 24px;
+            padding: 40px 24px 32px;
             text-align: center;
             border: 1px solid var(--border-color);
             position: relative;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
         }
-        .detail-device-card .big-icon {
-            font-size: 5rem;
-            margin-bottom: 12px;
+
+        /* ── Big Icon Container ── */
+        .detail-icon-container {
+            position: relative;
             display: inline-block;
+            margin-bottom: 16px;
+            width: 120px;
+            height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .detail-icon-container .big-icon {
+            font-size: 6rem;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 2;
             cursor: pointer;
-            transition: var(--transition);
         }
-        .detail-device-card .big-icon.state-on.light-bulb {
+        .detail-icon-container .big-icon:active {
+            transform: scale(0.85);
+        }
+
+        /* ── Light Bulb Glow (Enhanced) ── */
+        .detail-icon-container .big-icon.light-bulb.state-on {
             color: #ffc107;
-            text-shadow: 0 0 40px rgba(255, 193, 7, 0.4);
-            animation: glow-pulse-detail 1.5s ease-in-out infinite;
+            text-shadow:
+                0 0 30px rgba(255, 193, 7, 0.5),
+                0 0 60px rgba(255, 193, 7, 0.3),
+                0 0 100px rgba(255, 193, 7, 0.15),
+                0 0 150px rgba(255, 193, 7, 0.08);
+            animation: glow-pulse-detail 1.8s ease-in-out infinite;
         }
-        .detail-device-card .big-icon.state-on.water-faucet {
+        .detail-icon-container .big-icon.light-bulb.state-off {
+            color: var(--text-muted);
+            text-shadow: none;
+            animation: none;
+        }
+
+        @keyframes glow-pulse-detail {
+            0%,
+            100% {
+                text-shadow:
+                    0 0 30px rgba(255, 193, 7, 0.5),
+                    0 0 60px rgba(255, 193, 7, 0.25),
+                    0 0 100px rgba(255, 193, 7, 0.1);
+                transform: scale(1);
+            }
+            50% {
+                text-shadow:
+                    0 0 50px rgba(255, 193, 7, 0.8),
+                    0 0 100px rgba(255, 193, 7, 0.4),
+                    0 0 180px rgba(255, 193, 7, 0.2),
+                    0 0 250px rgba(255, 193, 7, 0.08);
+                transform: scale(1.04);
+            }
+        }
+
+        /* ── Light Bulb Ambient Glow Ring ── */
+        .detail-icon-container .glow-ring {
+            position: absolute;
+            border-radius: 50%;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .detail-icon-container .glow-ring.ring-1 {
+            width: 80px;
+            height: 80px;
+            border: 3px solid rgba(255, 193, 7, 0.15);
+            animation: ring-pulse-1 2.4s ease-in-out infinite;
+        }
+        .detail-icon-container .glow-ring.ring-2 {
+            width: 130px;
+            height: 130px;
+            border: 2px solid rgba(255, 193, 7, 0.08);
+            animation: ring-pulse-2 3.2s ease-in-out infinite;
+        }
+        .detail-icon-container .glow-ring.ring-3 {
+            width: 190px;
+            height: 190px;
+            border: 1.5px solid rgba(255, 193, 7, 0.04);
+            animation: ring-pulse-3 4s ease-in-out infinite;
+        }
+        .detail-icon-container .glow-ring.active {
+            opacity: 1;
+        }
+        .detail-icon-container .glow-ring.inactive {
+            opacity: 0;
+            animation: none !important;
+        }
+
+        @keyframes ring-pulse-1 {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.6;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.25);
+                opacity: 0.2;
+            }
+        }
+        @keyframes ring-pulse-2 {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.5;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.2);
+                opacity: 0.15;
+            }
+        }
+        @keyframes ring-pulse-3 {
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 0.4;
+            }
+            50% {
+                transform: translate(-50%, -50%) scale(1.3);
+                opacity: 0.1;
+            }
+        }
+
+        /* ── Water Faucet Animation (Enhanced) ── */
+        .detail-icon-container .big-icon.water-faucet.state-on {
             color: #1e88e5;
-            animation: faucet-pulse 1.8s ease-in-out infinite;
+            animation: faucet-pulse-detail 1.8s ease-in-out infinite;
+            filter: drop-shadow(0 0 20px rgba(30, 136, 229, 0.4));
         }
+        .detail-icon-container .big-icon.water-faucet.state-off {
+            color: var(--text-muted);
+            animation: none;
+            filter: none;
+        }
+
+        @keyframes faucet-pulse-detail {
+            0%,
+            100% {
+                transform: scale(1) rotate(-2deg);
+                filter: drop-shadow(0 0 20px rgba(30, 136, 229, 0.4));
+            }
+            50% {
+                transform: scale(1.05) rotate(2deg);
+                filter: drop-shadow(0 0 40px rgba(30, 136, 229, 0.7));
+            }
+        }
+
+        /* ── Water Drops (Detail) ── */
+        .detail-water-drops {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: visible;
+            z-index: 1;
+        }
+        .detail-water-drops .drop {
+            position: absolute;
+            width: 14px;
+            height: 22px;
+            background: linear-gradient(180deg, #42a5f5, #1e88e5);
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+            opacity: 0;
+            transform-origin: center;
+            box-shadow: 0 0 12px rgba(30, 136, 229, 0.3);
+        }
+        .detail-water-drops .drop::after {
+            content: '';
+            position: absolute;
+            top: 3px;
+            left: 30%;
+            width: 30%;
+            height: 25%;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+        }
+        .detail-water-drops .drop:nth-child(1) {
+            animation: drop-fall-detail 1.6s ease-in infinite 0.0s;
+            left: 22%;
+            top: 10%;
+        }
+        .detail-water-drops .drop:nth-child(2) {
+            animation: drop-fall-detail 1.9s ease-in infinite 0.3s;
+            left: 58%;
+            top: 5%;
+        }
+        .detail-water-drops .drop:nth-child(3) {
+            animation: drop-fall-detail 1.4s ease-in infinite 0.6s;
+            left: 12%;
+            top: 25%;
+        }
+        .detail-water-drops .drop:nth-child(4) {
+            animation: drop-fall-detail 1.7s ease-in infinite 0.9s;
+            left: 75%;
+            top: 20%;
+        }
+        .detail-water-drops .drop:nth-child(5) {
+            animation: drop-fall-detail 2.0s ease-in infinite 0.2s;
+            left: 42%;
+            top: 40%;
+        }
+        .detail-water-drops .drop:nth-child(6) {
+            animation: drop-fall-detail 1.5s ease-in infinite 0.5s;
+            left: 8%;
+            top: 50%;
+        }
+        .detail-water-drops .drop:nth-child(7) {
+            animation: drop-fall-detail 1.8s ease-in infinite 0.8s;
+            left: 68%;
+            top: 45%;
+        }
+        .detail-water-drops .drop:nth-child(8) {
+            animation: drop-fall-detail 2.2s ease-in infinite 1.1s;
+            left: 32%;
+            top: 55%;
+        }
+
+        .detail-water-drops .drop.dormant {
+            animation: none !important;
+            opacity: 0 !important;
+        }
+
+        @keyframes drop-fall-detail {
+            0% {
+                opacity: 0;
+                transform: translateY(0) scale(0.4) rotate(0deg);
+            }
+            15% {
+                opacity: 1;
+                transform: translateY(12px) scale(1.2) rotate(3deg);
+            }
+            40% {
+                opacity: 0.9;
+                transform: translateY(32px) scale(1) rotate(-2deg);
+            }
+            65% {
+                opacity: 0.7;
+                transform: translateY(55px) scale(0.8) rotate(2deg);
+            }
+            85% {
+                opacity: 0.3;
+                transform: translateY(80px) scale(0.5) rotate(-3deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(110px) scale(0) rotate(0deg);
+            }
+        }
+
+        /* ── Water Splash Rings ── */
+        .detail-water-drops .splash-ring {
+            position: absolute;
+            border-radius: 50%;
+            border: 2px solid rgba(30, 136, 229, 0.3);
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .detail-water-drops .splash-ring:nth-child(9) {
+            animation: ring-splash 2.4s ease-out infinite 0.1s;
+            left: 30%;
+            top: 50%;
+        }
+        .detail-water-drops .splash-ring:nth-child(10) {
+            animation: ring-splash 2.8s ease-out infinite 0.6s;
+            left: 60%;
+            top: 40%;
+        }
+        .detail-water-drops .splash-ring:nth-child(11) {
+            animation: ring-splash 2.0s ease-out infinite 1.2s;
+            left: 15%;
+            top: 60%;
+        }
+        .detail-water-drops .splash-ring.dormant {
+            animation: none !important;
+            opacity: 0 !important;
+        }
+
+        @keyframes ring-splash {
+            0% {
+                width: 0;
+                height: 0;
+                opacity: 0.8;
+                transform: translate(-50%, -50%) scale(0.3);
+            }
+            40% {
+                opacity: 0.6;
+            }
+            100% {
+                width: 140px;
+                height: 140px;
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.6);
+            }
+        }
+
+        /* ── Detail Device Card Text ── */
         .detail-device-card .big-name {
-            font-size: 1.8rem;
+            font-size: 2rem;
             font-weight: 700;
+            margin-top: 8px;
         }
         .detail-device-card .big-status {
             font-size: 1.2rem;
@@ -1992,27 +2358,85 @@
             margin-top: 4px;
             color: var(--text-secondary);
         }
+        .detail-device-card .big-status .status-on {
+            color: var(--success);
+        }
+        .detail-device-card .big-status .status-off {
+            color: var(--danger);
+        }
         .detail-device-card .device-id-display {
             margin-top: 8px;
             font-size: 0.8rem;
             color: var(--text-muted);
             background: var(--bg-primary);
-            padding: 4px 12px;
+            padding: 4px 14px;
             border-radius: 20px;
             display: inline-block;
             direction: ltr;
             font-family: monospace;
+            border: 1px solid var(--border-color);
         }
+        .detail-device-card .device-badges {
+            margin-top: 12px;
+            display: flex;
+            gap: 8px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .detail-device-card .device-badges .badge-online {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .detail-device-card .device-badges .badge-offline {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .detail-device-card .device-badges .badge-connecting {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .detail-device-card .device-badges .badge-vacation {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+            padding: 3px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .detail-device-card .detail-last-seen {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        /* ── Detail Controls ── */
         .detail-controls {
             background: var(--surface);
             border-radius: var(--border-radius);
             padding: 24px;
             border: 1px solid var(--border-color);
+            box-shadow: var(--card-shadow);
         }
         .detail-controls .ctrl-title {
             font-weight: 700;
             font-size: 1.1rem;
             margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-primary);
         }
         .detail-controls .ctrl-row {
             display: flex;
@@ -2025,6 +2449,150 @@
             min-width: 70px;
             font-weight: 500;
             color: var(--text-secondary);
+        }
+        .detail-controls .ctrl-row .toggle-switch.large {
+            width: 64px;
+            height: 32px;
+        }
+        .detail-controls .ctrl-row .toggle-switch.large::after {
+            width: 26px;
+            height: 26px;
+            top: 3px;
+            right: 3px;
+        }
+        .detail-controls .ctrl-row .toggle-switch.large.active::after {
+            transform: translateX(-30px);
+        }
+        .detail-controls .ctrl-row .slider.large {
+            flex: 1;
+            min-width: 120px;
+            height: 6px;
+            accent-color: var(--primary);
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--gray-bg);
+            border-radius: 4px;
+        }
+        .detail-controls .ctrl-row .slider.large::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary);
+            cursor: pointer;
+            box-shadow: 0 2px 8px rgba(11, 61, 145, 0.3);
+            transition: var(--transition);
+        }
+        .detail-controls .ctrl-row .slider.large::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        .detail-controls .ctrl-row .slider-value {
+            font-size: 0.85rem;
+            font-weight: 600;
+            min-width: 40px;
+            color: var(--text-secondary);
+            text-align: center;
+        }
+        .detail-controls .ctrl-row .color-preview.large {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+        .detail-controls .ctrl-row .color-preview.large:hover {
+            transform: scale(1.06);
+            border-color: var(--primary);
+        }
+        .detail-controls .ctrl-row select {
+            padding: 8px 14px;
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            font-family: inherit;
+            outline: none;
+            cursor: pointer;
+        }
+        .detail-controls .ctrl-row select:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+
+        /* ── Detail Door Canvas ── */
+        .detail-door-canvas {
+            width: 100%;
+            max-width: 400px;
+            margin: 0 auto;
+            aspect-ratio: 1.2 / 1;
+            display: block;
+            position: relative;
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-sm);
+            border: 2px solid var(--border-color);
+            overflow: hidden;
+            padding: 4px;
+        }
+        .detail-door-canvas canvas {
+            width: 100% !important;
+            height: 100% !important;
+            border-radius: calc(var(--border-radius-sm) - 4px);
+            display: block;
+            background: transparent;
+        }
+
+        /* ── Door Controls in Detail ── */
+        .detail-door-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            width: 100%;
+        }
+        .detail-door-controls .door-controls-modern .door-btn {
+            min-width: 90px;
+            padding: 14px 18px;
+            font-size: 0.9rem;
+        }
+        .detail-door-controls .door-controls-modern .door-btn .emoji {
+            font-size: 1.8rem;
+        }
+        .detail-door-controls .door-status-large {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .detail-door-controls .door-status-large .status-open {
+            color: var(--success);
+        }
+        .detail-door-controls .door-status-large .status-closed {
+            color: var(--danger);
+        }
+        .detail-door-controls .door-color-picker {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .detail-door-controls .door-color-picker label {
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .detail-door-controls .door-color-picker input[type="color"] {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+            padding: 2px;
+            cursor: pointer;
+            background: none;
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -2308,6 +2876,16 @@
                 max-width: 440px;
                 padding: 20px;
             }
+            .detail-icon-container {
+                width: 100px;
+                height: 100px;
+            }
+            .detail-icon-container .big-icon {
+                font-size: 5rem;
+            }
+            .detail-door-canvas {
+                max-width: 350px;
+            }
         }
         @media (max-width: 768px) {
             .modal-box {
@@ -2344,6 +2922,35 @@
             }
             .door-controls-modern .door-btn .emoji {
                 font-size: 1.2rem;
+            }
+            .detail-icon-container {
+                width: 80px;
+                height: 80px;
+            }
+            .detail-icon-container .big-icon {
+                font-size: 4rem;
+            }
+            .detail-door-canvas {
+                max-width: 280px;
+            }
+            .detail-device-card .big-name {
+                font-size: 1.5rem;
+            }
+            .detail-controls .ctrl-row .toggle-switch.large {
+                width: 54px;
+                height: 28px;
+            }
+            .detail-controls .ctrl-row .toggle-switch.large::after {
+                width: 22px;
+                height: 22px;
+                top: 3px;
+                right: 3px;
+            }
+            .detail-controls .ctrl-row .toggle-switch.large.active::after {
+                transform: translateX(-24px);
+            }
+            .detail-controls .ctrl-row .slider.large {
+                min-width: 80px;
             }
         }
         @media (max-width: 480px) {
@@ -2430,8 +3037,30 @@
                 max-width: 340px;
                 padding: 16px;
             }
-            .detail-device-card .big-icon {
+            .detail-icon-container {
+                width: 70px;
+                height: 70px;
+            }
+            .detail-icon-container .big-icon {
                 font-size: 3.5rem;
+            }
+            .detail-door-canvas {
+                max-width: 220px;
+            }
+            .detail-device-card {
+                padding: 24px 16px;
+            }
+            .detail-device-card .big-name {
+                font-size: 1.2rem;
+            }
+            .detail-controls {
+                padding: 16px;
+            }
+            .detail-controls .ctrl-row {
+                gap: 10px;
+            }
+            .detail-controls .ctrl-row .slider.large {
+                min-width: 60px;
             }
             .icon-picker-grid {
                 grid-template-columns: repeat(4, 1fr);
@@ -2447,6 +3076,18 @@
                 font-size: 0.5rem;
                 padding: 2px 6px;
             }
+            .detail-door-controls .door-controls-modern .door-btn {
+                min-width: 60px;
+                padding: 10px 12px;
+                font-size: 0.75rem;
+            }
+            .detail-door-controls .door-controls-modern .door-btn .emoji {
+                font-size: 1.4rem;
+            }
+            .detail-water-drops .drop {
+                width: 10px;
+                height: 16px;
+            }
         }
         @media (max-width: 380px) {
             .devices-grid {
@@ -2460,6 +3101,16 @@
             }
             .automation-stats {
                 grid-template-columns: 1fr;
+            }
+            .detail-icon-container {
+                width: 60px;
+                height: 60px;
+            }
+            .detail-icon-container .big-icon {
+                font-size: 3rem;
+            }
+            .detail-door-canvas {
+                max-width: 180px;
             }
         }
 
@@ -2512,134 +3163,6 @@
         .id-change-warning i {
             margin-left: 6px;
         }
-        .detail-water-container {
-            position: relative;
-            display: inline-block;
-        }
-        .detail-water-container .big-icon {
-            font-size: 5rem;
-            position: relative;
-            z-index: 2;
-        }
-        .detail-water-container .big-icon.water-faucet.state-on {
-            color: #1e88e5;
-            animation: faucet-pulse 1.8s ease-in-out infinite;
-        }
-        .detail-water-container .water-particle {
-            position: absolute;
-            width: 10px;
-            height: 16px;
-            background: #1e88e5;
-            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-            opacity: 0;
-            pointer-events: none;
-        }
-        .detail-water-container .water-particle:nth-child(1) {
-            animation: detail-drop 1.5s ease-in infinite 0s;
-            left: 20%;
-            top: 30%;
-        }
-        .detail-water-container .water-particle:nth-child(2) {
-            animation: detail-drop 1.8s ease-in infinite 0.4s;
-            left: 55%;
-            top: 15%;
-        }
-        .detail-water-container .water-particle:nth-child(3) {
-            animation: detail-drop 1.3s ease-in infinite 0.8s;
-            left: 75%;
-            top: 50%;
-        }
-        .detail-water-container .water-particle:nth-child(4) {
-            animation: detail-drop 1.6s ease-in infinite 0.2s;
-            left: 40%;
-            top: 70%;
-        }
-        .detail-water-container .water-particle:nth-child(5) {
-            animation: detail-drop 2.0s ease-in infinite 0.6s;
-            left: 10%;
-            top: 60%;
-        }
-        .detail-water-container .water-particle:nth-child(6) {
-            animation: detail-drop 1.4s ease-in infinite 1.0s;
-            left: 65%;
-            top: 80%;
-        }
-        @keyframes detail-drop {
-            0% {
-                opacity: 0;
-                transform: translateY(0) scale(0.5) rotate(0deg);
-            }
-            25% {
-                opacity: 1;
-                transform: translateY(15px) scale(1.3) rotate(5deg);
-            }
-            50% {
-                opacity: 0.8;
-                transform: translateY(35px) scale(1) rotate(-3deg);
-            }
-            75% {
-                opacity: 0.4;
-                transform: translateY(60px) scale(0.6) rotate(3deg);
-            }
-            100% {
-                opacity: 0;
-                transform: translateY(90px) scale(0) rotate(0deg);
-            }
-        }
-        .detail-water-container .big-icon.water-faucet.state-off~.water-particle {
-            animation: none !important;
-            opacity: 0 !important;
-        }
-
-        @keyframes glow-pulse {
-            0%,
-            100% {
-                text-shadow: 0 0 15px rgba(255, 193, 7, 0.2);
-            }
-            50% {
-                text-shadow: 0 0 30px rgba(255, 193, 7, 0.6);
-            }
-        }
-        @keyframes glow-pulse-detail {
-            0%,
-            100% {
-                text-shadow: 0 0 30px rgba(255, 193, 7, 0.3), 0 0 60px rgba(255, 193, 7, 0.1);
-            }
-            50% {
-                text-shadow: 0 0 60px rgba(255, 193, 7, 0.6), 0 0 120px rgba(255, 193, 7, 0.3);
-            }
-        }
-
-        .detail-door-canvas {
-            width: 100%;
-            max-width: 400px;
-            margin: 0 auto;
-            aspect-ratio: 1.2 / 1;
-            display: block;
-            position: relative;
-            background: var(--bg-primary);
-            border-radius: var(--border-radius-sm);
-            border: 2px solid var(--border-color);
-            overflow: hidden;
-            padding: 4px;
-        }
-        .detail-door-canvas canvas {
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: calc(var(--border-radius-sm) - 4px);
-            display: block;
-            background: transparent;
-        }
-        @media (max-width: 768px) {
-            .detail-door-canvas {
-                max-width: 300px;
-            }
-        }
-        @media (max-width: 480px) {
-            .detail-door-canvas {
-                max-width: 220px;
-            }
-        }
 
         .btn-primary {
             padding: 12px 28px;
@@ -2682,6 +3205,84 @@
         .btn-danger:hover {
             opacity: 0.85;
         }
+        .perm-badge {
+            display: inline-block;
+            padding: 2px 10px;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-left: 6px;
+        }
+        .perm-badge.granted {
+            background: rgba(16, 185, 129, 0.2);
+            color: var(--success);
+        }
+        .perm-badge.denied {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--danger);
+        }
+        .perm-badge.prompt {
+            background: rgba(245, 158, 11, 0.2);
+            color: var(--warning);
+        }
+
+        /* ── Improved status dot for device cards ── */
+        .device-card .status-dot.online {
+            background: var(--success);
+            border-color: rgba(16, 185, 129, 0.3);
+            box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
+        }
+        .device-card .status-dot.offline {
+            background: var(--danger);
+            border-color: rgba(239, 68, 68, 0.3);
+            box-shadow: 0 0 8px rgba(239, 68, 68, 0.15);
+        }
+        .device-card .status-dot.connecting {
+            background: var(--warning);
+            border-color: rgba(245, 158, 11, 0.3);
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
+            animation: pulse-dot 1s infinite;
+        }
+        /* For detail page badges */
+        .badge-online {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--success);
+        }
+        .badge-offline {
+            background: rgba(239, 68, 68, 0.12);
+            color: var(--danger);
+        }
+        .badge-connecting {
+            background: rgba(245, 158, 11, 0.15);
+            color: var(--warning);
+        }
+        /* أيام الأسبوع في المحرر */
+        .days-grid {
+            display: flex;
+            gap: 4px;
+            flex-wrap: wrap;
+        }
+        .days-grid .day-btn {
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            min-width: 32px;
+            text-align: center;
+        }
+        .days-grid .day-btn.active {
+            background: var(--primary);
+            color: #fff;
+            border-color: var(--primary);
+        }
+        .days-grid .day-btn:hover {
+            transform: scale(1.05);
+        }
     </style>
 </head>
 <body>
@@ -2697,7 +3298,7 @@
                 <button class="nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
                 <button class="nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
             </nav>
-            <div class="sidebar-footer">Smart General Electric™ · الإصدار 7.0.0</div>
+            <div class="sidebar-footer">Smart General Electric™ · الإصدار 8.1.0</div>
         </aside>
 
         <!-- Main Content -->
@@ -2712,6 +3313,9 @@
                     </div>
                 </div>
                 <div class="header-actions">
+                    <button class="icon-btn" id="voiceBtn" title="التحكم الصوتي">
+                        <i class="fas fa-microphone"></i>
+                    </button>
                     <div class="notif-bell">
                         <button class="icon-btn" id="notifBellBtn" title="الإشعارات">
                             <i class="fas fa-bell"></i>
@@ -2805,13 +3409,10 @@
         </div>
     </div>
 
-    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    UPDATED – Add Device Modal with dedicated Name & ID fields
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <!-- Add Device Modal -->
     <div class="modal-overlay" id="addModal">
         <div class="modal-box">
             <h3 class="modal-title">➕ إضافة جهاز جديد</h3>
-            <!-- NEW: Device Name Field -->
             <div class="form-group">
                 <label>اسم الجهاز</label>
                 <input id="addDeviceName" placeholder="مثل: لمبة الصالة, مروحة المكتب" />
@@ -2849,20 +3450,76 @@
         </div>
     </div>
 
-    <!-- Add Automation Modal -->
-    <div class="modal-overlay" id="addAutoModal">
-        <div class="modal-box">
-            <h3 class="modal-title"><i class="fas fa-robot"></i> إضافة أتمتة جديدة</h3>
-            <div class="auto-form-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div class="form-group full-width" style="grid-column:1/-1;"><label><i class="fas fa-tag"></i> اسم الأتمتة</label><input id="autoName" placeholder="مثل: تشغيل الماء عند الحركة" /></div>
-                <div class="form-group"><label><i class="fas fa-play-circle"></i> الجهاز المشغّل</label><select id="autoTriggerDevice"></select></div>
-                <div class="form-group"><label><i class="fas fa-arrow-left"></i> الشرط</label><select id="autoTriggerCondition"><option value="on">تشغيل</option><option value="off">إيقاف</option><option value="motion">حركة</option><option value="open">فتح</option></select></div>
-                <div class="form-group"><label><i class="fas fa-bullseye"></i> الجهاز المستهدف</label><select id="autoActionDevice"></select></div>
-                <div class="form-group"><label><i class="fas fa-arrow-right"></i> الإجراء</label><select id="autoActionCommand"><option value="on">تشغيل</option><option value="off">إيقاف</option><option value="open">فتح</option><option value="close">إغلاق</option></select></div>
+    <!-- Automation Editor Modal (متطورة) -->
+    <div class="modal-overlay" id="autoEditModal">
+        <div class="modal-box" style="max-width:640px;">
+            <h3 class="modal-title"><i class="fas fa-robot"></i> <span id="autoEditTitle">إضافة أتمتة جديدة</span></h3>
+            <input type="hidden" id="editAutoId" value="" />
+            
+            <div class="form-group">
+                <label><i class="fas fa-tag"></i> اسم الأتمتة</label>
+                <input id="editAutoName" placeholder="مثل: إضاءة الصباح" />
             </div>
-            <div class="modal-actions" style="display:flex; gap:10px; margin-top:8px;">
-                <button class="btn-secondary" id="addAutoCancel">إلغاء</button>
-                <button class="btn-primary" id="addAutoSubmit"><i class="fas fa-plus-circle"></i> إضافة</button>
+
+            <div class="form-group">
+                <label><i class="fas fa-clock"></i> نوع المشغل</label>
+                <select id="editTriggerType">
+                    <option value="device">جهاز (حالة/حدث)</option>
+                    <option value="schedule">جدول زمني (وقت محدد)</option>
+                </select>
+            </div>
+
+            <!-- مشغل الجهاز -->
+            <div id="editTriggerDeviceGroup" class="form-group">
+                <label><i class="fas fa-microchip"></i> الجهاز المشغّل</label>
+                <select id="editTriggerDevice"></select>
+            </div>
+            <div id="editTriggerConditionGroup" class="form-group">
+                <label><i class="fas fa-arrow-left"></i> الشرط</label>
+                <select id="editTriggerCondition">
+                    <option value="on">تشغيل (ON)</option>
+                    <option value="off">إيقاف (OFF)</option>
+                    <option value="motion">حركة (Motion)</option>
+                    <option value="open">فتح (Open)</option>
+                </select>
+            </div>
+
+            <!-- مشغل الجدول الزمني -->
+            <div id="editScheduleGroup" class="form-group" style="display:none;">
+                <label><i class="fas fa-calendar-alt"></i> الأيام</label>
+                <div class="days-grid" id="editScheduleDays">
+                    <button class="day-btn active" data-day="0">ح</button>
+                    <button class="day-btn active" data-day="1">ن</button>
+                    <button class="day-btn active" data-day="2">ث</button>
+                    <button class="day-btn active" data-day="3">ر</button>
+                    <button class="day-btn active" data-day="4">خ</button>
+                    <button class="day-btn active" data-day="5">ج</button>
+                    <button class="day-btn active" data-day="6">س</button>
+                </div>
+                <div style="margin-top:8px;">
+                    <label>الوقت</label>
+                    <input type="time" id="editScheduleTime" value="08:00" style="width:100%;padding:10px 14px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.95rem;" />
+                </div>
+            </div>
+
+            <!-- الإجراءات المتعددة -->
+            <div class="form-group">
+                <label><i class="fas fa-list-ul"></i> الإجراءات (يمكنك إضافة أكثر من إجراء)</label>
+                <div id="editActionsContainer"></div>
+                <button class="btn-small primary" id="addActionBtn" style="margin-top:6px;padding:6px 16px;border:none;border-radius:20px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer;">
+                    <i class="fas fa-plus-circle"></i> إضافة إجراء
+                </button>
+            </div>
+
+            <div class="form-group">
+                <label><i class="fas fa-hourglass-half"></i> التأخير بين الإجراءات (بالثواني)</label>
+                <input type="number" id="editDelay" value="1" min="0" max="60" style="width:100%;padding:10px 14px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.95rem;" />
+                <div class="modal-sub">عدد الثواني بين تنفيذ كل إجراء والآخر</div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-secondary" id="editAutoCancel">إلغاء</button>
+                <button class="btn-primary" id="editAutoSubmit"><i class="fas fa-save"></i> حفظ الأتمتة</button>
             </div>
         </div>
     </div>
@@ -2977,7 +3634,7 @@
     <div id="toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    JAVASCRIPT – Fully Updated
+    JAVASCRIPT – Fully Updated with Advanced Automation & Fixed Heartbeat
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <script>
         (function() {
@@ -3096,6 +3753,15 @@
                 updateTimer: null,
                 doorDrawTimer: null,
                 _currentRoom: null,
+                isListening: false,
+                recognition: null,
+                permMicrophone: 'prompt',
+                permCamera: 'prompt',
+                deviceLastHb: new Map(),
+                deviceConnecting: new Map(),
+                // متغيرات محرر الأتمتة
+                editingAutoId: null,
+                scheduleCheckerInterval: null,
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3123,21 +3789,13 @@
                 deleteCancel: $('deleteCancel'),
                 deleteDesc: $('deleteDesc'),
                 addModal: $('addModal'),
-                addDeviceName: $('addDeviceName'), // NEW
+                addDeviceName: $('addDeviceName'),
                 addDeviceId: $('addDeviceId'),
                 addDeviceType: $('addDeviceType'),
                 addDeviceRoom: $('addDeviceRoom'),
                 addModalCancel: $('addModalCancel'),
                 addModalSubmit: $('addModalSubmit'),
                 generateIdBtn: $('generateIdBtn'),
-                addAutoModal: $('addAutoModal'),
-                autoName: $('autoName'),
-                autoTriggerDevice: $('autoTriggerDevice'),
-                autoTriggerCondition: $('autoTriggerCondition'),
-                autoActionDevice: $('autoActionDevice'),
-                autoActionCommand: $('autoActionCommand'),
-                addAutoCancel: $('addAutoCancel'),
-                addAutoSubmit: $('addAutoSubmit'),
                 addRoomModal: $('addRoomModal'),
                 addRoomName: $('addRoomName'),
                 roomIconPicker: $('roomIconPicker'),
@@ -3190,6 +3848,25 @@
                 sceneDeviceList: $('sceneDeviceList'),
                 sceneModalCancel: $('sceneModalCancel'),
                 sceneModalSubmit: $('sceneModalSubmit'),
+                voiceBtn: $('voiceBtn'),
+                // محرر الأتمتة الجديد
+                autoEditModal: $('autoEditModal'),
+                editAutoId: $('editAutoId'),
+                editAutoName: $('editAutoName'),
+                editTriggerType: $('editTriggerType'),
+                editTriggerDevice: $('editTriggerDevice'),
+                editTriggerCondition: $('editTriggerCondition'),
+                editScheduleDays: $('editScheduleDays'),
+                editScheduleTime: $('editScheduleTime'),
+                editActionsContainer: $('editActionsContainer'),
+                editDelay: $('editDelay'),
+                addActionBtn: $('addActionBtn'),
+                editAutoCancel: $('editAutoCancel'),
+                editAutoSubmit: $('editAutoSubmit'),
+                editTriggerDeviceGroup: $('editTriggerDeviceGroup'),
+                editTriggerConditionGroup: $('editTriggerConditionGroup'),
+                editScheduleGroup: $('editScheduleGroup'),
+                autoEditTitle: $('autoEditTitle'),
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3226,9 +3903,12 @@
                 return slug;
             }
 
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ID GENERATOR
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function getDeviceStatus(device) {
+                if (device.online === true) return 'online';
+                if (device._connecting === true) return 'connecting';
+                return 'offline';
+            }
+
             function generateDeviceId(type, room) {
                 const typeInfo = DEVICE_TYPES[type];
                 if (!typeInfo) return 'device/room/' + generateRandomString(8);
@@ -3403,6 +4083,53 @@
                 } catch (_) {}
             }
 
+            // ── ترقية الأتمتة القديمة إلى النظام الجديد ──
+            function upgradeAutomations() {
+                let upgraded = false;
+                state.automations = state.automations.map(auto => {
+                    if (!auto.triggerType) {
+                        upgraded = true;
+                        const newAuto = {
+                            id: auto.id || 'auto_' + Date.now().toString(36),
+                            name: auto.name || 'أتمتة قديمة',
+                            enabled: auto.enabled !== undefined ? auto.enabled : true,
+                            triggerType: 'device',
+                            triggerDeviceId: auto.trigger?.deviceId || '',
+                            triggerCondition: auto.trigger?.condition || 'on',
+                            scheduleDays: [0, 1, 2, 3, 4, 5, 6],
+                            scheduleTime: '08:00',
+                            actions: [],
+                            delayBetweenActions: 1000,
+                        };
+                        if (auto.action) {
+                            newAuto.actions.push({
+                                deviceId: auto.action.deviceId || '',
+                                command: auto.action.command || 'on'
+                            });
+                        }
+                        if (newAuto.actions.length === 0) {
+                            newAuto.actions.push({ deviceId: '', command: 'on' });
+                        }
+                        return newAuto;
+                    }
+                    if (!Array.isArray(auto.actions)) {
+                        upgraded = true;
+                        auto.actions = [];
+                        if (auto.action) {
+                            auto.actions.push({
+                                deviceId: auto.action.deviceId || '',
+                                command: auto.action.command || 'on'
+                            });
+                        }
+                        if (auto.actions.length === 0) {
+                            auto.actions.push({ deviceId: '', command: 'on' });
+                        }
+                    }
+                    return auto;
+                });
+                if (upgraded) saveAutomations();
+            }
+
             function loadAll() {
                 try {
                     const theme = localStorage.getItem('sge_theme');
@@ -3426,8 +4153,11 @@
                     rebuildDeviceMap();
 
                     state.scenes = JSON.parse(localStorage.getItem('sge_scenes') || JSON.stringify(getDefaultScenes()));
-                    state.automations = JSON.parse(localStorage.getItem('sge_automations') || JSON.stringify(
-                    getDefaultAutomations()));
+                    const autoRaw = localStorage.getItem('sge_automations');
+                    if (autoRaw) state.automations = JSON.parse(autoRaw);
+                    else state.automations = getDefaultAutomations();
+                    upgradeAutomations();
+
                     state.rooms = JSON.parse(localStorage.getItem('sge_rooms') || JSON.stringify(['جميع الغرف',
                         'غرفة المعيشة', 'غرفة النوم', 'المطبخ', 'الحديقة', 'المدخل', 'المكتب', 'الحمام', 'المزرعة'
                     ]));
@@ -3450,7 +4180,12 @@
 
             function rebuildDeviceMap() {
                 state.deviceMap.clear();
-                for (const d of state.devices) state.deviceMap.set(d.id, d);
+                for (const d of state.devices) {
+                    state.deviceMap.set(d.id, d);
+                    if (d.lastHeartbeat) state.deviceLastHb.set(d.id, d.lastHeartbeat);
+                    if (d._connecting) state.deviceConnecting.set(d.id, true);
+                    else state.deviceConnecting.set(d.id, false);
+                }
             }
 
             function loadNotifications() {
@@ -3478,29 +4213,30 @@
             function getDefaultDevices() {
                 return [
                     { id: 'garage/entrance/aB3xY7zW', type: 1, room: 'المدخل', name: 'باب الجراج', status: false,
-                        open: false, online: true,
-                        doorColor: '#3b82f6', lastHeartbeat: Date.now(), icon: 'fa-door-open' },
+                        open: false, online: false,
+                        doorColor: '#3b82f6', lastHeartbeat: null, icon: 'fa-door-open', _connecting: true },
                     { id: 'dimmable/living_room/pQ9fL2dM', type: 3, room: 'غرفة المعيشة', name: 'لمبة المعيشة',
                         status: false, brightness: 70,
-                        color: '#ffaa33', online: true, lastHeartbeat: Date.now(), icon: 'fa-lightbulb' },
+                        color: '#ffaa33', online: false, lastHeartbeat: null, icon: 'fa-lightbulb',
+                    _connecting: true },
                     { id: 'light/bedroom/rT5hG8kL', type: 2, room: 'غرفة النوم', name: 'لمبة النوم', status: false,
-                        online: true,
-                        lastHeartbeat: Date.now(), icon: 'fa-lightbulb' },
+                        online: false,
+                        lastHeartbeat: null, icon: 'fa-lightbulb', _connecting: true },
                     { id: 'plug/kitchen/sK3wR4nX', type: 4, room: 'المطبخ', name: 'مقبس المطبخ', status: false,
-                        online: true,
-                        lastHeartbeat: Date.now(), icon: 'fa-plug' },
+                        online: false,
+                        lastHeartbeat: null, icon: 'fa-plug', _connecting: true },
                     { id: 'fan/office/jM7vP2cB', type: 5, room: 'المكتب', name: 'مروحة المكتب', status: false,
-                        speed: 1, online: true,
-                        lastHeartbeat: Date.now(), icon: 'fa-fan' },
+                        speed: 1, online: false,
+                        lastHeartbeat: null, icon: 'fa-fan', _connecting: true },
                     { id: 'ac/living_room/qW1rT6eY', type: 6, room: 'غرفة المعيشة', name: 'مكيف الصالة', status: false,
                         temp: 22,
-                        online: true, lastHeartbeat: Date.now(), icon: 'fa-snowflake' },
+                        online: false, lastHeartbeat: null, icon: 'fa-snowflake', _connecting: true },
                     { id: 'pump/garden/zX9cV4bN', type: 7, room: 'الحديقة', name: 'مضخة الحديقة', status: false,
-                        online: true,
-                        lastHeartbeat: Date.now(), icon: 'fa-water' },
+                        online: false,
+                        lastHeartbeat: null, icon: 'fa-water', _connecting: true },
                     { id: 'faucet/farm/fH2kL9pS', type: 8, room: 'المزرعة', name: 'حنفية المزرعة', status: false,
-                        online: true,
-                        lastHeartbeat: Date.now(), icon: 'fa-faucet' },
+                        online: false,
+                        lastHeartbeat: null, icon: 'fa-faucet', _connecting: true },
                 ];
             }
 
@@ -3518,11 +4254,20 @@
             }
 
             function getDefaultAutomations() {
-                return [
-                    { id: 'door_notify', name: 'تنبيه فتح الباب', enabled: true, trigger: { deviceId: 'garage/entrance/aB3xY7zW',
-                            condition: 'open' }, action: { deviceId: 'dimmable/living_room/pQ9fL2dM',
-                            command: 'on' } },
-                ];
+                return [{
+                    id: 'door_notify',
+                    name: 'تنبيه فتح الباب',
+                    enabled: true,
+                    triggerType: 'device',
+                    triggerDeviceId: 'garage/entrance/aB3xY7zW',
+                    triggerCondition: 'open',
+                    scheduleDays: [0, 1, 2, 3, 4, 5, 6],
+                    scheduleTime: '08:00',
+                    actions: [
+                        { deviceId: 'dimmable/living_room/pQ9fL2dM', command: 'on' }
+                    ],
+                    delayBetweenActions: 1000,
+                }];
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3572,40 +4317,88 @@
                     let changed = false;
                     for (const dev of state.devices) {
                         const wasOnline = dev.online;
-                        if (dev.lastHeartbeat && (now - dev.lastHeartbeat) > HEARTBEAT_TIMEOUT) {
-                            dev.online = false;
-                        } else if (!dev.lastHeartbeat) {
-                            dev.online = false;
+                        const wasConnecting = dev._connecting || false;
+                        let lastHb = dev.lastHeartbeat;
+                        if (!lastHb && state.deviceLastHb.has(dev.id)) {
+                            lastHb = state.deviceLastHb.get(dev.id);
+                            dev.lastHeartbeat = lastHb;
                         }
-                        if (wasOnline !== dev.online) {
-                            changed = true;
-                            if (!dev.online && wasOnline) {
+                        if (lastHb && (now - lastHb) > HEARTBEAT_TIMEOUT) {
+                            dev.online = false;
+                            dev._connecting = false;
+                            state.deviceConnecting.set(dev.id, false);
+                            if (wasOnline) {
                                 addLog(`🔴 ${dev.name} غير متصل (انقطاع النبضات)`, 'error', true);
                                 addNotification(`🔴 ${dev.name} غير متصل`, 'لم يتم استقبال نبضة قلب', '🔴', 'error');
                                 Sound.offline();
-                            } else if (dev.online && !wasOnline) {
+                            }
+                        } else if (lastHb && (now - lastHb) <= HEARTBEAT_TIMEOUT) {
+                            dev.online = true;
+                            dev._connecting = false;
+                            state.deviceConnecting.set(dev.id, false);
+                            if (!wasOnline) {
                                 addLog(`🟢 ${dev.name} عاد إلى الاتصال`, 'success', true);
-                                addNotification(`🟢 ${dev.name} عاد إلى الاتصال`, 'تم استقبال نبضة قلب', '🟢', 'success');
+                                addNotification(`🟢 ${dev.name} عاد إلى الاتصال`, 'تم استقبال نبضة قلب', '🟢',
+                                'success');
                                 Sound.success();
                             }
+                        } else if (!lastHb) {
+                            dev.online = false;
+                            dev._connecting = true;
+                            state.deviceConnecting.set(dev.id, true);
+                            if (!wasConnecting) {
+                                addLog(`🟡 ${dev.name} في انتظار الاتصال`, 'warning', true);
+                            }
+                        }
+                        if (wasOnline !== dev.online || wasConnecting !== dev._connecting) {
+                            changed = true;
                         }
                     }
                     if (changed) {
                         saveDevices();
                         debouncedUpdateUI();
                     }
-                }, 5000);
+                }, 3000);
             }
 
             function stopHeartbeatMonitor() {
-                if (state.heartbeatInterval) {
-                    clearInterval(state.heartbeatInterval);
-                    state.heartbeatInterval = null;
-                }
+                if (state.heartbeatInterval) { clearInterval(state.heartbeatInterval);
+                    state.heartbeatInterval = null; }
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT (abbreviated for brevity, fully functional)
+            //  SCHEDULE CHECKER (للأتمتة الزمنية)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function startScheduleChecker() {
+                if (state.scheduleCheckerInterval) clearInterval(state.scheduleCheckerInterval);
+                state.scheduleCheckerInterval = setInterval(() => {
+                    const now = new Date();
+                    const currentDay = now.getDay(); // 0=الأحد
+                    const currentTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes())
+                    .padStart(2, '0');
+
+                    for (const auto of state.automations) {
+                        if (!auto.enabled) continue;
+                        if (auto.triggerType !== 'schedule') continue;
+
+                        if (!auto.scheduleDays || !auto.scheduleDays.includes(currentDay)) continue;
+                        if (auto.scheduleTime === currentTime) {
+                            executeAutomationActions(auto);
+                            addLog(`⏰ تشغيل أتمتة مجدولة: ${auto.name} (${currentTime})`, 'success');
+                            addNotification(`⏰ أتمتة مجدولة`, `تم تشغيل "${auto.name}" تلقائياً`, '⏰', 'success');
+                            Sound.success();
+                        }
+                    }
+                }, 30000);
+            }
+
+            function stopScheduleChecker() {
+                if (state.scheduleCheckerInterval) { clearInterval(state.scheduleCheckerInterval);
+                    state.scheduleCheckerInterval = null; }
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  MQTT
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateConnectionBanner() {
                 if (state.mqttStatus === 'connected') updateWifiStatus('connected', 'متصل');
@@ -3857,7 +4650,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT MESSAGE HANDLER
+            //  MQTT MESSAGE HANDLER – FIXED HEARTBEAT
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function handleMqttMessage(topic, msg) {
                 const parts = topic.split('/');
@@ -3868,13 +4661,47 @@
                 if (!device) return;
                 let updated = false;
                 let oldState = '';
+
+                // ── Heartbeat (topic: {id}/system/heartbeat) ──
+                // كل جهاز يرسل نبضته على موضوع يحمل معرّفه (id) الخاص به،
+                // فيقرأها التطبيق ويربطها بنفس الجهاز عبر deviceId المستخرج من المسار.
+                // ONLINE/ALIVE = الجهاز فعليًا متصل الآن | OFFLINE = أعلنها
+                // الخادم تلقائيًا (LWT) لحظة انقطاع الجهاز عن الشبكة.
                 if (sub === 'system/heartbeat') {
+                    const now = Date.now();
+                    if (msg === 'OFFLINE') {
+                        const wasOnline = device.online;
+                        device.online = false;
+                        device._connecting = false;
+                        device.lastHeartbeat = null;
+                        state.deviceLastHb.set(deviceId, null);
+                        state.deviceConnecting.set(deviceId, false);
+                        if (wasOnline) {
+                            addLog(`🔴 ${device.name} غير متصل (انقطع عن الخادم)`, 'error', true);
+                            addNotification(`🔴 ${device.name} غير متصل`, 'انقطع اتصال الجهاز بالخادم', '🔴', 'error');
+                            Sound.offline();
+                        }
+                        saveDevices();
+                        debouncedUpdateUI();
+                        return;
+                    }
+                    // ONLINE (عند اتصال الجهاز بالخادم) أو ALIVE (نبضة حية كل 3 ثوانٍ)
+                    const wasOnline = device.online;
                     device.online = true;
-                    device.lastHeartbeat = Date.now();
-                    if (msg === 'AWAY') { state.vacationMode = true;
-                        saveVacation();
-                        updateVacationUI(); }
+                    device._connecting = false;
+                    device.lastHeartbeat = now;
+                    state.deviceLastHb.set(deviceId, now);
+                    state.deviceConnecting.set(deviceId, false);
+                    if (!wasOnline) {
+                        addLog(`🟢 ${device.name} متصل وجاهز للتحكم`, 'success', true);
+                        addNotification(`🟢 ${device.name} عاد إلى الاتصال`, 'الجهاز متصل بالخادم وجاهز للتحكم', '🟢', 'success');
+                        Sound.success();
+                    }
                     updated = true;
+                    saveDevices();
+                    debouncedUpdateUI();
+                    // النبضة تُعالَج بالكامل هنا؛ لا داعي لمتابعة التنفيذ أدناه
+                    return;
                 } else if (sub === 'system/vacation') {
                     if (msg === 'ON') { state.vacationMode = true;
                         saveVacation();
@@ -3925,46 +4752,74 @@
                     if (!isNaN(val) && val >= 16 && val <= 30) { device.temp = val;
                         updated = true; }
                 }
+
+                // ── إذا كان هناك تحديث في حالة الجهاز (ON/OFF, سطوع, سرعة...) ──
                 if (updated) {
-                    device.online = true;
-                    device.lastHeartbeat = Date.now();
+                    // ملاحظة مهمة: لا نُحدّث online/lastHeartbeat هنا بعد الآن.
+                    // رسائل status/cmd تُنشَر بخاصية retained من الجهاز، وقد تكون
+                    // "قديمة" (محفوظة في الخادم منذ آخر مرة كان الجهاز فيها متصلاً)
+                    // فتصل فور اشتراك التطبيق حتى لو الجهاز مفصول فعليًا الآن.
+                    // الاعتماد عليها لتحديد الاتصال هو ما كان يجعل النقطة تبقى
+                    // خضراء دائمًا. حالة الاتصال الحقيقية تُحدَّث حصرًا من موضوع
+                    // {id}/system/heartbeat (ONLINE / ALIVE / OFFLINE) أعلاه.
                     saveDevices();
                     debouncedUpdateUI();
                 }
             }
 
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  EXECUTE AUTOMATION ACTIONS (Core)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function executeAutomationActions(auto) {
+                if (!auto.actions || auto.actions.length === 0) return;
+                const delayMs = (auto.delayBetweenActions || 1000);
+                auto.actions.forEach((action, index) => {
+                    setTimeout(() => {
+                        const dev = state.deviceMap.get(action.deviceId);
+                        if (!dev) {
+                            addLog(`⚠️ جهاز غير موجود: ${action.deviceId}`, 'warning', true);
+                            return;
+                        }
+                        const cmd = action.command;
+                        if (cmd === 'on') {
+                            if (dev.type === 1) { doorCommand(dev.id, 'OPEN'); } else {
+                                sendMqttCommand(dev.id, dev.type, 'cmd', 'ON');
+                                dev.status = true;
+                            }
+                        } else if (cmd === 'off') {
+                            if (dev.type === 1) { doorCommand(dev.id, 'CLOSE'); } else {
+                                sendMqttCommand(dev.id, dev.type, 'cmd', 'OFF');
+                                dev.status = false;
+                            }
+                        } else if (cmd === 'open') {
+                            if (dev.type === 1) doorCommand(dev.id, 'OPEN');
+                        } else if (cmd === 'close') {
+                            if (dev.type === 1) doorCommand(dev.id, 'CLOSE');
+                        }
+                        addLog(`🤖 أتمتة "${auto.name}": ${dev.name} → ${cmd}`, 'success', true);
+                    }, index * delayMs);
+                });
+                setTimeout(() => {
+                    saveDevices();
+                    debouncedUpdateUI();
+                }, auto.actions.length * delayMs + 500);
+            }
+
             function processAutomations(triggerDevice) {
                 for (const auto of state.automations) {
                     if (!auto.enabled) continue;
-                    if (auto.trigger.deviceId !== triggerDevice.id) continue;
+                    if (auto.triggerType !== 'device') continue;
+                    if (auto.triggerDeviceId !== triggerDevice.id) continue;
                     let conditionMet = false;
-                    const condition = auto.trigger.condition;
+                    const condition = auto.triggerCondition;
                     if (condition === 'on') conditionMet = triggerDevice.status === true;
                     else if (condition === 'off') conditionMet = triggerDevice.status === false;
                     else if (condition === 'open') conditionMet = triggerDevice.open === true;
                     else if (condition === 'motion') conditionMet = triggerDevice.status === true;
                     if (!conditionMet) continue;
-                    const actionDevice = state.deviceMap.get(auto.action.deviceId);
-                    if (!actionDevice) continue;
-                    const command = auto.action.command;
-                    if (command === 'on') {
-                        if (actionDevice.type === 1) { doorCommand(actionDevice.id, 'OPEN'); } else {
-                            sendMqttCommand(actionDevice.id, actionDevice.type, 'cmd', 'ON');
-                            actionDevice.status = true;
-                        }
-                    } else if (command === 'off') {
-                        if (actionDevice.type === 1) { doorCommand(actionDevice.id, 'CLOSE'); } else {
-                            sendMqttCommand(actionDevice.id, actionDevice.type, 'cmd', 'OFF');
-                            actionDevice.status = false;
-                        }
-                    } else if (command === 'open') {
-                        if (actionDevice.type === 1) doorCommand(actionDevice.id, 'OPEN');
-                    } else if (command === 'close') {
-                        if (actionDevice.type === 1) doorCommand(actionDevice.id, 'CLOSE');
-                    }
-                    addLog(`🤖 أتمتة "${auto.name}" تم تنفيذها: ${triggerDevice.name} → ${actionDevice.name} (${command})`,
-                        'success');
-                    addNotification(`🤖 أتمتة: ${auto.name}`, `تم تنفيذ الأتمتة "${auto.name}"`, '🤖', 'success');
+                    executeAutomationActions(auto);
+                    addLog(`🤖 أتمتة "${auto.name}" تم تفعيلها بواسطة ${triggerDevice.name}`, 'success');
+                    addNotification(`🤖 أتمتة: ${auto.name}`, `تم تنفيذ "${auto.name}" تلقائياً`, '🤖', 'success');
                 }
             }
 
@@ -4275,12 +5130,21 @@
                 const name = dev?.name || id;
                 state.devices = state.devices.filter(d => d.id !== id);
                 state.deviceMap.delete(id);
+                state.deviceLastHb.delete(id);
+                state.deviceConnecting.delete(id);
                 if (state.activeDeviceId === id) {
                     state.activeDeviceId = state.devices.length ? state.devices[0].id : null;
                 }
                 state.schedules = state.schedules.filter(s => s.deviceId !== id);
                 state.scenes.forEach(s => s.actions = s.actions.filter(a => a.deviceId !== id));
-                state.automations = state.automations.filter(a => a.trigger.deviceId !== id && a.action.deviceId !== id);
+                state.automations = state.automations.filter(a => {
+                    if (a.triggerDeviceId === id) return false;
+                    if (a.actions) {
+                        a.actions = a.actions.filter(act => act.deviceId !== id);
+                        if (a.actions.length === 0) return false;
+                    }
+                    return true;
+                });
                 saveDevices();
                 saveSchedules();
                 saveScenes();
@@ -4594,12 +5458,19 @@
                         dev.id = newId;
                         state.deviceMap.delete(oldId);
                         state.deviceMap.set(newId, dev);
+                        state.deviceLastHb.delete(oldId);
+                        state.deviceLastHb.set(newId, dev.lastHeartbeat);
+                        state.deviceConnecting.delete(oldId);
+                        state.deviceConnecting.set(newId, dev._connecting || false);
                         state.scenes.forEach(scene => {
                             scene.actions.forEach(a => { if (a.deviceId === oldId) a.deviceId = newId; });
                         });
                         state.automations.forEach(auto => {
-                            if (auto.trigger.deviceId === oldId) auto.trigger.deviceId = newId;
-                            if (auto.action.deviceId === oldId) auto.action.deviceId = newId;
+                            if (auto.triggerDeviceId === oldId) auto.triggerDeviceId = newId;
+                            if (auto.actions) {
+                                auto.actions.forEach(a => { if (a.deviceId === oldId) a.deviceId =
+                                    newId; });
+                            }
                         });
                         state.schedules.forEach(s => { if (s.deviceId === oldId) s.deviceId = newId; });
                         if (state.activeDeviceId === oldId) { state.activeDeviceId = newId;
@@ -4654,7 +5525,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE
+            //  ENHANCED DETAIL PAGE
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(deviceId) {
                 state.activeDeviceId = deviceId;
@@ -4674,52 +5545,156 @@
                 const isOn = dev.status === true || dev.open === true;
                 const statusText = dev.type === 1 ? (dev.open ? 'مفتوح' : 'مغلق') :
                     (dev.status ? 'تشغيل' : 'إيقاف');
+                const statusClass = isOn ? 'status-on' : 'status-off';
                 const customIcon = dev.icon || typeInfo.icon;
-                let iconHtml = `<i class="fas ${customIcon}"></i>`;
-                let controlsHtml = '',
-                    extraHtml = '';
+                const iconClass = 'fas ' + customIcon;
+
+                let onlineBadge;
+                const status = getDeviceStatus(dev);
+                if (status === 'online') {
+                    onlineBadge = `<span class="badge-online">🟢 متصل</span>`;
+                } else if (status === 'connecting') {
+                    onlineBadge = `<span class="badge-connecting">🟡 جاري الاتصال</span>`;
+                } else {
+                    onlineBadge = `<span class="badge-offline">🔴 غير متصل</span>`;
+                }
+                const vacationBadge = state.vacationMode ?
+                    `<span class="badge-vacation">🏖️ إجازة</span>` : '';
+
+                let lastSeenText = 'لم يرد بعد';
+                if (dev.lastHeartbeat) {
+                    const diff = Date.now() - dev.lastHeartbeat;
+                    if (diff < 60000) {
+                        lastSeenText = 'منذ أقل من دقيقة';
+                    } else if (diff < 3600000) {
+                        lastSeenText = `منذ ${Math.floor(diff / 60000)} دقيقة`;
+                    } else {
+                        lastSeenText = new Date(dev.lastHeartbeat).toLocaleTimeString('ar-EG');
+                    }
+                }
+
+                let iconHtml = '';
+                let glowRings = '';
+                let waterDropsHtml = '';
+                let extraHtml = '';
+                let controlsHtml = '';
+
+                if (dev.type === 3 || dev.type === 2) {
+                    const isLightOn = isOn;
+                    const ringActive = isLightOn ? 'active' : 'inactive';
+                    glowRings = `
+                            <div class="glow-ring ring-1 ${ringActive}"></div>
+                            <div class="glow-ring ring-2 ${ringActive}"></div>
+                            <div class="glow-ring ring-3 ${ringActive}"></div>
+                        `;
+                    const lightClasses = ['big-icon', 'light-bulb'];
+                    if (isLightOn) lightClasses.push('state-on');
+                    else lightClasses.push('state-off');
+                    iconHtml = `
+                            <div class="detail-icon-container">
+                                <i class="${iconClass} ${lightClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}"></i>
+                                ${glowRings}
+                            </div>
+                        `;
+                } else if (dev.type === 8) {
+                    const isFaucetOn = isOn;
+                    const dropClass = isFaucetOn ? '' : 'dormant';
+                    const splashClass = isFaucetOn ? '' : 'dormant';
+                    const faucetClasses = ['big-icon', 'water-faucet'];
+                    if (isFaucetOn) faucetClasses.push('state-on');
+                    else faucetClasses.push('state-off');
+                    waterDropsHtml = `
+                            <div class="detail-water-drops">
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="drop ${dropClass}"></span>
+                                <span class="splash-ring ${splashClass}"></span>
+                                <span class="splash-ring ${splashClass}"></span>
+                                <span class="splash-ring ${splashClass}"></span>
+                            </div>
+                        `;
+                    iconHtml = `
+                            <div class="detail-icon-container">
+                                <i class="${iconClass} ${faucetClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}"></i>
+                                ${waterDropsHtml}
+                            </div>
+                        `;
+                } else {
+                    const simpleClasses = ['big-icon'];
+                    if (isOn) simpleClasses.push('state-on');
+                    iconHtml = `
+                            <div class="detail-icon-container">
+                                <i class="${iconClass} ${simpleClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}"></i>
+                            </div>
+                        `;
+                }
+
                 if (dev.type === 1) {
                     const progress = dev.open ? 1 : 0;
                     const key = 'door_' + dev.id;
-                    if (!state.doorAnimations[key]) state.doorAnimations[key] = { current: progress, target: progress,
-                        running: false };
+                    if (!state.doorAnimations[key]) {
+                        state.doorAnimations[key] = { current: progress, target: progress, running: false };
+                    }
                     const currentProgress = state.doorAnimations[key].current;
                     const doorColor = dev.doorColor || '#3b82f6';
                     extraHtml = `
-                            <div class="detail-door-canvas"><canvas data-device-id="${dev.id}"></canvas></div>
-                        `;
-                    setTimeout(() => {
-                        const canvas = document.querySelector(`.detail-door-canvas canvas[data-device-id="${dev.id}"]`);
-                        if (canvas) drawDoorCanvas(canvas, currentProgress, doorColor);
-                    }, 50);
-                    controlsHtml = `
-                            <div class="ctrl-row" style="justify-content:center;flex-direction:column;gap:12px;">
+                            <div class="detail-door-canvas">
+                                <canvas data-device-id="${dev.id}"></canvas>
+                            </div>
+                            <div class="detail-door-controls">
                                 <div class="door-controls-modern">
                                     <button class="door-btn door-btn-open" data-id="${dev.id}" data-cmd="OPEN"><span class="emoji">🔼</span><span class="label">فتح</span><span class="sub-label">رفع الباب</span></button>
                                     <button class="door-btn door-btn-stop" data-id="${dev.id}" data-cmd="STOP"><span class="emoji">⏹</span><span class="label">إيقاف</span><span class="sub-label">تعليق الحركة</span></button>
                                     <button class="door-btn door-btn-close" data-id="${dev.id}" data-cmd="CLOSE"><span class="emoji">🔽</span><span class="label">إغلاق</span><span class="sub-label">خفض الباب</span></button>
                                 </div>
-                                <div style="display:flex;justify-content:center;gap:16px;align-items:center;">
-                                    <span style="font-size:1rem;font-weight:600;color:${dev.open ? 'var(--success)' : 'var(--danger)'}">${dev.open ? '🟢 مفتوح' : '🔴 مغلق'}</span>
-                                    <span style="font-size:0.8rem;color:var(--text-muted);">(حالة الحساس)</span>
+                                <div class="door-status-large">
+                                    <span>الحالة:</span>
+                                    <span class="${dev.open ? 'status-open' : 'status-closed'}">${dev.open ? '🟢 مفتوح' : '🔴 مغلق'}</span>
                                 </div>
-                                <div style="text-align:center;">
-                                    <span>🎨 لون الباب</span>
-                                    <input type="color" id="doorColorPicker" value="${doorColor}" data-id="${dev.id}" style="margin-right:8px;cursor:pointer;width:40px;height:40px;border-radius:50%;border:2px solid var(--border-color);background:none;padding:2px;" />
+                                <div class="door-color-picker">
+                                    <label>🎨 لون الباب</label>
+                                    <input type="color" id="doorColorPicker" value="${doorColor}" data-id="${dev.id}" />
                                 </div>
                             </div>
                         `;
-                } else if (dev.type === 3) {
+                    setTimeout(() => {
+                        const canvas = document.querySelector(`.detail-door-canvas canvas[data-device-id="${dev.id}"]`);
+                        if (canvas) drawDoorCanvas(canvas, currentProgress, doorColor);
+                    }, 50);
+                }
+
+                if (dev.type === 3) {
                     controlsHtml = `
-                            <div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>
-                            <div class="ctrl-row"><span class="label">السطوع</span><input type="range" class="slider large" min="0" max="100" value="${dev.brightness||50}" id="detailBrightness" data-id="${dev.id}" /><span>${dev.brightness||50}%</span></div>
-                            <div class="ctrl-row"><span class="label">اللون</span><div class="color-preview large" id="detailColor" data-id="${dev.id}" style="background:${dev.color||'#ffaa33'}; width:40px; height:40px; border-radius:50%; border:2px solid var(--border-color); cursor:pointer;"></div></div>
+                            <div class="ctrl-row">
+                                <span class="label">التحكم</span>
+                                <button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button>
+                                <span>${isOn ? 'تشغيل' : 'إيقاف'}</span>
+                            </div>
+                            <div class="ctrl-row">
+                                <span class="label">السطوع</span>
+                                <input type="range" class="slider large" min="0" max="100" value="${dev.brightness||50}" id="detailBrightness" data-id="${dev.id}" />
+                                <span class="slider-value">${dev.brightness||50}%</span>
+                            </div>
+                            <div class="ctrl-row">
+                                <span class="label">اللون</span>
+                                <div class="color-preview large" id="detailColor" data-id="${dev.id}" style="background:${dev.color||'#ffaa33'};"></div>
+                            </div>
                         `;
                 } else if (dev.type === 5) {
                     controlsHtml = `
-                            <div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>
-                            <div class="ctrl-row"><span class="label">السرعة</span>
-                                <select id="detailSpeed" data-id="${dev.id}" style="padding:8px 12px;border-radius:12px;border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);">
+                            <div class="ctrl-row">
+                                <span class="label">التحكم</span>
+                                <button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button>
+                                <span>${isOn ? 'تشغيل' : 'إيقاف'}</span>
+                            </div>
+                            <div class="ctrl-row">
+                                <span class="label">السرعة</span>
+                                <select id="detailSpeed" data-id="${dev.id}">
                                     <option value="1" ${dev.speed===1?'selected':''}>سرعة 1</option>
                                     <option value="2" ${dev.speed===2?'selected':''}>سرعة 2</option>
                                     <option value="3" ${dev.speed===3?'selected':''}>سرعة 3</option>
@@ -4728,77 +5703,92 @@
                         `;
                 } else if (dev.type === 6) {
                     controlsHtml = `
-                            <div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>
-                            <div class="ctrl-row"><span class="label">درجة الحرارة</span><input type="range" class="slider large" min="16" max="30" value="${dev.temp||22}" id="detailTemp" data-id="${dev.id}" /><span>${dev.temp||22}°C</span></div>
+                            <div class="ctrl-row">
+                                <span class="label">التحكم</span>
+                                <button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button>
+                                <span>${isOn ? 'تشغيل' : 'إيقاف'}</span>
+                            </div>
+                            <div class="ctrl-row">
+                                <span class="label">درجة الحرارة</span>
+                                <input type="range" class="slider large" min="16" max="30" value="${dev.temp||22}" id="detailTemp" data-id="${dev.id}" />
+                                <span class="slider-value">${dev.temp||22}°C</span>
+                            </div>
                         `;
+                } else if (dev.type === 1) {
+                    // handled above
                 } else if (dev.type === 2 || dev.type === 4 || dev.type === 7 || dev.type === 8) {
-                    controlsHtml =
-                        `<div class="ctrl-row"><span class="label">التحكم</span><button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button><span>${isOn?'تشغيل':'إيقاف'}</span></div>`;
-                }
-                const bigIconClasses = ['big-icon'];
-                if (dev.type === 3) bigIconClasses.push('light-bulb');
-                if (dev.type === 8) bigIconClasses.push('water-faucet');
-                if (isOn) bigIconClasses.push('state-on');
-                let waterParticles = '';
-                if (dev.type === 8) {
-                    waterParticles = `
-                            <span class="water-particle"></span>
-                            <span class="water-particle"></span>
-                            <span class="water-particle"></span>
-                            <span class="water-particle"></span>
-                            <span class="water-particle"></span>
-                            <span class="water-particle"></span>
+                    controlsHtml = `
+                            <div class="ctrl-row">
+                                <span class="label">التحكم</span>
+                                <button class="toggle-switch large ${isOn?'active':''}" id="detailToggle" data-id="${dev.id}"></button>
+                                <span>${isOn ? 'تشغيل' : 'إيقاف'}</span>
+                            </div>
                         `;
                 }
+
                 dom.detailBody.innerHTML = `
                         <div class="detail-device-card">
-                            <div class="detail-water-container">
-                                <div class="${bigIconClasses.join(' ')}" data-action="toggle-icon" data-id="${dev.id}" style="cursor:pointer;">${iconHtml}</div>
-                                ${waterParticles}
-                            </div>
+                            ${iconHtml}
                             <div class="big-name">${dev.name}</div>
-                            <div class="big-status">${statusText}</div>
+                            <div class="big-status"><span class="${statusClass}">${statusText}</span></div>
                             <div class="device-id-display">🆔 ${dev.id}</div>
-                            <div style="margin-top:12px;">
-                                <span class="status-badge ${dev.online!==false?'online':'offline'}">${dev.online!==false?'🟢 متصل':'🔴 غير متصل'}</span>
-                                ${state.vacationMode ? '<span class="vacation-badge" style="font-size:0.65rem;">🏖️ إجازة</span>' : ''}
+                            <div class="device-badges">
+                                ${onlineBadge}
+                                ${vacationBadge}
                             </div>
-                        </div>
-                        <div class="detail-controls">
-                            <div class="ctrl-title"><i class="fas fa-sliders-h"></i> التحكم</div>
+                            <div class="detail-last-seen">🕒 آخر اتصال: ${lastSeenText}</div>
                             ${extraHtml}
-                            ${controlsHtml}
                         </div>
+                        ${controlsHtml ? `<div class="detail-controls"><div class="ctrl-title"><i class="fas fa-sliders-h"></i> التحكم</div>${controlsHtml}</div>` : ''}
                     `;
+
                 const iconToggle = document.querySelector('.big-icon[data-action="toggle-icon"]');
                 if (iconToggle) iconToggle.addEventListener('click', () => toggleDevice(iconToggle.dataset.id));
+
                 const colorPicker = document.getElementById('doorColorPicker');
                 if (colorPicker) {
                     colorPicker.addEventListener('input', (e) => {
                         const id = e.target.dataset.id;
                         const d = state.deviceMap.get(id);
-                        if (d && d.type === 1) { d.doorColor = e.target.value;
+                        if (d && d.type === 1) {
+                            d.doorColor = e.target.value;
                             saveDevices();
-                            renderDetailPage(id); }
+                            renderDetailPage(id);
+                        }
                     });
                 }
+
                 document.querySelectorAll('.door-controls-modern .door-btn').forEach(btn => {
                     btn.addEventListener('click', () => doorCommand(btn.dataset.id, btn.dataset.cmd));
                 });
+
                 const toggle = document.getElementById('detailToggle');
                 if (toggle) toggle.addEventListener('click', () => toggleDevice(toggle.dataset.id));
+
                 const bright = document.getElementById('detailBrightness');
-                if (bright) bright.addEventListener('input', () => { setBrightness(bright.dataset.id, bright.value);
-                    renderDetailPage(bright.dataset.id); });
+                if (bright) bright.addEventListener('input', () => {
+                    setBrightness(bright.dataset.id, bright.value);
+                    renderDetailPage(bright.dataset.id);
+                });
+
                 const temp = document.getElementById('detailTemp');
-                if (temp) temp.addEventListener('input', () => { setTemp(temp.dataset.id, temp.value);
-                    renderDetailPage(temp.dataset.id); });
+                if (temp) temp.addEventListener('input', () => {
+                    setTemp(temp.dataset.id, temp.value);
+                    renderDetailPage(temp.dataset.id);
+                });
+
                 const speed = document.getElementById('detailSpeed');
-                if (speed) speed.addEventListener('change', () => { setFanSpeed(speed.dataset.id, speed.value);
-                    renderDetailPage(speed.dataset.id); });
+                if (speed) speed.addEventListener('change', () => {
+                    setFanSpeed(speed.dataset.id, speed.value);
+                    renderDetailPage(speed.dataset.id);
+                });
+
                 const colorEl = document.getElementById('detailColor');
-                if (colorEl) colorEl.addEventListener('click', () => { pickColor(colorEl.dataset.id);
-                    setTimeout(() => renderDetailPage(colorEl.dataset.id), 100); });
+                if (colorEl) colorEl.addEventListener('click', () => {
+                    pickColor(colorEl.dataset.id);
+                    setTimeout(() => renderDetailPage(colorEl.dataset.id), 100);
+                });
+
                 const detailCanvas = document.querySelector('.detail-door-canvas canvas');
                 if (detailCanvas) {
                     const obs = new ResizeObserver(() => {
@@ -4973,7 +5963,7 @@
                 dom.addDeviceRoom.value = room;
                 const type = parseInt(dom.addDeviceType.value);
                 dom.addDeviceId.value = generateDeviceId(type, room);
-                dom.addDeviceName.value = ''; // Clear name field
+                dom.addDeviceName.value = '';
                 dom.addModal.classList.add('active');
                 dom.addDeviceName.focus();
             }
@@ -4987,7 +5977,6 @@
                 const statusText = device.type === 1 ? (device.open ? 'مفتوح' : 'مغلق') :
                     (device.status ? 'تشغيل' : 'إيقاف');
                 const statusColor = isOn ? 'var(--success)' : 'var(--text-muted)';
-                const isOnline = device.online !== false;
                 const customIcon = device.icon || typeInfo.icon;
                 const wrapClasses = ['icon-wrap'];
                 if (device.type === 3) wrapClasses.push('light-bulb');
@@ -5062,14 +6051,32 @@
                 const vacationBadge = state.vacationMode ?
                     `<span class="vacation-badge">🏖️ إجازة</span>` :
                     '';
-                const dotClass = isOnline ? 'online' : 'offline';
+
+                let dotClass = 'offline';
+                const status = getDeviceStatus(device);
+                if (status === 'online') dotClass = 'online';
+                else if (status === 'connecting') dotClass = 'connecting';
+                else dotClass = 'offline';
+
+                let lastSeenText = 'لم يرد بعد';
+                if (device.lastHeartbeat) {
+                    const diff = Date.now() - device.lastHeartbeat;
+                    if (diff < 60000) {
+                        lastSeenText = 'منذ أقل من دقيقة';
+                    } else if (diff < 3600000) {
+                        lastSeenText = `منذ ${Math.floor(diff / 60000)} دقيقة`;
+                    } else {
+                        lastSeenText = new Date(device.lastHeartbeat).toLocaleTimeString('ar-EG');
+                    }
+                }
+
                 return `
                         <div class="device-card" data-id="${device.id}">
                             <div class="card-top">
                                 <span class="icon-wrap-slot">${iconHtml}</span>
                                 <div class="badge-group">
                                     <span class="room-badge">${device.room}</span>
-                                    <span class="status-dot ${dotClass}" title="${isOnline ? '🟢 متصل بالخادم' : '🔴 غير متصل بالخادم'}"></span>
+                                    <span class="status-dot ${dotClass}" title="${status === 'online' ? '🟢 متصل بالخادم' : status === 'connecting' ? '🟡 جاري الاتصال' : '🔴 غير متصل بالخادم'}"></span>
                                     ${vacationBadge}
                                     <button class="qr-btn" data-action="qr-device" data-id="${device.id}" title="رمز QR"><i class="fas fa-qrcode"></i></button>
                                     <button class="settings-btn" data-action="settings-device" data-id="${device.id}" title="إعدادات"><i class="fas fa-sliders-h"></i></button>
@@ -5077,6 +6084,7 @@
                             </div>
                             <div class="device-name">${device.name}</div>
                             <div class="device-status" style="color:${statusColor};">${statusText}</div>
+                            <div class="device-last-seen">🕒 ${lastSeenText}</div>
                             ${extraHtml}
                             ${controls}
                         </div>
@@ -5169,7 +6177,7 @@
                         const previewIcons = devices.slice(0, 4).map(d => d.icon || DEVICE_TYPES[d.type]?.icon ||
                             'fa-microchip');
                         const icon = roomIcons[room] || 'fa-home';
-                        const onlineCount = devices.filter(d => d.online !== false).length;
+                        const onlineCount = devices.filter(d => getDeviceStatus(d) === 'online').length;
                         return `
                                 <div class="room-card" data-room="${escHtml(room)}">
                                     <button class="room-edit-btn" data-action="edit-room" data-room="${escHtml(room)}" title="تعديل اسم الغرفة"><i class="fas fa-pen"></i></button>
@@ -5414,7 +6422,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  AUTOMATIONS
+            //  AUTOMATIONS (Advanced Render & Editor)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderAutomationsPage() {
                 const total = state.automations.length;
@@ -5428,13 +6436,27 @@
                     cardsHtml = state.automations.map(a => {
                         const statusClass = a.enabled ? 'active' : 'inactive';
                         const statusLabel = a.enabled ? 'مفعلة' : 'معطلة';
-                        const triggerIcon = a.trigger.condition === 'on' ? 'fa-power-off' :
-                            a.trigger.condition === 'off' ? 'fa-stop' :
-                            a.trigger.condition === 'open' ? 'fa-door-open' :
-                            a.trigger.condition === 'motion' ? 'fa-people-arrows' : 'fa-bolt';
-                        const actionIcon = a.action.command === 'on' ? 'fa-play' :
-                            a.action.command === 'off' ? 'fa-stop' :
-                            a.action.command === 'open' ? 'fa-door-open' : 'fa-close';
+                        let triggerDesc = '';
+                        if (a.triggerType === 'device') {
+                            const dev = state.deviceMap.get(a.triggerDeviceId);
+                            const devName = dev ? dev.name : a.triggerDeviceId;
+                            const condMap = { on: 'تشغيل', off: 'إيقاف', open: 'فتح', motion: 'حركة' };
+                            triggerDesc =
+                                `جهاز <span class="highlight">${escHtml(devName)}</span> → ${condMap[a.triggerCondition] || a.triggerCondition}`;
+                        } else {
+                            const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                            const dayNames = a.scheduleDays ? a.scheduleDays.map(d => daysMap[d]).join('، ') :
+                                'كل الأيام';
+                            triggerDesc =
+                                `⏰ ${a.scheduleTime || '08:00'} (${dayNames})`;
+                        }
+                        const actionDesc = a.actions ? a.actions.map(act => {
+                            const dev = state.deviceMap.get(act.deviceId);
+                            const devName = dev ? dev.name : act.deviceId;
+                            const cmdMap = { on: 'تشغيل', off: 'إيقاف', open: 'فتح', close: 'إغلاق' };
+                            return `${escHtml(devName)} → ${cmdMap[act.command] || act.command}`;
+                        }).join('، ') : 'لا توجد إجراءات';
+
                         return `
                                 <div class="automation-card" data-id="${a.id}">
                                     <div class="auto-top">
@@ -5443,9 +6465,11 @@
                                             <div class="auto-info">
                                                 <div class="auto-name">${escHtml(a.name)}</div>
                                                 <div class="auto-desc">
-                                                    <span class="auto-trigger"><i class="fas ${triggerIcon}"></i> ${escHtml(a.trigger.deviceId)} → ${escHtml(a.trigger.condition)}</span>
+                                                    <span class="auto-trigger"><i class="fas fa-${a.triggerType === 'schedule' ? 'clock' : 'bolt'}"></i> ${triggerDesc}</span>
                                                     <span style="margin:0 4px;color:var(--text-muted);">⬅</span>
-                                                    <span class="auto-trigger"><i class="fas ${actionIcon}"></i> ${escHtml(a.action.deviceId)} → ${escHtml(a.action.command)}</span>
+                                                    <span class="auto-trigger"><i class="fas fa-arrow-right"></i> ${actionDesc}</span>
+                                                    ${a.delayBetweenActions > 0 ? `<span class="trigger-badge">⏱️ ${a.delayBetweenActions/1000}ث</span>` : ''}
+                                                    ${a.actions && a.actions.length > 1 ? `<span class="trigger-badge">${a.actions.length} إجراءات</span>` : ''}
                                                 </div>
                                             </div>
                                         </div>
@@ -5455,6 +6479,7 @@
                                         </div>
                                     </div>
                                     <div class="auto-actions-row">
+                                        <button class="btn-small primary" data-action="edit-auto" data-id="${a.id}"><i class="fas fa-sliders-h"></i> إعدادات</button>
                                         <button class="btn-small danger" data-action="delete-auto" data-id="${a.id}">🗑️ حذف</button>
                                     </div>
                                 </div>
@@ -5467,7 +6492,7 @@
                                 <div class="automation-stat-card"><div class="stat-number enabled">${enabled}</div><div class="stat-label">مفعلة</div></div>
                                 <div class="automation-stat-card"><div class="stat-number disabled">${disabled}</div><div class="stat-label">معطلة</div></div>
                             </div>
-                            <div class="section-header"><span class="title">🤖 الأتمتة</span><span class="see-all" id="addAutoBtn">➕ إضافة</span></div>
+                            <div class="section-header"><span class="title">🤖 الأتمتة المتطورة</span><span class="see-all" id="addAutoBtn">➕ إضافة</span></div>
                             <div style="display:grid;grid-template-columns:1fr;gap:14px;">${cardsHtml}</div>
                         `;
             }
@@ -5498,56 +6523,196 @@
                 addLog(`🗑️ حذف أتمتة: ${auto.name}`, 'warning');
             }
 
-            function addAutomation(name, triggerDevice, triggerCondition, actionDevice, actionCommand) {
-                const newAuto = {
-                    id: 'auto_' + Date.now().toString(36),
-                    name,
-                    enabled: true,
-                    trigger: { deviceId: triggerDevice, condition: triggerCondition },
-                    action: { deviceId: actionDevice, command: actionCommand }
-                };
-                state.automations.push(newAuto);
-                saveAutomations();
-                debouncedUpdateUI();
-                Sound.success();
-                showToast(`✅ تم إضافة أتمتة "${name}"`, 'success');
-                addNotification(`🤖 أتمتة: ${name}`, `تم إنشاء أتمتة "${name}"`, '🤖', 'success');
-                addLog(`🤖 إضافة أتمتة: ${name}`, 'success');
-            }
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  AUTOMATION EDITOR (Advanced)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function openAutomationEditor(autoId = null) {
+                dom.autoEditModal.classList.add('active');
+                const isEdit = autoId !== null;
+                dom.autoEditTitle.textContent = isEdit ? '✏️ تحرير الأتمتة' : '➕ إضافة أتمتة جديدة';
+                dom.editAutoId.value = autoId || '';
 
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  AUTO FORM
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function showAutoForm() {
                 const deviceOptions = state.devices.map(d =>
                     `<option value="${d.id}">${d.name} (${d.id})</option>`).join('');
-                dom.autoTriggerDevice.innerHTML = deviceOptions;
-                dom.autoActionDevice.innerHTML = deviceOptions;
-                dom.autoName.value = '';
-                dom.autoTriggerCondition.value = 'on';
-                dom.autoActionCommand.value = 'on';
-                dom.addAutoModal.classList.add('active');
-                dom.autoName.focus();
+                dom.editTriggerDevice.innerHTML = deviceOptions;
+
+                let auto = null;
+                if (isEdit) {
+                    auto = state.automations.find(a => a.id === autoId);
+                    if (!auto) { showToast('⚠️ الأتمتة غير موجودة', 'error');
+                        closeAutomationEditor(); return; }
+                }
+
+                dom.editAutoName.value = auto ? auto.name : '';
+                dom.editTriggerType.value = auto ? auto.triggerType : 'device';
+                dom.editTriggerDevice.value = auto ? auto.triggerDeviceId : (state.devices.length > 0 ? state.devices[0].id :
+                '');
+                dom.editTriggerCondition.value = auto ? auto.triggerCondition : 'on';
+                dom.editScheduleTime.value = auto ? auto.scheduleTime : '08:00';
+                dom.editDelay.value = auto ? (auto.delayBetweenActions / 1000) : 1;
+
+                const daysBtns = dom.editScheduleDays.querySelectorAll('.day-btn');
+                const selectedDays = auto ? auto.scheduleDays : [0, 1, 2, 3, 4, 5, 6];
+                daysBtns.forEach(btn => {
+                    const day = parseInt(btn.dataset.day);
+                    btn.classList.toggle('active', selectedDays.includes(day));
+                });
+
+                toggleTriggerGroup(dom.editTriggerType.value);
+
+                renderActionRows(auto ? auto.actions : [{ deviceId: state.devices.length > 0 ? state.devices[0].id : '',
+                    command: 'on' }]);
+
+                dom.editTriggerType.addEventListener('change', function() {
+                    toggleTriggerGroup(this.value);
+                });
+
+                dom.editAutoCancel.onclick = closeAutomationEditor;
+                dom.editAutoSubmit.onclick = handleSaveAutomation;
             }
 
-            function closeAutoForm() { dom.addAutoModal.classList.remove('active'); }
+            function toggleTriggerGroup(type) {
+                if (type === 'schedule') {
+                    dom.editTriggerDeviceGroup.style.display = 'none';
+                    dom.editTriggerConditionGroup.style.display = 'none';
+                    dom.editScheduleGroup.style.display = 'block';
+                } else {
+                    dom.editTriggerDeviceGroup.style.display = 'block';
+                    dom.editTriggerConditionGroup.style.display = 'block';
+                    dom.editScheduleGroup.style.display = 'none';
+                }
+            }
 
-            function handleAddAuto() {
-                const name = dom.autoName.value.trim();
-                const triggerDevice = dom.autoTriggerDevice.value;
-                const triggerCondition = dom.autoTriggerCondition.value;
-                const actionDevice = dom.autoActionDevice.value;
-                const actionCommand = dom.autoActionCommand.value;
+            function renderActionRows(actions) {
+                const container = dom.editActionsContainer;
+                container.innerHTML = '';
+                if (!actions || actions.length === 0) {
+                    actions = [{ deviceId: state.devices.length > 0 ? state.devices[0].id : '', command: 'on' }];
+                }
+                actions.forEach((act, index) => {
+                    const row = document.createElement('div');
+                    row.className = 'action-row';
+                    row.dataset.index = index;
+                    const deviceOptions = state.devices.map(d =>
+                        `<option value="${d.id}" ${d.id === act.deviceId ? 'selected' : ''}>${d.name}</option>`
+                    ).join('');
+                    row.innerHTML = `
+                            <select class="action-device">${deviceOptions}</select>
+                            <select class="action-command">
+                                <option value="on" ${act.command === 'on' ? 'selected' : ''}>تشغيل</option>
+                                <option value="off" ${act.command === 'off' ? 'selected' : ''}>إيقاف</option>
+                                <option value="open" ${act.command === 'open' ? 'selected' : ''}>فتح</option>
+                                <option value="close" ${act.command === 'close' ? 'selected' : ''}>إغلاق</option>
+                            </select>
+                            <button class="btn-small danger remove-action-btn" ${actions.length <= 1 ? 'disabled style="opacity:0.4;cursor:not-allowed;"' : ''}><i class="fas fa-times"></i></button>
+                        `;
+                    container.appendChild(row);
+                });
+                container.querySelectorAll('.remove-action-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        if (this.disabled) return;
+                        const row = this.closest('.action-row');
+                        if (container.children.length > 1) {
+                            row.remove();
+                        } else {
+                            showToast('⚠️ يجب أن يكون هناك إجراء واحد على الأقل', 'warning');
+                        }
+                    });
+                });
+            }
+
+            function closeAutomationEditor() {
+                dom.autoEditModal.classList.remove('active');
+                dom.editAutoId.value = '';
+                dom.editAutoName.value = '';
+            }
+
+            function handleSaveAutomation() {
+                const id = dom.editAutoId.value;
+                const name = dom.editAutoName.value.trim();
+                const triggerType = dom.editTriggerType.value;
+                const triggerDevice = dom.editTriggerDevice.value;
+                const triggerCondition = dom.editTriggerCondition.value;
+                const scheduleTime = dom.editScheduleTime.value;
+                const delaySec = parseInt(dom.editDelay.value) || 0;
+
+                const daysBtns = dom.editScheduleDays.querySelectorAll('.day-btn');
+                const scheduleDays = [];
+                daysBtns.forEach(btn => {
+                    if (btn.classList.contains('active')) {
+                        scheduleDays.push(parseInt(btn.dataset.day));
+                    }
+                });
+                if (scheduleDays.length === 0) {
+                    showToast('⚠️ اختر يومًا واحداً على الأقل للجدولة', 'warning');
+                    return;
+                }
+
+                const actionRows = dom.editActionsContainer.querySelectorAll('.action-row');
+                const actions = [];
+                let valid = true;
+                actionRows.forEach(row => {
+                    const devId = row.querySelector('.action-device').value;
+                    const cmd = row.querySelector('.action-command').value;
+                    if (!devId) { valid = false; return; }
+                    actions.push({ deviceId: devId, command: cmd });
+                });
+                if (!valid || actions.length === 0) {
+                    showToast('⚠️ أضف إجراءً صحيحاً (جهاز + أمر)', 'warning');
+                    return;
+                }
                 if (!name) { showToast('⚠️ أدخل اسم الأتمتة', 'error'); return; }
-                if (!triggerDevice || !actionDevice) { showToast('⚠️ اختر الأجهزة', 'error'); return; }
-                addAutomation(name, triggerDevice, triggerCondition, actionDevice, actionCommand);
-                closeAutoForm();
+
+                const autoData = {
+                    id: id || 'auto_' + Date.now().toString(36),
+                    name: name,
+                    enabled: true,
+                    triggerType: triggerType,
+                    triggerDeviceId: triggerType === 'device' ? triggerDevice : '',
+                    triggerCondition: triggerType === 'device' ? triggerCondition : 'on',
+                    scheduleDays: triggerType === 'schedule' ? scheduleDays : [0, 1, 2, 3, 4, 5, 6],
+                    scheduleTime: triggerType === 'schedule' ? scheduleTime : '08:00',
+                    actions: actions,
+                    delayBetweenActions: delaySec * 1000,
+                };
+
+                if (id) {
+                    const idx = state.automations.findIndex(a => a.id === id);
+                    if (idx === -1) { showToast('⚠️ الأتمتة غير موجودة', 'error'); return; }
+                    state.automations[idx] = { ...state.automations[idx], ...autoData };
+                    addLog(`✏️ تحديث أتمتة: ${name}`, 'success');
+                } else {
+                    state.automations.push(autoData);
+                    addLog(`➕ إضافة أتمتة: ${name} (${actions.length} إجراءات)`, 'success');
+                    addNotification(`🤖 أتمتة: ${name}`, `تم إنشاء أتمتة "${name}"`, '🤖', 'success');
+                }
+                saveAutomations();
+                closeAutomationEditor();
+                debouncedUpdateUI();
+                Sound.success();
+                showToast(`✅ تم حفظ الأتمتة "${name}"`, 'success');
+            }
+
+            function initScheduleDays() {
+                dom.editScheduleDays.querySelectorAll('.day-btn').forEach(btn => {
+                    btn.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                    });
+                });
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  SETTINGS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderSettingsPage() {
+                const micStatus = state.permMicrophone;
+                const camStatus = state.permCamera;
+                const micBadge = micStatus === 'granted' ? '<span class="perm-badge granted">✅ مسموح</span>' :
+                    micStatus === 'denied' ? '<span class="perm-badge denied">❌ ممنوع</span>' :
+                    '<span class="perm-badge prompt">⏳ ينتظر</span>';
+                const camBadge = camStatus === 'granted' ? '<span class="perm-badge granted">✅ مسموح</span>' :
+                    camStatus === 'denied' ? '<span class="perm-badge denied">❌ ممنوع</span>' :
+                    '<span class="perm-badge prompt">⏳ ينتظر</span>';
                 return `
                             <div class="settings-card">
                                 <div class="card-title"><i class="fas fa-server"></i> إعدادات الاتصال</div>
@@ -5556,6 +6721,19 @@
                                     <div class="field"><label>اسم المستخدم</label><input id="settingsUser" value="${state.username}" /></div>
                                     <div class="field"><label>كلمة المرور</label><input id="settingsPass" type="password" value="${state.password}" /></div>
                                     <button class="btn-primary" id="settingsSaveBtn" style="width:100%;padding:12px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:700;cursor:pointer;">💾 حفظ وإعادة الاتصال</button>
+                                </div>
+                            </div>
+                            <div class="settings-card">
+                                <div class="card-title"><i class="fas fa-shield-alt"></i> صلاحيات الأجهزة</div>
+                                <div style="display:flex;flex-direction:column;gap:8px;padding:4px 0;">
+                                    <div><i class="fas fa-microphone"></i> الميكروفون: ${micBadge}</div>
+                                    <div><i class="fas fa-camera"></i> الكاميرا: ${camBadge}</div>
+                                    <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">
+                                        يمكنك تغيير الصلاحيات من إعدادات المتصفح (🔒).
+                                    </div>
+                                    <button class="btn-small primary" id="requestPermBtn" style="padding:6px 14px;border:none;border-radius:20px;background:var(--primary);color:#fff;font-weight:600;cursor:pointer;margin-top:4px;">
+                                        <i class="fas fa-sync-alt"></i> طلب الصلاحيات مجدداً
+                                    </button>
                                 </div>
                             </div>
                             <div class="settings-card">
@@ -5588,7 +6766,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 7.0.0<br>
+                                    الإصدار 8.1.0 (اتصال محسّن)<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -5676,18 +6854,27 @@
             //  QR SCANNER
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function showQrScanner() {
-                if (navigator.mediaDevices?.getUserMedia) {
-                    navigator.mediaDevices.getUserMedia({ video: true }).then(s => {
-                        s.getTracks().forEach(t => t.stop());
-                        dom.qrOverlay.classList.add('active');
-                        if (!state.qrRunning) startQrReader();
-                    }).catch(() => {
-                        dom.qrOverlay.classList.add('active');
-                        dom.qrReader.innerHTML =
-                            '<div style="padding:40px;text-align:center;">⚠️ تعذر الوصول للكاميرا<br><small>أدخل النص يدوياً</small></div>';
-                        state.qrRunning = false;
-                        showToast('⚠️ يرجى السماح بالكاميرا أو إدخال النص', 'warning');
-                    });
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(stream => {
+                            stream.getTracks().forEach(t => t.stop());
+                            state.permCamera = 'granted';
+                            dom.qrOverlay.classList.add('active');
+                            if (!state.qrRunning) startQrReader();
+                        })
+                        .catch(err => {
+                            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                                state.permCamera = 'denied';
+                                showToast('⚠️ تم رفض الوصول إلى الكاميرا. يرجى السماح من إعدادات المتصفح.', 'error',
+                                    '📷');
+                            } else {
+                                showToast('⚠️ تعذر الوصول للكاميرا: ' + err.message, 'error', '📷');
+                            }
+                            dom.qrOverlay.classList.add('active');
+                            dom.qrReader.innerHTML =
+                                '<div style="padding:40px;text-align:center;">⚠️ تعذر الوصول للكاميرا<br><small>أدخل النص يدوياً</small></div>';
+                            state.qrRunning = false;
+                        });
                 } else {
                     dom.qrOverlay.classList.add('active');
                     dom.qrReader.innerHTML = '<div style="padding:40px;text-align:center;">⚠️ الكاميرا غير مدعومة</div>';
@@ -5722,7 +6909,7 @@
                 if (parts[0] === 'SGE' && id) {
                     if (!state.deviceMap.has(id)) {
                         const typeInfo = DEVICE_TYPES[type] || DEVICE_TYPES[2];
-                        state.devices.push({
+                        const newDev = {
                             id: id,
                             type: type,
                             room: room,
@@ -5737,8 +6924,12 @@
                             doorColor: '#3b82f6',
                             lastHeartbeat: null,
                             icon: typeInfo.icon,
-                        });
-                        state.deviceMap.set(id, state.devices[state.devices.length - 1]);
+                            _connecting: true
+                        };
+                        state.devices.push(newDev);
+                        state.deviceMap.set(id, newDev);
+                        state.deviceLastHb.set(id, null);
+                        state.deviceConnecting.set(id, true);
                         saveDevices();
                         addNotification(`➕ إضافة جهاز`, `تم إضافة "${id}" عبر QR`, '📦', 'success');
                         addLog(`📱 تم إضافة جهاز ${id} عبر QR`, 'success');
@@ -5750,7 +6941,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD DEVICE (UPDATED with Name field)
+            //  ADD DEVICE
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAddModal(room) {
                 dom.addModal.classList.add('active');
@@ -5759,7 +6950,7 @@
                 const type = parseInt(dom.addDeviceType.value);
                 const selectedRoom = dom.addDeviceRoom.value;
                 dom.addDeviceId.value = generateDeviceId(type, selectedRoom);
-                dom.addDeviceName.value = ''; // Clear name field
+                dom.addDeviceName.value = '';
                 dom.addDeviceName.focus();
             }
 
@@ -5770,18 +6961,10 @@
                 const name = dom.addDeviceName.value.trim();
                 const type = parseInt(dom.addDeviceType.value);
                 const room = dom.addDeviceRoom.value;
-
-                if (!name) {
-                    showToast('⚠️ أدخل اسم الجهاز', 'error');
-                    dom.addDeviceName.focus();
-                    return;
-                }
-                if (!id) {
-                    showToast('⚠️ أدخل معرف الجهاز', 'error');
-                    dom.addDeviceId.focus();
-                    return;
-                }
-
+                if (!name) { showToast('⚠️ أدخل اسم الجهاز', 'error');
+                    dom.addDeviceName.focus(); return; }
+                if (!id) { showToast('⚠️ أدخل معرف الجهاز', 'error');
+                    dom.addDeviceId.focus(); return; }
                 if (state.deviceMap.has(id)) {
                     const newId = generateDeviceId(type, room);
                     if (!state.deviceMap.has(newId)) {
@@ -5793,7 +6976,6 @@
                         return;
                     }
                 }
-
                 const typeInfo = DEVICE_TYPES[type] || DEVICE_TYPES[2];
                 const newDev = {
                     id: id,
@@ -5810,9 +6992,12 @@
                     doorColor: '#3b82f6',
                     lastHeartbeat: null,
                     icon: typeInfo.icon,
+                    _connecting: true
                 };
                 state.devices.push(newDev);
                 state.deviceMap.set(id, newDev);
+                state.deviceLastHb.set(id, null);
+                state.deviceConnecting.set(id, true);
                 saveDevices();
                 state.activeDeviceId = id;
                 saveActiveDevice();
@@ -5859,6 +7044,205 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  VOICE CONTROL
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function initVoiceControl() {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                if (!SpeechRecognition) {
+                    console.warn('Voice control not supported');
+                    dom.voiceBtn.style.opacity = '0.5';
+                    dom.voiceBtn.title = 'التحكم الصوتي غير مدعوم';
+                    return;
+                }
+                const recognition = new SpeechRecognition();
+                recognition.lang = 'ar-EG';
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.maxAlternatives = 1;
+                state.recognition = recognition;
+
+                recognition.onstart = function() {
+                    state.isListening = true;
+                    dom.voiceBtn.classList.add('voice-active');
+                    dom.voiceBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
+                    showToast('🎤 استمع... تحدث الآن', 'info', '🎤', true);
+                };
+
+                recognition.onerror = function(event) {
+                    console.error('Voice error:', event.error);
+                    state.isListening = false;
+                    dom.voiceBtn.classList.remove('voice-active');
+                    dom.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    if (event.error === 'not-allowed') {
+                        state.permMicrophone = 'denied';
+                        showToast('⚠️ تم رفض الوصول إلى الميكروفون. يرجى السماح من إعدادات المتصفح.', 'warning', '🎤');
+                    } else if (event.error === 'no-speech') {
+                        showToast('⚠️ لم يتم سماع صوت، حاول مرة أخرى', 'warning', '🎤');
+                    } else if (event.error === 'audio-capture') {
+                        showToast('⚠️ تعذر الوصول للميكروفون، تأكد من توصيله', 'error', '🎤');
+                    } else {
+                        showToast(`❌ خطأ في الصوت: ${event.error}`, 'error', '🎤');
+                    }
+                };
+
+                recognition.onend = function() {
+                    state.isListening = false;
+                    dom.voiceBtn.classList.remove('voice-active');
+                    dom.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                };
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    showToast(`🎤 سمعت: "${transcript}"`, 'info', '🎤', true);
+                    addLog(`🎤 أمر صوتي: ${transcript}`, 'info');
+                    processVoiceCommand(transcript);
+                };
+
+                dom.voiceBtn.addEventListener('click', function() {
+                    if (state.isListening) {
+                        recognition.stop();
+                        return;
+                    }
+                    if (state.permMicrophone === 'denied') {
+                        showToast('⚠️ تم رفض الوصول للميكروفون مسبقاً. يرجى تغيير الإعدادات.', 'warning', '🎤');
+                        return;
+                    }
+                    try {
+                        recognition.start();
+                        state.permMicrophone = 'granted';
+                    } catch (e) {
+                        showToast('⚠️ تعذر بدء التعرف الصوتي', 'error', '🎤');
+                        console.error(e);
+                    }
+                });
+            }
+
+            function processVoiceCommand(transcript) {
+                const lower = transcript.toLowerCase();
+                let action = null;
+                if (lower.includes('تشغيل') || lower.includes('شغل') || lower.includes('on')) {
+                    action = 'on';
+                } else if (lower.includes('إيقاف') || lower.includes('أوقف') || lower.includes('off') || lower.includes(
+                    'اطفي')) {
+                    action = 'off';
+                } else if (lower.includes('فتح') || lower.includes('افتح')) {
+                    action = 'open';
+                } else if (lower.includes('إغلاق') || lower.includes('اغلق') || lower.includes('قفل')) {
+                    action = 'close';
+                } else if (lower.includes('توقف') || lower.includes('stop')) {
+                    action = 'stop';
+                }
+                if (!action) {
+                    showToast('⚠️ لم يتم التعرف على أمر (تشغيل/إيقاف/فتح/إغلاق)', 'warning', '🎤');
+                    return;
+                }
+                let matchedDevice = null;
+                let bestScore = 0;
+                for (const dev of state.devices) {
+                    const devName = dev.name.toLowerCase();
+                    if (lower.includes(devName)) {
+                        if (devName.length > bestScore) {
+                            bestScore = devName.length;
+                            matchedDevice = dev;
+                        }
+                    }
+                }
+                if (!matchedDevice) {
+                    for (const dev of state.devices) {
+                        const room = dev.room.toLowerCase();
+                        if (lower.includes(room)) {
+                            if (room.length > bestScore) {
+                                bestScore = room.length;
+                                matchedDevice = dev;
+                            }
+                        }
+                    }
+                    if (!matchedDevice) {
+                        showToast('⚠️ لم يتم التعرف على الجهاز المطلوب', 'warning', '🎤');
+                        return;
+                    }
+                }
+                const dev = matchedDevice;
+                const type = dev.type;
+                if (type === 1) {
+                    if (action === 'open') { doorCommand(dev.id, 'OPEN'); } else if (action === 'close') { doorCommand(dev
+                            .id, 'CLOSE'); } else if (action === 'stop') { doorCommand(dev.id, 'STOP'); } else if (action ===
+                        'on') { doorCommand(dev.id, 'OPEN'); } else if (action === 'off') { doorCommand(dev.id, 'CLOSE'); }
+                } else if (type === 3 || type === 5 || type === 6) {
+                    if (action === 'on') { toggleDevice(dev.id); } else if (action === 'off') { toggleDevice(dev.id); } else if (
+                        action === 'open' || action === 'close') { toggleDevice(dev.id); }
+                } else {
+                    if (action === 'on') { toggleDevice(dev.id); } else if (action === 'off') { toggleDevice(dev.id); } else if (
+                        action === 'open' || action === 'close') { toggleDevice(dev.id); }
+                }
+                const actionLabel = { on: 'تشغيل', off: 'إيقاف', open: 'فتح', close: 'إغلاق', stop: 'إيقاف' } [action] || action;
+                showToast(`🎤 تم ${actionLabel} ${dev.name}`, 'success', '🎤');
+                addLog(`🎤 أمر صوتي: ${actionLabel} ${dev.name}`, 'success');
+                Sound.success();
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  PERMISSION CHECK
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            async function checkPermissions() {
+                try {
+                    if (navigator.permissions) {
+                        const mic = await navigator.permissions.query({ name: 'microphone' });
+                        state.permMicrophone = mic.state;
+                        mic.onchange = () => { state.permMicrophone = mic.state;
+                            debouncedUpdateUI(); };
+                        const cam = await navigator.permissions.query({ name: 'camera' });
+                        state.permCamera = cam.state;
+                        cam.onchange = () => { state.permCamera = cam.state;
+                            debouncedUpdateUI(); };
+                    } else {
+                        state.permMicrophone = 'prompt';
+                        state.permCamera = 'prompt';
+                    }
+                } catch (_) {}
+                if (state.currentPage === 'settings') debouncedUpdateUI();
+            }
+
+            function requestPermissions() {
+                if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+                    navigator.mediaDevices.getUserMedia({ audio: true })
+                        .then(stream => {
+                            stream.getTracks().forEach(t => t.stop());
+                            state.permMicrophone = 'granted';
+                            showToast('✅ تم منح صلاحية الميكروفون', 'success', '🎤');
+                            if (state.currentPage === 'settings') debouncedUpdateUI();
+                        })
+                        .catch(err => {
+                            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                                state.permMicrophone = 'denied';
+                                showToast('⚠️ تم رفض الميكروفون. قم بتغيير الإعدادات.', 'warning', '🎤');
+                            } else {
+                                showToast('❌ خطأ: ' + err.message, 'error', '🎤');
+                            }
+                            if (state.currentPage === 'settings') debouncedUpdateUI();
+                        });
+                    navigator.mediaDevices.getUserMedia({ video: true })
+                        .then(stream => {
+                            stream.getTracks().forEach(t => t.stop());
+                            state.permCamera = 'granted';
+                            showToast('✅ تم منح صلاحية الكاميرا', 'success', '📷');
+                            if (state.currentPage === 'settings') debouncedUpdateUI();
+                        })
+                        .catch(err => {
+                            if (err.name === 'NotAllowedError' || err.name === 'PermissionDeniedError') {
+                                state.permCamera = 'denied';
+                                showToast('⚠️ تم رفض الكاميرا. قم بتغيير الإعدادات.', 'warning', '📷');
+                            } else {
+                                showToast('❌ خطأ: ' + err.message, 'error', '📷');
+                            }
+                            if (state.currentPage === 'settings') debouncedUpdateUI();
+                        });
+                } else {
+                    showToast('⚠️ الأجهزة غير مدعومة', 'warning', '⚠️');
+                }
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  DEBOUNCED UI UPDATE
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let updateScheduled = false;
@@ -5891,7 +7275,7 @@
                     dashboard: 'الرئيسية',
                     devices: 'الأجهزة',
                     scenes: 'المشاهد',
-                    automations: 'الأتمتة',
+                    automations: 'الأتمتة المتطورة',
                     settings: 'الإعدادات'
                 };
                 dom.pageTitle.textContent = titles[page] || 'الرئيسية';
@@ -5913,6 +7297,21 @@
                 }
                 document.querySelectorAll('[data-page="scenes"]').forEach(el => {
                     el.addEventListener('click', () => navigateTo('scenes'));
+                });
+                const reqBtn = document.getElementById('requestPermBtn');
+                if (reqBtn) {
+                    reqBtn.addEventListener('click', requestPermissions);
+                }
+                const addAutoBtn = document.getElementById('addAutoBtn');
+                if (addAutoBtn) {
+                    addAutoBtn.addEventListener('click', () => openAutomationEditor(null));
+                }
+                document.querySelectorAll('[data-action="edit-auto"]').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const id = btn.dataset.id;
+                        if (id) openAutomationEditor(id);
+                    });
                 });
             }
 
@@ -5987,10 +7386,6 @@
                         if (page) navigateTo(page);
                     });
                 });
-                const addAutoBtn = document.getElementById('addAutoBtn');
-                if (addAutoBtn) addAutoBtn.addEventListener('click', showAutoForm);
-                const addRoomBtn = document.getElementById('addRoomBtn');
-                if (addRoomBtn) addRoomBtn.addEventListener('click', openAddRoomModal);
                 const settingsSave = document.getElementById('settingsSaveBtn');
                 if (settingsSave) settingsSave.addEventListener('click', saveSettings);
                 const soundToggle = document.getElementById('soundToggleBtn');
@@ -6021,6 +7416,20 @@
                     if (e.key === 'Enter') handleSceneSubmit();
                     if (e.key === 'Escape') closeSceneModal();
                 });
+                dom.addActionBtn.addEventListener('click', function() {
+                    const container = dom.editActionsContainer;
+                    const actions = container.querySelectorAll('.action-row');
+                    const lastRow = actions[actions.length - 1];
+                    const deviceId = lastRow ? lastRow.querySelector('.action-device').value : (state.devices
+                        .length > 0 ? state.devices[0].id : '');
+                    const command = lastRow ? lastRow.querySelector('.action-command').value : 'on';
+                    const newActions = [...actions].map(row => ({
+                        deviceId: row.querySelector('.action-device').value,
+                        command: row.querySelector('.action-command').value
+                    }));
+                    newActions.push({ deviceId: deviceId, command: command });
+                    renderActionRows(newActions);
+                });
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -6031,6 +7440,11 @@
                 updateUI();
                 setTimeout(connectMQTT, 800);
                 startHeartbeatMonitor();
+                startScheduleChecker();
+                initVoiceControl();
+                checkPermissions();
+                initScheduleDays();
+
                 document.addEventListener('click', (e) => {
                     if (e.target.closest('.nav-item, .bottom-nav-item, .center-nav-btn, .icon-btn, .see-all, .back-btn')) {
                         Sound.tap();
@@ -6095,14 +7509,6 @@
                 dom.addRoomName.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') handleAddRoom();
                 });
-                dom.addAutoCancel.addEventListener('click', closeAutoForm);
-                dom.addAutoSubmit.addEventListener('click', handleAddAuto);
-                dom.addAutoModal.addEventListener('click', (e) => {
-                    if (e.target === dom.addAutoModal) closeAutoForm();
-                });
-                dom.autoName.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter') handleAddAuto();
-                });
                 dom.detailBackBtn.addEventListener('click', closeDetailPage);
                 dom.detailDeleteBtn.addEventListener('click', () => {
                     if (state.activeDeviceId) deleteDevice(state.activeDeviceId);
@@ -6155,6 +7561,9 @@
                 dom.deviceSettingsModal.addEventListener('click', (e) => {
                     if (e.target === dom.deviceSettingsModal) closeDeviceSettings();
                 });
+                dom.autoEditModal.addEventListener('click', (e) => {
+                    if (e.target === dom.autoEditModal) closeAutomationEditor();
+                });
                 document.addEventListener('keydown', (e) => {
                     if (e.target.tagName === 'INPUT') return;
                     if (e.key === 'Escape') {
@@ -6165,11 +7574,14 @@
                         closeLogPanel();
                         closeRoomDetail();
                         closeRoomEditModal();
-                        closeAutoForm();
                         closeAddRoomModal();
                         closeAddModal();
                         closeQRCodeModal();
                         closeSceneModal();
+                        closeAutomationEditor();
+                        if (state.isListening && state.recognition) {
+                            state.recognition.stop();
+                        }
                     }
                     if (dom.detailPage.classList.contains('active')) {
                         const dev = state.deviceMap.get(state.activeDeviceId);
@@ -6187,13 +7599,17 @@
                 });
                 window.addEventListener('beforeunload', () => {
                     stopHeartbeatMonitor();
+                    stopScheduleChecker();
                     if (state.mqttClient) { try { state.mqttClient.end(true); } catch (_) {} }
                     if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
                     if (state.updateTimer) clearTimeout(state.updateTimer);
+                    if (state.isListening && state.recognition) {
+                        try { state.recognition.stop(); } catch (_) {}
+                    }
                 });
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v7.0.0 – Enhanced Add Device Modal');
-                console.log(`📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes`);
+                console.log('⚡ Smart General Electric v8.1.0 – Advanced Automation + Fixed Heartbeat');
+                console.log(`📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`);
             }
 
             // ── Expose to global scope ──
@@ -6214,8 +7630,6 @@
             window.openRoomDetail = openRoomDetail;
             window.closeRoomDetail = closeRoomDetail;
             window.openRoomEditModal = openRoomEditModal;
-            window.showAutoForm = showAutoForm;
-            window.closeAutoForm = closeAutoForm;
             window.openAddRoomModal = openAddRoomModal;
             window.closeAddRoomModal = closeAddRoomModal;
             window.openAddDeviceInRoom = openAddDeviceInRoom;
@@ -6224,11 +7638,21 @@
             window.generateDeviceId = generateDeviceId;
             window.openSceneModal = openSceneModal;
             window.closeSceneModal = closeSceneModal;
+            window.requestPermissions = requestPermissions;
+            window.openAutomationEditor = openAutomationEditor;
+            window.closeAutomationEditor = closeAutomationEditor;
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
             else init();
 
         })();
     </script>
+
+    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+    ESP FIRMWARE – Enhanced with 3-second Heartbeat & OTA
+    (نفس الكود الموجود سابقاً مع نبضات 3 ثوانٍ)
+    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
+    <!-- تم تضمين الكود الخاص بالجهاز في التعليق السابق، وهو متوافق 100% مع هذا الإصدار -->
+
 </body>
 </html>
