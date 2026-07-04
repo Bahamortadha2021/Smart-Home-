@@ -4367,6 +4367,31 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  عند انقطاع التطبيق نفسه عن الخادم: لا يمكننا معرفة الحالة
+            //  الحقيقية لأي جهاز بعد الآن، فيجب ألا تبقى نقاط الأجهزة على
+            //  آخر لون مخزَّن (أخضر مثلاً) بينما التطبيق أصلاً غير متصل.
+            //  نضع كل الأجهزة في حالة "جاري الاتصال" حتى تُصحَّح تلقائيًا
+            //  فور استقبال أول رسالة heartbeat حقيقية بعد إعادة الاتصال.
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function markAllDevicesUnknown() {
+                let changed = false;
+                for (const dev of state.devices) {
+                    if (dev.online || !dev._connecting) {
+                        dev.online = false;
+                        dev._connecting = true;
+                        dev.lastHeartbeat = null;
+                        state.deviceLastHb.set(dev.id, null);
+                        state.deviceConnecting.set(dev.id, true);
+                        changed = true;
+                    }
+                }
+                if (changed) {
+                    saveDevices();
+                    debouncedUpdateUI();
+                }
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  SCHEDULE CHECKER (للأتمتة الزمنية)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function startScheduleChecker() {
@@ -4591,6 +4616,7 @@
                             state.connectionStable = false;
                             updateConnectionBanner();
                             Sound.disconnected();
+                            markAllDevicesUnknown();
                             scheduleReconnect();
                         }
                     });
@@ -4604,6 +4630,7 @@
                             addLog('🔌 انقطع الاتصال بالخادم', 'warning', true);
                             updateConnectionBanner();
                             Sound.disconnected();
+                            markAllDevicesUnknown();
                             scheduleReconnect();
                         }
                     });
@@ -4650,15 +4677,35 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT MESSAGE HANDLER – FIXED HEARTBEAT
+            //  تحديد الجهاز من موضوع MQTT الوارد
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  معرّفات الأجهزة في هذا التطبيق تحتوي على أكثر من جزء
+            //  (مثال: "light/bedroom/rT5hG8kL") — لذا لا يصح أخذ أول
+            //  جزء فقط من المسار كمعرّف (كان هذا هو سبب بقاء النقطة
+            //  برتقالية دائمًا رغم أن الجهاز يعمل فعليًا: نبضة heartbeat
+            //  ورسائل status كانت تصل، لكن التطبيق يفشل في مطابقتها مع
+            //  الجهاز الصحيح فيتجاهلها بالكامل). الحل: نبحث عن أطول
+            //  معرّف جهاز مسجَّل يُطابق بداية المسار الوارد.
+            function resolveDeviceFromTopic(topic) {
+                let matched = null;
+                for (const dev of state.devices) {
+                    const prefix = dev.id + '/';
+                    if (topic.startsWith(prefix) && (!matched || dev.id.length > matched.id.length)) {
+                        matched = dev;
+                    }
+                }
+                if (!matched) return null;
+                return { device: matched, sub: topic.slice(matched.id.length + 1) };
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  MQTT MESSAGE HANDLER – FIXED HEARTBEAT + FIXED DEVICE MATCHING
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function handleMqttMessage(topic, msg) {
-                const parts = topic.split('/');
-                if (parts.length < 2) return;
-                const deviceId = parts[0];
-                const sub = parts.slice(1).join('/');
-                const device = state.deviceMap.get(deviceId);
-                if (!device) return;
+                const resolved = resolveDeviceFromTopic(topic);
+                if (!resolved) return;
+                const { device, sub } = resolved;
+                const deviceId = device.id;
                 let updated = false;
                 let oldState = '';
 
@@ -7437,6 +7484,10 @@
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function init() {
                 loadAll();
+                // عند فتح التطبيق من جديد: لا نعرض آخر حالة اتصال محفوظة محليًا
+                // (قد تكون قديمة/غير صحيحة)، بل نبدأ بحالة "جاري الاتصال" لكل
+                // جهاز إلى أن تصل نبضة حقيقية بعد نجاح الاتصال بالخادم.
+                markAllDevicesUnknown();
                 updateUI();
                 setTimeout(connectMQTT, 800);
                 startHeartbeatMonitor();
