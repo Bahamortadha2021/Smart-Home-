@@ -2877,7 +2877,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Bottom Nav
+           Bottom Nav – زر الميكروفون في الجانب الأيمن
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .bottom-nav {
             display: none;
@@ -2918,6 +2918,47 @@
         }
         .bottom-nav-item:hover {
             color: var(--text-primary);
+        }
+        /* زر الميكروفون في الجانب الأيمن */
+        .bottom-nav .voice-nav-btn {
+            flex: 0 0 auto;
+            margin: 0 4px;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 3px solid var(--surface);
+            box-shadow: 0 4px 12px rgba(11, 61, 145, 0.3);
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .bottom-nav .voice-nav-btn:active {
+            transform: scale(0.88);
+        }
+        .bottom-nav .voice-nav-btn.voice-active {
+            background: var(--success);
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.5);
+            animation: pulse-voice 1.2s ease-in-out infinite;
+        }
+        .bottom-nav .voice-nav-btn .badge-voice {
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            background: var(--danger);
+            color: #fff;
+            font-size: 0.5rem;
+            font-weight: 700;
+            padding: 2px 6px;
+            border-radius: 20px;
+            min-width: 16px;
+            text-align: center;
+            border: 2px solid var(--surface);
         }
         .bottom-nav .center-btn-wrapper {
             flex: 0 0 auto;
@@ -3105,6 +3146,11 @@
                 width: 48px;
                 height: 48px;
                 font-size: 1.3rem;
+            }
+            .bottom-nav .voice-nav-btn {
+                width: 44px;
+                height: 44px;
+                font-size: 1.2rem;
             }
             .scene-tile {
                 flex: 0 0 90px;
@@ -3386,6 +3432,29 @@
         .days-grid .day-btn:hover {
             transform: scale(1.05);
         }
+
+        /* تنسيق حقل الأمر الصوتي في الإعدادات */
+        .voice-command-input {
+            direction: ltr;
+            font-family: 'Cairo', sans-serif;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            padding: 8px 12px;
+            width: 100%;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+        }
+        .voice-command-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px var(--primary-light);
+        }
+        .voice-command-hint {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
     </style>
 </head>
 <body>
@@ -3416,9 +3485,7 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <button class="icon-btn" id="voiceBtn" title="التحكم الصوتي">
-                        <i class="fas fa-microphone"></i>
-                    </button>
+                    <!-- تم إزالة زر الميكروفون من الأعلى ووضعه في المنيو السفلي -->
                     <div class="notif-bell">
                         <button class="icon-btn" id="notifBellBtn" title="الإشعارات">
                             <i class="fas fa-bell"></i>
@@ -3482,7 +3549,7 @@
     Modals
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 
-    <!-- Device Settings Modal -->
+    <!-- Device Settings Modal (يحتوي حقل الأمر الصوتي) -->
     <div class="modal-overlay" id="deviceSettingsModal">
         <div class="modal-box">
             <h3 class="modal-title"><i class="fas fa-sliders-h"></i> إعدادات الجهاز</h3>
@@ -3512,7 +3579,7 @@
         </div>
     </div>
 
-    <!-- Add Device Modal (مع زر نسخ ID) -->
+    <!-- Add Device Modal (أزرار توليد ونسخ فوق حقل المعرف) -->
     <div class="modal-overlay" id="addModal">
         <div class="modal-box">
             <h3 class="modal-title">➕ إضافة جهاز جديد</h3>
@@ -3523,11 +3590,11 @@
             </div>
             <div class="form-group">
                 <label>معرف الجهاز (Device ID)</label>
-                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
-                    <input id="addDeviceId" placeholder="مثل: garage/all_rooms/B9ABdV9s" style="flex:1;direction:ltr;font-family:monospace;min-width:120px;" />
-                    <button class="btn-small primary" id="generateIdBtn" style="white-space:nowrap;padding:8px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:600;cursor:pointer;">🔄 توليد</button>
-                    <button class="btn-small primary" id="copyIdBtn" style="white-space:nowrap;padding:8px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--accent-gold);color:#fff;font-weight:600;cursor:pointer;">📋 نسخ</button>
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-bottom:6px;">
+                    <button class="btn-small primary" id="generateIdBtn" style="padding:6px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:600;cursor:pointer;">🔄 توليد</button>
+                    <button class="btn-small primary" id="copyIdBtn" style="padding:6px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--accent-gold);color:#fff;font-weight:600;cursor:pointer;">📋 نسخ</button>
                 </div>
+                <input id="addDeviceId" placeholder="مثل: garage/all_rooms/B9ABdV9s" style="width:100%;direction:ltr;font-family:monospace;padding:10px 14px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.95rem;" />
                 <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">الصيغة: <span style="direction:ltr;font-family:monospace;">نوع/اسم_الغرفة_بالانجليزية/8أحرف_عشوائية</span></div>
             </div>
             <div class="form-group">
@@ -3554,7 +3621,7 @@
         </div>
     </div>
 
-    <!-- Automation Editor Modal (متطورة) -->
+    <!-- Automation Editor Modal -->
     <div class="modal-overlay" id="autoEditModal">
         <div class="modal-box" style="max-width:660px;">
             <h3 class="modal-title"><i class="fas fa-robot"></i> <span id="autoEditTitle">إضافة أتمتة جديدة</span></h3>
@@ -3574,7 +3641,6 @@
                 </select>
             </div>
 
-            <!-- مشغل الجهاز -->
             <div id="editTriggerDeviceGroup" class="form-group">
                 <label><i class="fas fa-microchip"></i> الجهاز المشغّل</label>
                 <select id="editTriggerDevice"></select>
@@ -3590,7 +3656,6 @@
                 </select>
             </div>
 
-            <!-- مشغل الجدول الزمني -->
             <div id="editScheduleGroup" class="form-group" style="display:none;">
                 <label><i class="fas fa-calendar-alt"></i> الأيام</label>
                 <div class="days-grid" id="editScheduleDays">
@@ -3608,7 +3673,6 @@
                 </div>
             </div>
 
-            <!-- مشغل النطاق الزمني -->
             <div id="editTimeRangeGroup" class="form-group" style="display:none;">
                 <label><i class="fas fa-hourglass-half"></i> النطاق الزمني</label>
                 <div style="display:flex;gap:12px;flex-wrap:wrap;">
@@ -3624,7 +3688,6 @@
                 <div class="modal-sub">يتم تنفيذ الأتمتة إذا كان الوقت الحالي بين هذين الوقتين</div>
             </div>
 
-            <!-- الإجراءات المتعددة -->
             <div class="form-group">
                 <label><i class="fas fa-list-ul"></i> الإجراءات (يمكنك إضافة أكثر من إجراء)</label>
                 <div id="editActionsContainer"></div>
@@ -3743,20 +3806,25 @@
         </div>
     </div>
 
-    <!-- Bottom Nav -->
+    <!-- Bottom Nav (مع زر الميكروفون في الجانب الأيمن) -->
     <nav class="bottom-nav" id="bottomNav">
         <button class="bottom-nav-item" data-page="devices"><i class="fas fa-microchip"></i> الأجهزة</button>
         <button class="bottom-nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
         <div class="center-btn-wrapper"><button class="center-nav-btn active" id="homeNavBtn" data-page="dashboard"><i class="fas fa-home"></i></button></div>
         <button class="bottom-nav-item" data-page="scenes"><i class="fas fa-magic"></i> المشاهد</button>
-        <button class="bottom-nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
+        <div style="display:flex;align-items:center;gap:4px;">
+            <button class="bottom-nav-item" data-page="settings"><i class="fas fa-cog"></i> الإعدادات</button>
+            <button class="voice-nav-btn" id="voiceNavBtn" title="التحكم الصوتي">
+                <i class="fas fa-microphone"></i>
+            </button>
+        </div>
     </nav>
 
     <!-- Toast -->
     <div id="toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    JAVASCRIPT – Fully Updated with Advanced Automation & Fixed Heartbeat
+    JAVASCRIPT
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <script>
         (function() {
@@ -3883,7 +3951,7 @@
                 deviceConnecting: new Map(),
                 editingAutoId: null,
                 scheduleCheckerInterval: null,
-                // نظام الأصوات المخصصة
+                // الأصوات المخصصة
                 customSounds: {},
                 soundMapping: {
                     success: null,
@@ -3898,6 +3966,8 @@
                     offline: null,
                     delete: null,
                 },
+                // خريطة الأوامر الصوتية المخصصة لكل جهاز
+                voiceCommands: {}, // deviceId => { on: 'phrase', off: 'phrase', open: 'phrase', close: 'phrase' }
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3985,7 +4055,8 @@
                 sceneDeviceList: $('sceneDeviceList'),
                 sceneModalCancel: $('sceneModalCancel'),
                 sceneModalSubmit: $('sceneModalSubmit'),
-                voiceBtn: $('voiceBtn'),
+                // زر الميكروفون في المنيو السفلي
+                voiceNavBtn: $('voiceNavBtn'),
                 autoEditModal: $('autoEditModal'),
                 editAutoId: $('editAutoId'),
                 editAutoName: $('editAutoName'),
@@ -4078,12 +4149,10 @@
                 return audioCtx;
             }
 
-            // تحميل صوت مخصص من base64
             async function loadCustomSound(base64Data) {
                 try {
                     const ctx = getAudioCtx();
                     if (!ctx) return null;
-                    // تحويل base64 إلى ArrayBuffer
                     const binary = atob(base64Data);
                     const len = binary.length;
                     const bytes = new Uint8Array(len);
@@ -4098,13 +4167,10 @@
                 }
             }
 
-            // تشغيل صوت مخصص أو توليدي
             function playCustomSound(soundId, masterGain = 0.2) {
                 if (!state.soundEnabled) return;
                 const ctx = getAudioCtx();
                 if (!ctx) return;
-
-                // التحقق من وجود صوت مخصص لهذا المعرف
                 const mapping = state.soundMapping[soundId];
                 if (mapping && state.customSounds[mapping]) {
                     const buffer = soundCache[mapping];
@@ -4120,8 +4186,6 @@
                         } catch (e) { console.warn('فشل تشغيل الصوت المخصص:', e); }
                     }
                 }
-
-                // إذا لم يوجد صوت مخصص، استخدم الأصوات التوليدية
                 playTonesForSound(soundId, masterGain);
             }
 
@@ -4171,7 +4235,6 @@
                 });
             }
 
-            // واجهة الصوت الموحدة
             const Sound = {
                 tap() { playCustomSound('tap', 0.10); },
                 toggleOn() { playCustomSound('toggleOn', 0.16); },
@@ -4188,20 +4251,18 @@
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  إدارة الأصوات المخصصة – تحميل / حفظ
+            //  إدارة الأصوات المخصصة
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function saveCustomSounds() {
                 try {
-                    // لا نحفظ البيانات الضخمة في localStorage (نحتفظ بالمراجع فقط)
                     const soundNames = Object.keys(state.customSounds);
                     const toSave = {};
                     for (const name of soundNames) {
                         if (state.customSounds[name]) {
-                            toSave[name] = state.customSounds[name]; // base64
+                            toSave[name] = state.customSounds[name];
                         }
                     }
                     localStorage.setItem('sge_custom_sounds', JSON.stringify(toSave));
-                    // حفظ خريطة الصوت
                     localStorage.setItem('sge_sound_mapping', JSON.stringify(state.soundMapping));
                 } catch (_) {}
             }
@@ -4212,7 +4273,6 @@
                     if (raw) {
                         const parsed = JSON.parse(raw);
                         state.customSounds = parsed || {};
-                        // تحميل المخازن المؤقتة للصوت
                         for (const [name, base64] of Object.entries(state.customSounds)) {
                             loadCustomSound(base64).then(buf => {
                                 if (buf) soundCache[name] = buf;
@@ -4259,7 +4319,6 @@
             function resetCustomSound(soundKey) {
                 delete state.customSounds[soundKey];
                 delete soundCache[soundKey];
-                // إعادة تعيين الخريطة
                 for (const [k, v] of Object.entries(state.soundMapping)) {
                     if (v === soundKey) state.soundMapping[k] = null;
                 }
@@ -4367,6 +4426,16 @@
                     localStorage.setItem('sge_notif_unread', state.unreadCount);
                 } catch (_) {}
             }
+            // حفظ الأوامر الصوتية
+            function saveVoiceCommands() {
+                try { localStorage.setItem('sge_voice_commands', JSON.stringify(state.voiceCommands)); } catch (_) {}
+            }
+            function loadVoiceCommands() {
+                try {
+                    const raw = localStorage.getItem('sge_voice_commands');
+                    if (raw) state.voiceCommands = JSON.parse(raw);
+                } catch (_) {}
+            }
 
             function upgradeAutomations() {
                 let upgraded = false;
@@ -4466,6 +4535,7 @@
                     else if (state.devices.length) state.activeDeviceId = state.devices[0].id;
                     loadNotifications();
                     loadCustomSounds();
+                    loadVoiceCommands();
                 } catch (_) { console.warn('Storage error'); }
             }
 
@@ -4678,7 +4748,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SCHEDULE CHECKER (للأتمتة الزمنية)
+            //  SCHEDULE CHECKER
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function startScheduleChecker() {
                 if (state.scheduleCheckerInterval) clearInterval(state.scheduleCheckerInterval);
@@ -4703,7 +4773,6 @@
                         }
 
                         if (shouldTrigger) {
-                            // تأكد من عدم التنفيذ مرتين في نفس الدقيقة
                             const lastRun = auto._lastRun || '';
                             if (lastRun === currentTime) continue;
                             auto._lastRun = currentTime;
@@ -5092,7 +5161,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  EXECUTE AUTOMATION ACTIONS (Core)
+            //  EXECUTE AUTOMATION ACTIONS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function executeAutomationActions(auto) {
                 if (!auto.actions || auto.actions.length === 0) return;
@@ -5470,6 +5539,9 @@
                     }
                     return true;
                 });
+                // حذف الأوامر الصوتية
+                delete state.voiceCommands[id];
+                saveVoiceCommands();
                 saveDevices();
                 saveSchedules();
                 saveScenes();
@@ -5677,7 +5749,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE SETTINGS
+            //  DEVICE SETTINGS (مع حقل الأمر الصوتي)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDeviceSettings(deviceId) {
                 state.editingDeviceId = deviceId;
@@ -5709,6 +5781,14 @@
                         `<div class="icon-option ${sel}" data-icon="${icon}" data-action="pick-icon"><i class="fas ${icon}"></i></div>`;
                 }
                 iconPickerHtml += `</div><input type="hidden" id="selectedIcon" value="${currentIcon}" />`;
+
+                // الأوامر الصوتية المخصصة لهذا الجهاز
+                const voiceCmd = state.voiceCommands[dev.id] || { on: '', off: '', open: '', close: '' };
+                const onCmd = voiceCmd.on || '';
+                const offCmd = voiceCmd.off || '';
+                const openCmd = voiceCmd.open || '';
+                const closeCmd = voiceCmd.close || '';
+
                 dom.deviceSettingsBody.innerHTML = `
                         <div class="form-group" style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
                             <div style="flex:1;min-width:200px;">
@@ -5729,6 +5809,26 @@
                         <div class="form-group"><label>الرمز المخصص <span style="font-size:0.75rem;color:var(--text-muted);">(اختر أيقونة للجهاز)</span></label>${iconPickerHtml}</div>
                         ${dev.type === 3 ? `<div class="form-group"><label>اللون</label><input type="color" id="editDeviceColor" value="${dev.color || '#ffaa33'}" style="width:100%;padding:4px;height:48px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);cursor:pointer;" /></div>` : ''}
                         ${dev.type === 1 ? `<div class="form-group"><label>لون الباب</label><input type="color" id="editDoorColor" value="${dev.doorColor || '#3b82f6'}" style="width:100%;padding:4px;height:48px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);cursor:pointer;" /></div>` : ''}
+                        <div class="form-group">
+                            <label><i class="fas fa-microphone"></i> الأوامر الصوتية المخصصة</label>
+                            <div style="display:flex;flex-direction:column;gap:8px;">
+                                <div><label style="font-weight:400;font-size:0.8rem;">تشغيل (ON)</label>
+                                    <input class="voice-command-input" id="voiceCmdOn" value="${escHtml(onCmd)}" placeholder="مثل: شغل النور" />
+                                </div>
+                                <div><label style="font-weight:400;font-size:0.8rem;">إيقاف (OFF)</label>
+                                    <input class="voice-command-input" id="voiceCmdOff" value="${escHtml(offCmd)}" placeholder="مثل: طفي النور" />
+                                </div>
+                                ${dev.type === 1 ? `
+                                <div><label style="font-weight:400;font-size:0.8rem;">فتح (OPEN)</label>
+                                    <input class="voice-command-input" id="voiceCmdOpen" value="${escHtml(openCmd)}" placeholder="مثل: افتح الباب" />
+                                </div>
+                                <div><label style="font-weight:400;font-size:0.8rem;">إغلاق (CLOSE)</label>
+                                    <input class="voice-command-input" id="voiceCmdClose" value="${escHtml(closeCmd)}" placeholder="مثل: اقفل الباب" />
+                                </div>
+                                ` : ''}
+                            </div>
+                            <div class="voice-command-hint">يمكنك تخصيص أمر صوتي لكل جهاز ليتعرف عليه النظام.</div>
+                        </div>
                         <div class="modal-actions-row">
                             <button class="btn-danger" id="editDeviceDelete">🗑️ حذف</button>
                             <button class="btn-primary" id="editDeviceSave">💾 حفظ</button>
@@ -5764,6 +5864,12 @@
                     const selectedIcon = document.getElementById('selectedIcon').value;
                     const color = document.getElementById('editDeviceColor')?.value;
                     const doorColor = document.getElementById('editDoorColor')?.value;
+                    // قراءة الأوامر الصوتية
+                    const voiceOn = document.getElementById('voiceCmdOn').value.trim();
+                    const voiceOff = document.getElementById('voiceCmdOff').value.trim();
+                    const voiceOpen = document.getElementById('voiceCmdOpen')?.value.trim() || '';
+                    const voiceClose = document.getElementById('voiceCmdClose')?.value.trim() || '';
+
                     if (!name) { showToast('⚠️ أدخل اسماً', 'error'); return; }
                     if (!newId) { showToast('⚠️ أدخل معرفاً', 'error'); return; }
                     const idChanged = (newId !== dev.id);
@@ -5829,9 +5935,23 @@
                             client.subscribe(newId + '/system/vacation', { qos: 1 });
                             client.subscribe(newId + '/system/heartbeat', { qos: 1 });
                         }
+                        // تحديث الأوامر الصوتية
+                        if (state.voiceCommands[oldId]) {
+                            state.voiceCommands[newId] = state.voiceCommands[oldId];
+                            delete state.voiceCommands[oldId];
+                        }
                         addLog(`🔄 تغيير معرف الجهاز: ${oldId} → ${newId}`, 'warning');
                         showToast(`✅ تم تغيير المعرف إلى ${newId}`, 'success');
                     }
+                    // حفظ الأوامر الصوتية
+                    const cmds = { on: voiceOn, off: voiceOff, open: voiceOpen, close: voiceClose };
+                    if (voiceOn || voiceOff || voiceOpen || voiceClose) {
+                        state.voiceCommands[dev.id] = cmds;
+                    } else {
+                        delete state.voiceCommands[dev.id];
+                    }
+                    saveVoiceCommands();
+
                     if (dev.icon !== selectedIcon) addLog(`🎨 تغيير رمز ${dev.name} إلى ${selectedIcon}`, 'info');
                     saveDevices();
                     saveScenes();
@@ -7050,7 +7170,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SETTINGS (مع إدارة الأصوات المخصصة)
+            //  SETTINGS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderSettingsPage() {
                 const micStatus = state.permMicrophone;
@@ -7062,7 +7182,6 @@
                     camStatus === 'denied' ? '<span class="perm-badge denied">❌ ممنوع</span>' :
                     '<span class="perm-badge prompt">⏳ ينتظر</span>';
 
-                // بناء قائمة إدارة الأصوات
                 const soundItems = [
                     { key: 'success', label: '✅ نجاح' },
                     { key: 'error', label: '❌ خطأ' },
@@ -7190,7 +7309,7 @@
                     ['sge_devices', 'sge_scenes', 'sge_automations', 'sge_logs', 'sge_rooms',
                         'sge_active_device', 'sge_schedules', 'sge_alarms', 'sge_notifications',
                         'sge_server', 'sge_username', 'sge_password', 'sge_theme', 'sge_sound', 'sge_notify',
-                        'sge_vacation', 'sge_custom_sounds', 'sge_sound_mapping'
+                        'sge_vacation', 'sge_custom_sounds', 'sge_sound_mapping', 'sge_voice_commands'
                     ].forEach(k => localStorage.removeItem(k));
                     location.reload();
                 } catch (_) { showToast('❌ حدث خطأ', 'error'); }
@@ -7435,14 +7554,14 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  VOICE CONTROL
+            //  VOICE CONTROL – متطور مع الأوامر المخصصة وزر في المنيو السفلي
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function initVoiceControl() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
                 if (!SpeechRecognition) {
                     console.warn('Voice control not supported');
-                    dom.voiceBtn.style.opacity = '0.5';
-                    dom.voiceBtn.title = 'التحكم الصوتي غير مدعوم';
+                    dom.voiceNavBtn.style.opacity = '0.5';
+                    dom.voiceNavBtn.title = 'التحكم الصوتي غير مدعوم';
                     return;
                 }
                 const recognition = new SpeechRecognition();
@@ -7454,16 +7573,16 @@
 
                 recognition.onstart = function() {
                     state.isListening = true;
-                    dom.voiceBtn.classList.add('voice-active');
-                    dom.voiceBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
+                    dom.voiceNavBtn.classList.add('voice-active');
+                    dom.voiceNavBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
                     showToast('🎤 استمع... تحدث الآن', 'info', '🎤', true);
                 };
 
                 recognition.onerror = function(event) {
                     console.error('Voice error:', event.error);
                     state.isListening = false;
-                    dom.voiceBtn.classList.remove('voice-active');
-                    dom.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    dom.voiceNavBtn.classList.remove('voice-active');
+                    dom.voiceNavBtn.innerHTML = '<i class="fas fa-microphone"></i>';
                     if (event.error === 'not-allowed') {
                         state.permMicrophone = 'denied';
                         showToast('⚠️ تم رفض الوصول إلى الميكروفون. يرجى السماح من إعدادات المتصفح.', 'warning', '🎤');
@@ -7478,18 +7597,18 @@
 
                 recognition.onend = function() {
                     state.isListening = false;
-                    dom.voiceBtn.classList.remove('voice-active');
-                    dom.voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    dom.voiceNavBtn.classList.remove('voice-active');
+                    dom.voiceNavBtn.innerHTML = '<i class="fas fa-microphone"></i>';
                 };
 
                 recognition.onresult = function(event) {
-                    const transcript = event.results[0][0].transcript;
+                    const transcript = event.results[0][0].transcript.toLowerCase().trim();
                     showToast(`🎤 سمعت: "${transcript}"`, 'info', '🎤', true);
                     addLog(`🎤 أمر صوتي: ${transcript}`, 'info');
                     processVoiceCommand(transcript);
                 };
 
-                dom.voiceBtn.addEventListener('click', function() {
+                dom.voiceNavBtn.addEventListener('click', function() {
                     if (state.isListening) {
                         recognition.stop();
                         return;
@@ -7509,59 +7628,91 @@
             }
 
             function processVoiceCommand(transcript) {
-                const lower = transcript.toLowerCase();
-                let action = null;
-                if (lower.includes('تشغيل') || lower.includes('شغل') || lower.includes('on')) {
-                    action = 'on';
-                } else if (lower.includes('إيقاف') || lower.includes('أوقف') || lower.includes('off') || lower.includes(
-                    'اطفي')) {
-                    action = 'off';
-                } else if (lower.includes('فتح') || lower.includes('افتح')) {
-                    action = 'open';
-                } else if (lower.includes('إغلاق') || lower.includes('اغلق') || lower.includes('قفل')) {
-                    action = 'close';
-                } else if (lower.includes('توقف') || lower.includes('stop')) {
-                    action = 'stop';
-                }
-                if (!action) {
-                    showToast('⚠️ لم يتم التعرف على أمر (تشغيل/إيقاف/فتح/إغلاق)', 'warning', '🎤');
-                    return;
-                }
+                // البحث عن جهاز يطابق أمراً صوتياً مخصصاً
                 let matchedDevice = null;
+                let matchedAction = null;
                 let bestScore = 0;
+
                 for (const dev of state.devices) {
-                    const devName = dev.name.toLowerCase();
-                    if (lower.includes(devName)) {
-                        if (devName.length > bestScore) {
-                            bestScore = devName.length;
-                            matchedDevice = dev;
+                    const cmds = state.voiceCommands[dev.id];
+                    if (!cmds) continue;
+                    const entries = [
+                        { phrase: cmds.on, action: 'on' },
+                        { phrase: cmds.off, action: 'off' },
+                        { phrase: cmds.open, action: 'open' },
+                        { phrase: cmds.close, action: 'close' },
+                    ];
+                    for (const entry of entries) {
+                        if (!entry.phrase) continue;
+                        const phrase = entry.phrase.toLowerCase().trim();
+                        if (transcript.includes(phrase)) {
+                            const score = phrase.length;
+                            if (score > bestScore) {
+                                bestScore = score;
+                                matchedDevice = dev;
+                                matchedAction = entry.action;
+                            }
                         }
                     }
                 }
+
+                // إذا لم يتم العثور على أمر مخصص، استخدم الكلمات العامة
                 if (!matchedDevice) {
+                    let action = null;
+                    if (transcript.includes('تشغيل') || transcript.includes('شغل') || transcript.includes('on')) {
+                        action = 'on';
+                    } else if (transcript.includes('إيقاف') || transcript.includes('أوقف') || transcript.includes('off') ||
+                        transcript.includes('اطفي')) {
+                        action = 'off';
+                    } else if (transcript.includes('فتح') || transcript.includes('افتح')) {
+                        action = 'open';
+                    } else if (transcript.includes('إغلاق') || transcript.includes('اغلق') || transcript.includes('قفل')) {
+                        action = 'close';
+                    } else if (transcript.includes('توقف') || transcript.includes('stop')) {
+                        action = 'stop';
+                    }
+                    if (!action) {
+                        showToast('⚠️ لم يتم التعرف على أمر (تشغيل/إيقاف/فتح/إغلاق)', 'warning', '🎤');
+                        return;
+                    }
+                    // البحث عن جهاز باسمه
+                    let bestNameScore = 0;
                     for (const dev of state.devices) {
-                        const room = dev.room.toLowerCase();
-                        if (lower.includes(room)) {
-                            if (room.length > bestScore) {
-                                bestScore = room.length;
+                        const devName = dev.name.toLowerCase();
+                        if (transcript.includes(devName)) {
+                            if (devName.length > bestNameScore) {
+                                bestNameScore = devName.length;
                                 matchedDevice = dev;
                             }
                         }
                     }
                     if (!matchedDevice) {
-                        showToast('⚠️ لم يتم التعرف على الجهاز المطلوب', 'warning', '🎤');
-                        return;
+                        // البحث بالغرفة
+                        for (const dev of state.devices) {
+                            const room = dev.room.toLowerCase();
+                            if (transcript.includes(room)) {
+                                if (room.length > bestNameScore) {
+                                    bestNameScore = room.length;
+                                    matchedDevice = dev;
+                                }
+                            }
+                        }
+                        if (!matchedDevice) {
+                            showToast('⚠️ لم يتم التعرف على الجهاز المطلوب', 'warning', '🎤');
+                            return;
+                        }
                     }
+                    matchedAction = action;
                 }
+
                 const dev = matchedDevice;
+                const action = matchedAction;
                 const type = dev.type;
+
                 if (type === 1) {
-                    if (action === 'open') { doorCommand(dev.id, 'OPEN'); } else if (action === 'close') { doorCommand(dev
-                            .id, 'CLOSE'); } else if (action === 'stop') { doorCommand(dev.id, 'STOP'); } else if (action ===
+                    if (action === 'open') { doorCommand(dev.id, 'OPEN'); } else if (action === 'close') { doorCommand(dev.id,
+                            'CLOSE'); } else if (action === 'stop') { doorCommand(dev.id, 'STOP'); } else if (action ===
                         'on') { doorCommand(dev.id, 'OPEN'); } else if (action === 'off') { doorCommand(dev.id, 'CLOSE'); }
-                } else if (type === 3 || type === 5 || type === 6) {
-                    if (action === 'on') { toggleDevice(dev.id); } else if (action === 'off') { toggleDevice(dev.id); } else if (
-                        action === 'open' || action === 'close') { toggleDevice(dev.id); }
                 } else {
                     if (action === 'on') { toggleDevice(dev.id); } else if (action === 'off') { toggleDevice(dev.id); } else if (
                         action === 'open' || action === 'close') { toggleDevice(dev.id); }
@@ -7675,9 +7826,19 @@
                 document.querySelectorAll('.nav-item, .bottom-nav-item, .center-nav-btn').forEach(el => {
                     el.classList.toggle('active', el.dataset.page === page);
                 });
+                // تحديث زر الميكروفون في المنيو السفلي
+                const voiceBtn = dom.voiceNavBtn;
+                if (voiceBtn) {
+                    if (state.isListening) {
+                        voiceBtn.classList.add('voice-active');
+                        voiceBtn.innerHTML = '<i class="fas fa-microphone-alt"></i>';
+                    } else {
+                        voiceBtn.classList.remove('voice-active');
+                        voiceBtn.innerHTML = '<i class="fas fa-microphone"></i>';
+                    }
+                }
                 if (page === 'settings') {
                     updateDiagnosticPanel();
-                    // إعدادات الأصوات المخصصة
                     setTimeout(() => {
                         document.querySelectorAll('[data-action="play-sound"]').forEach(btn => {
                             btn.addEventListener('click', function() {
@@ -7737,7 +7898,6 @@
                                 showToast('📋 تم نسخ المعرف', 'success', '📋');
                                 Sound.tap();
                             }).catch(() => {
-                                // Fallback
                                 idInput.select();
                                 document.execCommand('copy');
                                 showToast('📋 تم نسخ المعرف', 'success', '📋');
@@ -8044,7 +8204,7 @@
                     }
                 });
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v8.1.0 – Advanced Automation + Custom Sounds');
+                console.log('⚡ Smart General Electric v8.1.0 – Advanced Automation + Custom Sounds + Voice Commands');
                 console.log(`📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`);
             }
 
