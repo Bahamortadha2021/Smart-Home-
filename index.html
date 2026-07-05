@@ -1686,7 +1686,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Automation (متطورة)
+           Automation (متطورة) - Enhanced
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .automation-stats {
             display: grid;
@@ -1882,6 +1882,36 @@
             border-radius: 12px;
             cursor: pointer;
         }
+        /* محرر الأتمتة المتقدم - مجموعات الشرط */
+        .condition-group {
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-sm);
+            padding: 12px 14px;
+            border: 1px solid var(--border-color);
+            margin-bottom: 10px;
+        }
+        .condition-group .condition-row {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 4px;
+        }
+        .condition-group .condition-row select,
+        .condition-group .condition-row input {
+            padding: 6px 10px;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+            background: var(--surface);
+            color: var(--text-primary);
+            font-size: 0.85rem;
+        }
+        .condition-group .condition-row .logic-label {
+            font-weight: 600;
+            color: var(--primary);
+            font-size: 0.8rem;
+            padding: 0 4px;
+        }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
            Settings
@@ -1953,6 +1983,79 @@
         }
         .conn-diagnostic .diag-info {
             color: var(--primary);
+        }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           Sound Management
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .sound-manager {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        .sound-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 14px;
+            background: var(--bg-primary);
+            border-radius: var(--border-radius-sm);
+            border: 1px solid var(--border-color);
+            flex-wrap: wrap;
+        }
+        .sound-item .sound-label {
+            font-weight: 600;
+            min-width: 100px;
+            font-size: 0.85rem;
+        }
+        .sound-item .sound-preview {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex: 1;
+            min-width: 100px;
+        }
+        .sound-item .sound-preview button {
+            padding: 4px 14px;
+            border: none;
+            border-radius: 20px;
+            background: var(--primary);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+        }
+        .sound-item .sound-preview .file-name {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+        .sound-item input[type="file"] {
+            display: none;
+        }
+        .sound-item .upload-btn {
+            padding: 4px 14px;
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            background: var(--surface);
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.7rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        .sound-item .upload-btn:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+        }
+        .sound-item .reset-btn {
+            padding: 4px 12px;
+            border: none;
+            border-radius: 20px;
+            background: var(--danger);
+            color: #fff;
+            font-weight: 600;
+            font-size: 0.65rem;
+            cursor: pointer;
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3409,7 +3512,7 @@
         </div>
     </div>
 
-    <!-- Add Device Modal -->
+    <!-- Add Device Modal (مع زر نسخ ID) -->
     <div class="modal-overlay" id="addModal">
         <div class="modal-box">
             <h3 class="modal-title">➕ إضافة جهاز جديد</h3>
@@ -3420,9 +3523,10 @@
             </div>
             <div class="form-group">
                 <label>معرف الجهاز (Device ID)</label>
-                <div style="display:flex;gap:8px;align-items:center;">
-                    <input id="addDeviceId" placeholder="مثل: garage/all_rooms/B9ABdV9s" style="flex:1;direction:ltr;font-family:monospace;" />
+                <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap;">
+                    <input id="addDeviceId" placeholder="مثل: garage/all_rooms/B9ABdV9s" style="flex:1;direction:ltr;font-family:monospace;min-width:120px;" />
                     <button class="btn-small primary" id="generateIdBtn" style="white-space:nowrap;padding:8px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:600;cursor:pointer;">🔄 توليد</button>
+                    <button class="btn-small primary" id="copyIdBtn" style="white-space:nowrap;padding:8px 14px;border:none;border-radius:var(--border-radius-sm);background:var(--accent-gold);color:#fff;font-weight:600;cursor:pointer;">📋 نسخ</button>
                 </div>
                 <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">الصيغة: <span style="direction:ltr;font-family:monospace;">نوع/اسم_الغرفة_بالانجليزية/8أحرف_عشوائية</span></div>
             </div>
@@ -3452,10 +3556,10 @@
 
     <!-- Automation Editor Modal (متطورة) -->
     <div class="modal-overlay" id="autoEditModal">
-        <div class="modal-box" style="max-width:640px;">
+        <div class="modal-box" style="max-width:660px;">
             <h3 class="modal-title"><i class="fas fa-robot"></i> <span id="autoEditTitle">إضافة أتمتة جديدة</span></h3>
             <input type="hidden" id="editAutoId" value="" />
-            
+
             <div class="form-group">
                 <label><i class="fas fa-tag"></i> اسم الأتمتة</label>
                 <input id="editAutoName" placeholder="مثل: إضاءة الصباح" />
@@ -3466,6 +3570,7 @@
                 <select id="editTriggerType">
                     <option value="device">جهاز (حالة/حدث)</option>
                     <option value="schedule">جدول زمني (وقت محدد)</option>
+                    <option value="time_range">نطاق زمني (بين وقتين)</option>
                 </select>
             </div>
 
@@ -3481,6 +3586,7 @@
                     <option value="off">إيقاف (OFF)</option>
                     <option value="motion">حركة (Motion)</option>
                     <option value="open">فتح (Open)</option>
+                    <option value="close">إغلاق (Close)</option>
                 </select>
             </div>
 
@@ -3500,6 +3606,22 @@
                     <label>الوقت</label>
                     <input type="time" id="editScheduleTime" value="08:00" style="width:100%;padding:10px 14px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.95rem;" />
                 </div>
+            </div>
+
+            <!-- مشغل النطاق الزمني -->
+            <div id="editTimeRangeGroup" class="form-group" style="display:none;">
+                <label><i class="fas fa-hourglass-half"></i> النطاق الزمني</label>
+                <div style="display:flex;gap:12px;flex-wrap:wrap;">
+                    <div style="flex:1;min-width:100px;">
+                        <label style="font-weight:400;font-size:0.75rem;">من</label>
+                        <input type="time" id="editTimeRangeStart" value="06:00" style="width:100%;padding:8px 12px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.9rem;" />
+                    </div>
+                    <div style="flex:1;min-width:100px;">
+                        <label style="font-weight:400;font-size:0.75rem;">إلى</label>
+                        <input type="time" id="editTimeRangeEnd" value="22:00" style="width:100%;padding:8px 12px;border-radius:var(--border-radius-sm);border:1px solid var(--border-color);background:var(--bg-primary);color:var(--text-primary);font-size:0.9rem;" />
+                    </div>
+                </div>
+                <div class="modal-sub">يتم تنفيذ الأتمتة إذا كان الوقت الحالي بين هذين الوقتين</div>
             </div>
 
             <!-- الإجراءات المتعددة -->
@@ -3759,9 +3881,23 @@
                 permCamera: 'prompt',
                 deviceLastHb: new Map(),
                 deviceConnecting: new Map(),
-                // متغيرات محرر الأتمتة
                 editingAutoId: null,
                 scheduleCheckerInterval: null,
+                // نظام الأصوات المخصصة
+                customSounds: {},
+                soundMapping: {
+                    success: null,
+                    error: null,
+                    warning: null,
+                    notification: null,
+                    door: null,
+                    toggleOn: null,
+                    toggleOff: null,
+                    connected: null,
+                    disconnected: null,
+                    offline: null,
+                    delete: null,
+                },
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3796,6 +3932,7 @@
                 addModalCancel: $('addModalCancel'),
                 addModalSubmit: $('addModalSubmit'),
                 generateIdBtn: $('generateIdBtn'),
+                copyIdBtn: $('copyIdBtn'),
                 addRoomModal: $('addRoomModal'),
                 addRoomName: $('addRoomName'),
                 roomIconPicker: $('roomIconPicker'),
@@ -3849,7 +3986,6 @@
                 sceneModalCancel: $('sceneModalCancel'),
                 sceneModalSubmit: $('sceneModalSubmit'),
                 voiceBtn: $('voiceBtn'),
-                // محرر الأتمتة الجديد
                 autoEditModal: $('autoEditModal'),
                 editAutoId: $('editAutoId'),
                 editAutoName: $('editAutoName'),
@@ -3858,6 +3994,8 @@
                 editTriggerCondition: $('editTriggerCondition'),
                 editScheduleDays: $('editScheduleDays'),
                 editScheduleTime: $('editScheduleTime'),
+                editTimeRangeStart: $('editTimeRangeStart'),
+                editTimeRangeEnd: $('editTimeRangeEnd'),
                 editActionsContainer: $('editActionsContainer'),
                 editDelay: $('editDelay'),
                 addActionBtn: $('addActionBtn'),
@@ -3866,6 +4004,7 @@
                 editTriggerDeviceGroup: $('editTriggerDeviceGroup'),
                 editTriggerConditionGroup: $('editTriggerConditionGroup'),
                 editScheduleGroup: $('editScheduleGroup'),
+                editTimeRangeGroup: $('editTimeRangeGroup'),
                 autoEditTitle: $('autoEditTitle'),
             };
 
@@ -3926,9 +4065,10 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SOUND ENGINE
+            //  SOUND ENGINE – مع دعم الأصوات المخصصة
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let audioCtx = null;
+            let soundCache = {};
 
             function getAudioCtx() {
                 if (!audioCtx) {
@@ -3938,8 +4078,80 @@
                 return audioCtx;
             }
 
-            function playTones(tones, masterGain = 0.16) {
+            // تحميل صوت مخصص من base64
+            async function loadCustomSound(base64Data) {
+                try {
+                    const ctx = getAudioCtx();
+                    if (!ctx) return null;
+                    // تحويل base64 إلى ArrayBuffer
+                    const binary = atob(base64Data);
+                    const len = binary.length;
+                    const bytes = new Uint8Array(len);
+                    for (let i = 0; i < len; i++) {
+                        bytes[i] = binary.charCodeAt(i);
+                    }
+                    const audioBuffer = await ctx.decodeAudioData(bytes.buffer);
+                    return audioBuffer;
+                } catch (e) {
+                    console.warn('فشل تحميل الصوت المخصص:', e);
+                    return null;
+                }
+            }
+
+            // تشغيل صوت مخصص أو توليدي
+            function playCustomSound(soundId, masterGain = 0.2) {
                 if (!state.soundEnabled) return;
+                const ctx = getAudioCtx();
+                if (!ctx) return;
+
+                // التحقق من وجود صوت مخصص لهذا المعرف
+                const mapping = state.soundMapping[soundId];
+                if (mapping && state.customSounds[mapping]) {
+                    const buffer = soundCache[mapping];
+                    if (buffer) {
+                        try {
+                            const source = ctx.createBufferSource();
+                            source.buffer = buffer;
+                            const gain = ctx.createGain();
+                            gain.gain.setValueAtTime(masterGain * 0.8, ctx.currentTime);
+                            source.connect(gain).connect(ctx.destination);
+                            source.start();
+                            return;
+                        } catch (e) { console.warn('فشل تشغيل الصوت المخصص:', e); }
+                    }
+                }
+
+                // إذا لم يوجد صوت مخصص، استخدم الأصوات التوليدية
+                playTonesForSound(soundId, masterGain);
+            }
+
+            function playTonesForSound(soundId, masterGain = 0.16) {
+                const tonesMap = {
+                    tap: [{ freq: 720, start: 0, dur: 0.04, type: 'sine', gain: 0.10 }],
+                    toggleOn: [{ freq: 520, start: 0, dur: 0.06, type: 'sine' }, { freq: 880, start: 0.05, dur: 0.08,
+                        type: 'sine' }],
+                    toggleOff: [{ freq: 620, start: 0, dur: 0.08, type: 'sine', freqEnd: 300 }],
+                    success: [{ freq: 660, start: 0, dur: 0.08, type: 'sine' }, { freq: 990, start: 0.08, dur: 0.12,
+                        type: 'sine' }],
+                    error: [{ freq: 300, start: 0, dur: 0.12, type: 'square', gain: 0.08 }, { freq: 220, start: 0.11,
+                        dur: 0.16, type: 'square', gain: 0.08 }],
+                    warning: [{ freq: 500, start: 0, dur: 0.08, type: 'triangle', gain: 0.10 }, { freq: 500, start: 0.13,
+                        dur: 0.08, type: 'triangle', gain: 0.10 }],
+                    notification: [{ freq: 880, start: 0, dur: 0.08, type: 'sine', gain: 0.12 }, { freq: 1175, start: 0.08,
+                        dur: 0.12, type: 'sine', gain: 0.12 }, { freq: 1568, start: 0.18, dur: 0.16, type: 'sine',
+                        gain: 0.10 }],
+                    connected: [{ freq: 440, start: 0, dur: 0.06, type: 'sine' }, { freq: 660, start: 0.06, dur: 0.06,
+                        type: 'sine' }, { freq: 880, start: 0.12, dur: 0.1, type: 'sine' }],
+                    disconnected: [{ freq: 700, start: 0, dur: 0.1, type: 'sine', freqEnd: 260 }],
+                    door: [{ freq: 350, start: 0, dur: 0.04, type: 'square', gain: 0.07 }, { freq: 450, start: 0.05,
+                        dur: 0.04, type: 'square', gain: 0.07 }],
+                    delete: [{ freq: 400, start: 0, dur: 0.04, type: 'sawtooth', gain: 0.07 }, { freq: 250, start: 0.04,
+                        dur: 0.08, type: 'sawtooth', gain: 0.07 }],
+                    offline: [{ freq: 300, start: 0, dur: 0.06, type: 'sawtooth', gain: 0.06 }, { freq: 200, start: 0.06,
+                        dur: 0.1, type: 'sawtooth', gain: 0.06 }],
+                };
+                const tones = tonesMap[soundId];
+                if (!tones) return;
                 const ctx = getAudioCtx();
                 if (!ctx) return;
                 const now = ctx.currentTime;
@@ -3958,30 +4170,103 @@
                     osc.stop(now + tn.start + tn.dur + 0.02);
                 });
             }
+
+            // واجهة الصوت الموحدة
             const Sound = {
-                tap() { playTones([{ freq: 720, start: 0, dur: 0.04, type: 'sine', gain: 0.10 }]); },
-                toggleOn() { playTones([{ freq: 520, start: 0, dur: 0.06, type: 'sine' }, { freq: 880, start: 0.05,
-                        dur: 0.08, type: 'sine' }]); },
-                toggleOff() { playTones([{ freq: 620, start: 0, dur: 0.08, type: 'sine', freqEnd: 300 }]); },
-                success() { playTones([{ freq: 660, start: 0, dur: 0.08, type: 'sine' }, { freq: 990, start: 0.08,
-                        dur: 0.12, type: 'sine' }]); },
-                error() { playTones([{ freq: 300, start: 0, dur: 0.12, type: 'square', gain: 0.08 }, { freq: 220,
-                        start: 0.11, dur: 0.16, type: 'square', gain: 0.08 }]); },
-                warning() { playTones([{ freq: 500, start: 0, dur: 0.08, type: 'triangle', gain: 0.10 }, { freq: 500,
-                        start: 0.13, dur: 0.08, type: 'triangle', gain: 0.10 }]); },
-                notification() { playTones([{ freq: 880, start: 0, dur: 0.08, type: 'sine', gain: 0.12 }, { freq: 1175,
-                        start: 0.08, dur: 0.12, type: 'sine', gain: 0.12 }, { freq: 1568, start: 0.18, dur: 0.16,
-                        type: 'sine', gain: 0.10 }]); },
-                connected() { playTones([{ freq: 440, start: 0, dur: 0.06, type: 'sine' }, { freq: 660, start: 0.06,
-                        dur: 0.06, type: 'sine' }, { freq: 880, start: 0.12, dur: 0.1, type: 'sine' }]); },
-                disconnected() { playTones([{ freq: 700, start: 0, dur: 0.1, type: 'sine', freqEnd: 260 }]); },
-                door() { playTones([{ freq: 350, start: 0, dur: 0.04, type: 'square', gain: 0.07 }, { freq: 450,
-                        start: 0.05, dur: 0.04, type: 'square', gain: 0.07 }]); },
-                delete() { playTones([{ freq: 400, start: 0, dur: 0.04, type: 'sawtooth', gain: 0.07 }, { freq: 250,
-                        start: 0.04, dur: 0.08, type: 'sawtooth', gain: 0.07 }]); },
-                offline() { playTones([{ freq: 300, start: 0, dur: 0.06, type: 'sawtooth', gain: 0.06 }, { freq: 200,
-                        start: 0.06, dur: 0.1, type: 'sawtooth', gain: 0.06 }]); },
+                tap() { playCustomSound('tap', 0.10); },
+                toggleOn() { playCustomSound('toggleOn', 0.16); },
+                toggleOff() { playCustomSound('toggleOff', 0.16); },
+                success() { playCustomSound('success', 0.16); },
+                error() { playCustomSound('error', 0.12); },
+                warning() { playCustomSound('warning', 0.14); },
+                notification() { playCustomSound('notification', 0.16); },
+                connected() { playCustomSound('connected', 0.16); },
+                disconnected() { playCustomSound('disconnected', 0.16); },
+                door() { playCustomSound('door', 0.12); },
+                delete() { playCustomSound('delete', 0.12); },
+                offline() { playCustomSound('offline', 0.12); },
             };
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  إدارة الأصوات المخصصة – تحميل / حفظ
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function saveCustomSounds() {
+                try {
+                    // لا نحفظ البيانات الضخمة في localStorage (نحتفظ بالمراجع فقط)
+                    const soundNames = Object.keys(state.customSounds);
+                    const toSave = {};
+                    for (const name of soundNames) {
+                        if (state.customSounds[name]) {
+                            toSave[name] = state.customSounds[name]; // base64
+                        }
+                    }
+                    localStorage.setItem('sge_custom_sounds', JSON.stringify(toSave));
+                    // حفظ خريطة الصوت
+                    localStorage.setItem('sge_sound_mapping', JSON.stringify(state.soundMapping));
+                } catch (_) {}
+            }
+
+            function loadCustomSounds() {
+                try {
+                    const raw = localStorage.getItem('sge_custom_sounds');
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        state.customSounds = parsed || {};
+                        // تحميل المخازن المؤقتة للصوت
+                        for (const [name, base64] of Object.entries(state.customSounds)) {
+                            loadCustomSound(base64).then(buf => {
+                                if (buf) soundCache[name] = buf;
+                            }).catch(() => {});
+                        }
+                    }
+                    const mapping = localStorage.getItem('sge_sound_mapping');
+                    if (mapping) {
+                        const parsed = JSON.parse(mapping);
+                        state.soundMapping = { ...state.soundMapping, ...parsed };
+                    }
+                } catch (_) {}
+            }
+
+            function uploadCustomSound(event, soundKey) {
+                const file = event.target.files[0];
+                if (!file) return;
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    try {
+                        const base64 = e.target.result.split(',')[1];
+                        if (!base64) { showToast('⚠️ فشل قراءة الملف', 'error'); return; }
+                        state.customSounds[soundKey] = base64;
+                        loadCustomSound(base64).then(buf => {
+                            if (buf) {
+                                soundCache[soundKey] = buf;
+                                showToast(`✅ تم تحميل الصوت "${soundKey}"`, 'success', '🎵');
+                                saveCustomSounds();
+                                if (state.currentPage === 'settings') debouncedUpdateUI();
+                            } else {
+                                showToast('⚠️ تنسيق الصوت غير مدعوم', 'error');
+                            }
+                        }).catch(() => {
+                            showToast('⚠️ فشل تحميل الصوت', 'error');
+                        });
+                    } catch (err) {
+                        showToast('⚠️ خطأ: ' + err.message, 'error');
+                    }
+                };
+                reader.readAsDataURL(file);
+                event.target.value = '';
+            }
+
+            function resetCustomSound(soundKey) {
+                delete state.customSounds[soundKey];
+                delete soundCache[soundKey];
+                // إعادة تعيين الخريطة
+                for (const [k, v] of Object.entries(state.soundMapping)) {
+                    if (v === soundKey) state.soundMapping[k] = null;
+                }
+                saveCustomSounds();
+                if (state.currentPage === 'settings') debouncedUpdateUI();
+                showToast(`✅ تم إعادة تعيين الصوت`, 'success', '🔄');
+            }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  TOAST & LOGGING
@@ -4083,7 +4368,6 @@
                 } catch (_) {}
             }
 
-            // ── ترقية الأتمتة القديمة إلى النظام الجديد ──
             function upgradeAutomations() {
                 let upgraded = false;
                 state.automations = state.automations.map(auto => {
@@ -4098,6 +4382,8 @@
                             triggerCondition: auto.trigger?.condition || 'on',
                             scheduleDays: [0, 1, 2, 3, 4, 5, 6],
                             scheduleTime: '08:00',
+                            timeRangeStart: '06:00',
+                            timeRangeEnd: '22:00',
                             actions: [],
                             delayBetweenActions: 1000,
                         };
@@ -4125,6 +4411,10 @@
                             auto.actions.push({ deviceId: '', command: 'on' });
                         }
                     }
+                    if (!auto.timeRangeStart) { auto.timeRangeStart = '06:00';
+                        upgraded = true; }
+                    if (!auto.timeRangeEnd) { auto.timeRangeEnd = '22:00';
+                        upgraded = true; }
                     return auto;
                 });
                 if (upgraded) saveAutomations();
@@ -4175,6 +4465,7 @@
                     if (active && state.deviceMap.has(active)) state.activeDeviceId = active;
                     else if (state.devices.length) state.activeDeviceId = state.devices[0].id;
                     loadNotifications();
+                    loadCustomSounds();
                 } catch (_) { console.warn('Storage error'); }
             }
 
@@ -4263,6 +4554,8 @@
                     triggerCondition: 'open',
                     scheduleDays: [0, 1, 2, 3, 4, 5, 6],
                     scheduleTime: '08:00',
+                    timeRangeStart: '06:00',
+                    timeRangeEnd: '22:00',
                     actions: [
                         { deviceId: 'dimmable/living_room/pQ9fL2dM', command: 'on' }
                     ],
@@ -4366,13 +4659,6 @@
                     state.heartbeatInterval = null; }
             }
 
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  عند انقطاع التطبيق نفسه عن الخادم: لا يمكننا معرفة الحالة
-            //  الحقيقية لأي جهاز بعد الآن، فيجب ألا تبقى نقاط الأجهزة على
-            //  آخر لون مخزَّن (أخضر مثلاً) بينما التطبيق أصلاً غير متصل.
-            //  نضع كل الأجهزة في حالة "جاري الاتصال" حتى تُصحَّح تلقائيًا
-            //  فور استقبال أول رسالة heartbeat حقيقية بعد إعادة الاتصال.
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function markAllDevicesUnknown() {
                 let changed = false;
                 for (const dev of state.devices) {
@@ -4398,16 +4684,29 @@
                 if (state.scheduleCheckerInterval) clearInterval(state.scheduleCheckerInterval);
                 state.scheduleCheckerInterval = setInterval(() => {
                     const now = new Date();
-                    const currentDay = now.getDay(); // 0=الأحد
+                    const currentDay = now.getDay();
                     const currentTime = String(now.getHours()).padStart(2, '0') + ':' + String(now.getMinutes())
                     .padStart(2, '0');
 
                     for (const auto of state.automations) {
                         if (!auto.enabled) continue;
-                        if (auto.triggerType !== 'schedule') continue;
+                        let shouldTrigger = false;
 
-                        if (!auto.scheduleDays || !auto.scheduleDays.includes(currentDay)) continue;
-                        if (auto.scheduleTime === currentTime) {
+                        if (auto.triggerType === 'schedule') {
+                            if (!auto.scheduleDays || !auto.scheduleDays.includes(currentDay)) continue;
+                            if (auto.scheduleTime === currentTime) shouldTrigger = true;
+                        } else if (auto.triggerType === 'time_range') {
+                            if (!auto.scheduleDays || !auto.scheduleDays.includes(currentDay)) continue;
+                            const start = auto.timeRangeStart || '06:00';
+                            const end = auto.timeRangeEnd || '22:00';
+                            if (currentTime >= start && currentTime <= end) shouldTrigger = true;
+                        }
+
+                        if (shouldTrigger) {
+                            // تأكد من عدم التنفيذ مرتين في نفس الدقيقة
+                            const lastRun = auto._lastRun || '';
+                            if (lastRun === currentTime) continue;
+                            auto._lastRun = currentTime;
                             executeAutomationActions(auto);
                             addLog(`⏰ تشغيل أتمتة مجدولة: ${auto.name} (${currentTime})`, 'success');
                             addNotification(`⏰ أتمتة مجدولة`, `تم تشغيل "${auto.name}" تلقائياً`, '⏰', 'success');
@@ -4679,13 +4978,6 @@
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  تحديد الجهاز من موضوع MQTT الوارد
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  معرّفات الأجهزة في هذا التطبيق تحتوي على أكثر من جزء
-            //  (مثال: "light/bedroom/rT5hG8kL") — لذا لا يصح أخذ أول
-            //  جزء فقط من المسار كمعرّف (كان هذا هو سبب بقاء النقطة
-            //  برتقالية دائمًا رغم أن الجهاز يعمل فعليًا: نبضة heartbeat
-            //  ورسائل status كانت تصل، لكن التطبيق يفشل في مطابقتها مع
-            //  الجهاز الصحيح فيتجاهلها بالكامل). الحل: نبحث عن أطول
-            //  معرّف جهاز مسجَّل يُطابق بداية المسار الوارد.
             function resolveDeviceFromTopic(topic) {
                 let matched = null;
                 for (const dev of state.devices) {
@@ -4699,7 +4991,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT MESSAGE HANDLER – FIXED HEARTBEAT + FIXED DEVICE MATCHING
+            //  MQTT MESSAGE HANDLER
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function handleMqttMessage(topic, msg) {
                 const resolved = resolveDeviceFromTopic(topic);
@@ -4709,11 +5001,6 @@
                 let updated = false;
                 let oldState = '';
 
-                // ── Heartbeat (topic: {id}/system/heartbeat) ──
-                // كل جهاز يرسل نبضته على موضوع يحمل معرّفه (id) الخاص به،
-                // فيقرأها التطبيق ويربطها بنفس الجهاز عبر deviceId المستخرج من المسار.
-                // ONLINE/ALIVE = الجهاز فعليًا متصل الآن | OFFLINE = أعلنها
-                // الخادم تلقائيًا (LWT) لحظة انقطاع الجهاز عن الشبكة.
                 if (sub === 'system/heartbeat') {
                     const now = Date.now();
                     if (msg === 'OFFLINE') {
@@ -4732,7 +5019,6 @@
                         debouncedUpdateUI();
                         return;
                     }
-                    // ONLINE (عند اتصال الجهاز بالخادم) أو ALIVE (نبضة حية كل 3 ثوانٍ)
                     const wasOnline = device.online;
                     device.online = true;
                     device._connecting = false;
@@ -4747,7 +5033,6 @@
                     updated = true;
                     saveDevices();
                     debouncedUpdateUI();
-                    // النبضة تُعالَج بالكامل هنا؛ لا داعي لمتابعة التنفيذ أدناه
                     return;
                 } else if (sub === 'system/vacation') {
                     if (msg === 'ON') { state.vacationMode = true;
@@ -4800,15 +5085,7 @@
                         updated = true; }
                 }
 
-                // ── إذا كان هناك تحديث في حالة الجهاز (ON/OFF, سطوع, سرعة...) ──
                 if (updated) {
-                    // ملاحظة مهمة: لا نُحدّث online/lastHeartbeat هنا بعد الآن.
-                    // رسائل status/cmd تُنشَر بخاصية retained من الجهاز، وقد تكون
-                    // "قديمة" (محفوظة في الخادم منذ آخر مرة كان الجهاز فيها متصلاً)
-                    // فتصل فور اشتراك التطبيق حتى لو الجهاز مفصول فعليًا الآن.
-                    // الاعتماد عليها لتحديد الاتصال هو ما كان يجعل النقطة تبقى
-                    // خضراء دائمًا. حالة الاتصال الحقيقية تُحدَّث حصرًا من موضوع
-                    // {id}/system/heartbeat (ONLINE / ALIVE / OFFLINE) أعلاه.
                     saveDevices();
                     debouncedUpdateUI();
                 }
@@ -4862,6 +5139,7 @@
                     if (condition === 'on') conditionMet = triggerDevice.status === true;
                     else if (condition === 'off') conditionMet = triggerDevice.status === false;
                     else if (condition === 'open') conditionMet = triggerDevice.open === true;
+                    else if (condition === 'close') conditionMet = triggerDevice.open === false;
                     else if (condition === 'motion') conditionMet = triggerDevice.status === true;
                     if (!conditionMet) continue;
                     executeAutomationActions(auto);
@@ -6487,15 +6765,22 @@
                         if (a.triggerType === 'device') {
                             const dev = state.deviceMap.get(a.triggerDeviceId);
                             const devName = dev ? dev.name : a.triggerDeviceId;
-                            const condMap = { on: 'تشغيل', off: 'إيقاف', open: 'فتح', motion: 'حركة' };
+                            const condMap = { on: 'تشغيل', off: 'إيقاف', open: 'فتح', close: 'إغلاق',
+                                motion: 'حركة' };
                             triggerDesc =
                                 `جهاز <span class="highlight">${escHtml(devName)}</span> → ${condMap[a.triggerCondition] || a.triggerCondition}`;
-                        } else {
+                        } else if (a.triggerType === 'schedule') {
                             const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
                             const dayNames = a.scheduleDays ? a.scheduleDays.map(d => daysMap[d]).join('، ') :
                                 'كل الأيام';
                             triggerDesc =
                                 `⏰ ${a.scheduleTime || '08:00'} (${dayNames})`;
+                        } else if (a.triggerType === 'time_range') {
+                            const daysMap = ['الأحد', 'الإثنين', 'الثلاثاء', 'الأربعاء', 'الخميس', 'الجمعة', 'السبت'];
+                            const dayNames = a.scheduleDays ? a.scheduleDays.map(d => daysMap[d]).join('، ') :
+                                'كل الأيام';
+                            triggerDesc =
+                                `⏳ ${a.timeRangeStart || '06:00'} → ${a.timeRangeEnd || '22:00'} (${dayNames})`;
                         }
                         const actionDesc = a.actions ? a.actions.map(act => {
                             const dev = state.deviceMap.get(act.deviceId);
@@ -6512,7 +6797,7 @@
                                             <div class="auto-info">
                                                 <div class="auto-name">${escHtml(a.name)}</div>
                                                 <div class="auto-desc">
-                                                    <span class="auto-trigger"><i class="fas fa-${a.triggerType === 'schedule' ? 'clock' : 'bolt'}"></i> ${triggerDesc}</span>
+                                                    <span class="auto-trigger"><i class="fas fa-${a.triggerType === 'schedule' ? 'clock' : a.triggerType === 'time_range' ? 'hourglass-half' : 'bolt'}"></i> ${triggerDesc}</span>
                                                     <span style="margin:0 4px;color:var(--text-muted);">⬅</span>
                                                     <span class="auto-trigger"><i class="fas fa-arrow-right"></i> ${actionDesc}</span>
                                                     ${a.delayBetweenActions > 0 ? `<span class="trigger-badge">⏱️ ${a.delayBetweenActions/1000}ث</span>` : ''}
@@ -6593,9 +6878,11 @@
                 dom.editAutoName.value = auto ? auto.name : '';
                 dom.editTriggerType.value = auto ? auto.triggerType : 'device';
                 dom.editTriggerDevice.value = auto ? auto.triggerDeviceId : (state.devices.length > 0 ? state.devices[0].id :
-                '');
+                    '');
                 dom.editTriggerCondition.value = auto ? auto.triggerCondition : 'on';
                 dom.editScheduleTime.value = auto ? auto.scheduleTime : '08:00';
+                dom.editTimeRangeStart.value = auto ? auto.timeRangeStart : '06:00';
+                dom.editTimeRangeEnd.value = auto ? auto.timeRangeEnd : '22:00';
                 dom.editDelay.value = auto ? (auto.delayBetweenActions / 1000) : 1;
 
                 const daysBtns = dom.editScheduleDays.querySelectorAll('.day-btn');
@@ -6623,10 +6910,17 @@
                     dom.editTriggerDeviceGroup.style.display = 'none';
                     dom.editTriggerConditionGroup.style.display = 'none';
                     dom.editScheduleGroup.style.display = 'block';
+                    dom.editTimeRangeGroup.style.display = 'none';
+                } else if (type === 'time_range') {
+                    dom.editTriggerDeviceGroup.style.display = 'none';
+                    dom.editTriggerConditionGroup.style.display = 'none';
+                    dom.editScheduleGroup.style.display = 'block';
+                    dom.editTimeRangeGroup.style.display = 'block';
                 } else {
                     dom.editTriggerDeviceGroup.style.display = 'block';
                     dom.editTriggerConditionGroup.style.display = 'block';
                     dom.editScheduleGroup.style.display = 'none';
+                    dom.editTimeRangeGroup.style.display = 'none';
                 }
             }
 
@@ -6681,6 +6975,8 @@
                 const triggerDevice = dom.editTriggerDevice.value;
                 const triggerCondition = dom.editTriggerCondition.value;
                 const scheduleTime = dom.editScheduleTime.value;
+                const timeRangeStart = dom.editTimeRangeStart.value;
+                const timeRangeEnd = dom.editTimeRangeEnd.value;
                 const delaySec = parseInt(dom.editDelay.value) || 0;
 
                 const daysBtns = dom.editScheduleDays.querySelectorAll('.day-btn');
@@ -6717,10 +7013,15 @@
                     triggerType: triggerType,
                     triggerDeviceId: triggerType === 'device' ? triggerDevice : '',
                     triggerCondition: triggerType === 'device' ? triggerCondition : 'on',
-                    scheduleDays: triggerType === 'schedule' ? scheduleDays : [0, 1, 2, 3, 4, 5, 6],
+                    scheduleDays: (triggerType === 'schedule' || triggerType === 'time_range') ? scheduleDays : [0, 1, 2,
+                        3, 4, 5, 6
+                    ],
                     scheduleTime: triggerType === 'schedule' ? scheduleTime : '08:00',
+                    timeRangeStart: triggerType === 'time_range' ? timeRangeStart : '06:00',
+                    timeRangeEnd: triggerType === 'time_range' ? timeRangeEnd : '22:00',
                     actions: actions,
                     delayBetweenActions: delaySec * 1000,
+                    _lastRun: '',
                 };
 
                 if (id) {
@@ -6749,7 +7050,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SETTINGS
+            //  SETTINGS (مع إدارة الأصوات المخصصة)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderSettingsPage() {
                 const micStatus = state.permMicrophone;
@@ -6760,6 +7061,42 @@
                 const camBadge = camStatus === 'granted' ? '<span class="perm-badge granted">✅ مسموح</span>' :
                     camStatus === 'denied' ? '<span class="perm-badge denied">❌ ممنوع</span>' :
                     '<span class="perm-badge prompt">⏳ ينتظر</span>';
+
+                // بناء قائمة إدارة الأصوات
+                const soundItems = [
+                    { key: 'success', label: '✅ نجاح' },
+                    { key: 'error', label: '❌ خطأ' },
+                    { key: 'warning', label: '⚠️ تنبيه' },
+                    { key: 'notification', label: '🔔 إشعار' },
+                    { key: 'door', label: '🚪 باب' },
+                    { key: 'toggleOn', label: '🔛 تشغيل' },
+                    { key: 'toggleOff', label: '🔚 إيقاف' },
+                    { key: 'connected', label: '📡 متصل' },
+                    { key: 'disconnected', label: '📡 غير متصل' },
+                    { key: 'offline', label: '📡 انقطاع' },
+                    { key: 'delete', label: '🗑️ حذف' },
+                ];
+
+                let soundHtml = '';
+                for (const item of soundItems) {
+                    const hasCustom = !!state.customSounds[item.key];
+                    const fileName = hasCustom ? '🎵 مخصص' : 'افتراضي';
+                    soundHtml += `
+                            <div class="sound-item">
+                                <span class="sound-label">${item.label}</span>
+                                <div class="sound-preview">
+                                    <button class="btn-small primary" data-action="play-sound" data-sound="${item.key}">▶️ استماع</button>
+                                    <span class="file-name">${fileName}</span>
+                                </div>
+                                <div>
+                                    <input type="file" accept="audio/*" id="soundFile_${item.key}" data-sound="${item.key}" />
+                                    <label for="soundFile_${item.key}" class="upload-btn">📤 رفع</label>
+                                    ${hasCustom ? `<button class="reset-btn" data-action="reset-sound" data-sound="${item.key}">↩️ إعادة</button>` : ''}
+                                </div>
+                            </div>
+                        `;
+                }
+
                 return `
                             <div class="settings-card">
                                 <div class="card-title"><i class="fas fa-server"></i> إعدادات الاتصال</div>
@@ -6768,6 +7105,13 @@
                                     <div class="field"><label>اسم المستخدم</label><input id="settingsUser" value="${state.username}" /></div>
                                     <div class="field"><label>كلمة المرور</label><input id="settingsPass" type="password" value="${state.password}" /></div>
                                     <button class="btn-primary" id="settingsSaveBtn" style="width:100%;padding:12px;border:none;border-radius:var(--border-radius-sm);background:var(--primary);color:#fff;font-weight:700;cursor:pointer;">💾 حفظ وإعادة الاتصال</button>
+                                </div>
+                            </div>
+                            <div class="settings-card">
+                                <div class="card-title"><i class="fas fa-music"></i> 🎵 الأصوات المخصصة</div>
+                                <div class="sound-manager">
+                                    ${soundHtml}
+                                    <div style="font-size:0.75rem;color:var(--text-muted);margin-top:4px;">ارفع ملف صوتي (MP3, WAV, OGG) لتخصيص صوت الإشعارات. سيتم حفظ الصوت في المتصفح.</div>
                                 </div>
                             </div>
                             <div class="settings-card">
@@ -6813,7 +7157,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 8.1.0 (اتصال محسّن)<br>
+                                    الإصدار 8.1.0 (اتصال محسّن + أصوات مخصصة)<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -6846,7 +7190,7 @@
                     ['sge_devices', 'sge_scenes', 'sge_automations', 'sge_logs', 'sge_rooms',
                         'sge_active_device', 'sge_schedules', 'sge_alarms', 'sge_notifications',
                         'sge_server', 'sge_username', 'sge_password', 'sge_theme', 'sge_sound', 'sge_notify',
-                        'sge_vacation'
+                        'sge_vacation', 'sge_custom_sounds', 'sge_sound_mapping'
                     ].forEach(k => localStorage.removeItem(k));
                     location.reload();
                 } catch (_) { showToast('❌ حدث خطأ', 'error'); }
@@ -7331,7 +7675,30 @@
                 document.querySelectorAll('.nav-item, .bottom-nav-item, .center-nav-btn').forEach(el => {
                     el.classList.toggle('active', el.dataset.page === page);
                 });
-                if (page === 'settings') updateDiagnosticPanel();
+                if (page === 'settings') {
+                    updateDiagnosticPanel();
+                    // إعدادات الأصوات المخصصة
+                    setTimeout(() => {
+                        document.querySelectorAll('[data-action="play-sound"]').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const key = this.dataset.sound;
+                                if (key) playCustomSound(key, 0.2);
+                            });
+                        });
+                        document.querySelectorAll('input[type="file"][data-sound]').forEach(input => {
+                            input.addEventListener('change', function(e) {
+                                const key = this.dataset.sound;
+                                if (key) uploadCustomSound(e, key);
+                            });
+                        });
+                        document.querySelectorAll('[data-action="reset-sound"]').forEach(btn => {
+                            btn.addEventListener('click', function() {
+                                const key = this.dataset.sound;
+                                if (key) resetCustomSound(key);
+                            });
+                        });
+                    }, 100);
+                }
                 requestAnimationFrame(() => { drawAllDoors(); });
                 updateLogBadge();
                 if (dom.roomOverlay.classList.contains('active') && state._currentRoom) {
@@ -7360,6 +7727,27 @@
                         if (id) openAutomationEditor(id);
                     });
                 });
+                // زر نسخ المعرف
+                const copyBtn = document.getElementById('copyIdBtn');
+                if (copyBtn) {
+                    copyBtn.addEventListener('click', function() {
+                        const idInput = document.getElementById('addDeviceId');
+                        if (idInput && idInput.value) {
+                            navigator.clipboard.writeText(idInput.value).then(() => {
+                                showToast('📋 تم نسخ المعرف', 'success', '📋');
+                                Sound.tap();
+                            }).catch(() => {
+                                // Fallback
+                                idInput.select();
+                                document.execCommand('copy');
+                                showToast('📋 تم نسخ المعرف', 'success', '📋');
+                                Sound.tap();
+                            });
+                        } else {
+                            showToast('⚠️ لا يوجد معرف للنسخ', 'warning');
+                        }
+                    });
+                }
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -7484,9 +7872,6 @@
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function init() {
                 loadAll();
-                // عند فتح التطبيق من جديد: لا نعرض آخر حالة اتصال محفوظة محليًا
-                // (قد تكون قديمة/غير صحيحة)، بل نبدأ بحالة "جاري الاتصال" لكل
-                // جهاز إلى أن تصل نبضة حقيقية بعد نجاح الاتصال بالخادم.
                 markAllDevicesUnknown();
                 updateUI();
                 setTimeout(connectMQTT, 800);
@@ -7659,7 +8044,7 @@
                     }
                 });
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v8.1.0 – Advanced Automation + Fixed Heartbeat');
+                console.log('⚡ Smart General Electric v8.1.0 – Advanced Automation + Custom Sounds');
                 console.log(`📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`);
             }
 
@@ -7692,18 +8077,15 @@
             window.requestPermissions = requestPermissions;
             window.openAutomationEditor = openAutomationEditor;
             window.closeAutomationEditor = closeAutomationEditor;
+            window.uploadCustomSound = uploadCustomSound;
+            window.resetCustomSound = resetCustomSound;
+            window.playCustomSound = playCustomSound;
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
             else init();
 
         })();
     </script>
-
-    <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    ESP FIRMWARE – Enhanced with 3-second Heartbeat & OTA
-    (نفس الكود الموجود سابقاً مع نبضات 3 ثوانٍ)
-    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
-    <!-- تم تضمين الكود الخاص بالجهاز في التعليق السابق، وهو متوافق 100% مع هذا الإصدار -->
 
 </body>
 </html>
