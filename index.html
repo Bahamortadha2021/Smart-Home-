@@ -2878,7 +2878,7 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-           Bottom Nav – زر الميكروفون أصبح عائمًا فوق المنيو
+           Bottom Nav
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         .bottom-nav {
             display: none;
@@ -2920,6 +2920,34 @@
         .bottom-nav-item:hover {
             color: var(--text-primary);
         }
+        .bottom-nav .center-btn-wrapper {
+            flex: 0 0 auto;
+            margin-top: -26px;
+        }
+        .bottom-nav .center-btn-wrapper .center-nav-btn {
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            background: var(--primary);
+            color: #fff;
+            font-size: 1.6rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 4px solid var(--surface);
+            box-shadow: 0 6px 16px rgba(11, 61, 145, 0.35);
+            -webkit-tap-highlight-color: transparent;
+            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
+        }
+        .bottom-nav .center-btn-wrapper .center-nav-btn:active {
+            transform: scale(0.92);
+        }
+        .bottom-nav .center-btn-wrapper .center-nav-btn.active {
+            background: var(--accent-gold);
+            box-shadow: 0 6px 18px rgba(200, 160, 61, 0.45);
+        }
+
         /* زر الميكروفون العائم فوق المنيو */
         .fab-voice {
             position: fixed;
@@ -2962,33 +2990,6 @@
             min-width: 16px;
             text-align: center;
             border: 2px solid var(--surface);
-        }
-        .bottom-nav .center-btn-wrapper {
-            flex: 0 0 auto;
-            margin-top: -26px;
-        }
-        .bottom-nav .center-btn-wrapper .center-nav-btn {
-            width: 58px;
-            height: 58px;
-            border-radius: 50%;
-            background: var(--primary);
-            color: #fff;
-            font-size: 1.6rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            border: 4px solid var(--surface);
-            box-shadow: 0 6px 16px rgba(11, 61, 145, 0.35);
-            -webkit-tap-highlight-color: transparent;
-            transition: transform 0.2s, background 0.2s, box-shadow 0.2s;
-        }
-        .bottom-nav .center-btn-wrapper .center-nav-btn:active {
-            transform: scale(0.92);
-        }
-        .bottom-nav .center-btn-wrapper .center-nav-btn.active {
-            background: var(--accent-gold);
-            box-shadow: 0 6px 18px rgba(200, 160, 61, 0.45);
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -3511,7 +3512,6 @@
                     </div>
                 </div>
                 <div class="header-actions">
-                    <!-- تم إزالة زر الميكروفون من الأعلى ووضعه كـ FAB -->
                     <div class="notif-bell">
                         <button class="icon-btn" id="notifBellBtn" title="الإشعارات">
                             <i class="fas fa-bell"></i>
@@ -3580,7 +3580,7 @@
     Modals
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
 
-    <!-- Device Settings Modal (يحتوي حقل الأمر الصوتي) -->
+    <!-- Device Settings Modal -->
     <div class="modal-overlay" id="deviceSettingsModal">
         <div class="modal-box">
             <h3 class="modal-title"><i class="fas fa-sliders-h"></i> إعدادات الجهاز</h3>
@@ -3610,7 +3610,7 @@
         </div>
     </div>
 
-    <!-- Add Device Modal (مع أزرار توليد ونسخ فوق المعرف) -->
+    <!-- Add Device Modal -->
     <div class="modal-overlay" id="addModal">
         <div class="modal-box">
             <h3 class="modal-title">➕ إضافة جهاز جديد</h3>
@@ -3845,7 +3845,7 @@
         </div>
     </div>
 
-    <!-- Bottom Nav (بدون زر الميكروفون) -->
+    <!-- Bottom Nav -->
     <nav class="bottom-nav" id="bottomNav">
         <button class="bottom-nav-item" data-page="devices"><i class="fas fa-microchip"></i> الأجهزة</button>
         <button class="bottom-nav-item" data-page="automations"><i class="fas fa-robot"></i> الأتمتة</button>
@@ -3858,7 +3858,7 @@
     <div id="toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    JAVASCRIPT
+    JAVASCRIPT – Improved Connection Stability
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <script>
         (function() {
@@ -3924,19 +3924,25 @@
                 'fa-tv', 'fa-music', 'fa-book', 'fa-briefcase', 'fa-gem',
                 'fa-palette', 'fa-crown', 'fa-moon', 'fa-sun', 'fa-star'
             ];
-            const K_MAX_RECONNECT = 5;
-            const K_RECONNECT_DELAY = 5;
-            const MAX_NOTIFS = 50;
-            const HEARTBEAT_TIMEOUT = 15000;
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  STATE
+            //  CONNECTION STABILITY SETTINGS
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            const K_MAX_RECONNECT = 15; // More attempts before giving up
+            const K_RECONNECT_DELAY = 1000; // Start with 1 second
+            const K_MAX_RECONNECT_DELAY = 60000; // Max 60 seconds
+            const K_PING_INTERVAL = 25000; // 25 seconds
+            const K_PONG_TIMEOUT = 40000; // 40 seconds
+            const K_JITTER_FACTOR = 0.2; // 20% jitter
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  STATE (extended)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             const state = {
                 mqttStatus: 'disconnected',
                 lastError: '',
                 reconnectAttempt: 0,
-                serverHost: 'broker.hivemq.com', // الخادم الافتراضي
+                serverHost: 'broker.hivemq.com', // Default broker
                 username: '',
                 password: '',
                 devices: [],
@@ -3993,7 +3999,6 @@
                 deviceConnecting: new Map(),
                 editingAutoId: null,
                 scheduleCheckerInterval: null,
-                // الأصوات المخصصة
                 customSounds: {},
                 soundMapping: {
                     success: null,
@@ -4008,8 +4013,15 @@
                     offline: null,
                     delete: null,
                 },
-                // خريطة الأوامر الصوتية المخصصة لكل جهاز
                 voiceCommands: {},
+                // New connection stability state
+                pingTimer: null,
+                pongTimeoutTimer: null,
+                lastPong: Date.now(),
+                isManualDisconnect: false,
+                primaryBroker: 'broker.hivemq.com',
+                currentBrokerIndex: 0,
+                reconnectAttempt: 0,
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4097,7 +4109,6 @@
                 sceneDeviceList: $('sceneDeviceList'),
                 sceneModalCancel: $('sceneModalCancel'),
                 sceneModalSubmit: $('sceneModalSubmit'),
-                // زر الميكروفون العائم
                 voiceFabBtn: $('voiceFabBtn'),
                 autoEditModal: $('autoEditModal'),
                 editAutoId: $('editAutoId'),
@@ -4178,7 +4189,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SOUND ENGINE
+            //  SOUND ENGINE (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let audioCtx = null;
             let soundCache = {};
@@ -4293,7 +4304,7 @@
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  إدارة الأصوات المخصصة
+            //  SOUND MANAGEMENT (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function saveCustomSounds() {
                 try {
@@ -4453,6 +4464,7 @@
                 _) {} }
             function saveConfig(server, username, password) {
                 state.serverHost = server || 'broker.hivemq.com';
+                state.primaryBroker = state.serverHost;
                 state.username = username || '';
                 state.password = password || '';
                 try {
@@ -4541,6 +4553,7 @@
                     const notifPref = localStorage.getItem('sge_notify');
                     state.notifyStatusUpdates = notifPref === null ? true : notifPref === 'on';
                     state.serverHost = localStorage.getItem('sge_server') || 'broker.hivemq.com';
+                    state.primaryBroker = state.serverHost;
                     state.username = localStorage.getItem('sge_username') || '';
                     state.password = localStorage.getItem('sge_password') || '';
                     const vac = localStorage.getItem('sge_vacation');
@@ -4639,7 +4652,6 @@
                     { id: 'faucet/farm/fH2kL9pS', type: 8, room: 'المزرعة', name: 'حنفية المزرعة', status: false,
                         online: false,
                         lastHeartbeat: null, icon: 'fa-faucet', _connecting: true },
-                    // مثال على حساسات
                     { id: 'gas/kitchen/g8K3sN2d', type: 9, room: 'المطبخ', name: 'حساس غاز المطبخ', status: false,
                         online: false, lastHeartbeat: null, icon: 'fa-fire', _connecting: true },
                     { id: 'motion/living_room/m9W5qR7v', type: 12, room: 'غرفة المعيشة', name: 'حساس حركة الصالة',
@@ -4838,7 +4850,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT
+            //  MQTT – IMPROVED CONNECTION STABILITY
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateConnectionBanner() {
                 if (state.mqttStatus === 'connected') updateWifiStatus('connected', 'متصل');
@@ -4907,10 +4919,9 @@
                 return deviceId + '/' + base + '/' + suffix;
             }
 
-            let mqttConnectAttempt = 0;
-
+            // Enhanced connection attempt with promise chaining
             function connectMQTT() {
-                if (state.mqttStatus === 'connecting' || state.isReconnecting) return;
+                if (state.mqttStatus === 'connecting' || state.isReconnecting || state.isManualDisconnect) return;
                 if (!state.serverHost) {
                     state.lastError = 'الخادم غير محدد';
                     state.mqttStatus = 'disconnected';
@@ -4918,16 +4929,20 @@
                     addDiagnostic('❌ الخادم غير محدد', 'error');
                     return;
                 }
+
                 state.mqttStatus = 'connecting';
                 state.lastError = '';
+                state.isReconnecting = true;
                 updateConnectionBanner();
                 state.connectionAttempts++;
                 addDiagnostic(`🔄 محاولة الاتصال #${state.connectionAttempts} بـ ${state.serverHost}`, 'info');
                 addLog('جاري الاتصال بخادم MQTT...', 'info');
+
                 if (state.mqttClient) {
                     try { state.mqttClient.end(true); } catch (_) {}
                     state.mqttClient = null;
                 }
+
                 const isSecure = window.location.protocol === 'https:';
                 state.usingSecure = isSecure;
                 const protocols = [];
@@ -4949,6 +4964,7 @@
                         protocols.push({ port: 8884, secure: true });
                     }
                 }
+
                 tryConnectWithProtocol(protocols, 0);
             }
 
@@ -4956,17 +4972,22 @@
                 if (index >= protocols.length) {
                     state.mqttStatus = 'disconnected';
                     state.lastError = 'فشلت جميع محاولات الاتصال';
+                    state.isReconnecting = false;
                     updateConnectionBanner();
                     addDiagnostic('❌ فشلت جميع محاولات الاتصال', 'error');
                     scheduleReconnect();
                     return;
                 }
+
                 const proto = protocols[index];
                 const protocol = proto.secure ? 'wss' : 'ws';
                 const port = proto.port;
                 const wsUrl = `${protocol}://${state.serverHost}:${port}/mqtt`;
                 addDiagnostic(`🔗 محاولة ${protocol}://${state.serverHost}:${port}/mqtt`, 'info');
+
                 const clientId = 'SGE_' + Date.now().toString(36) + '_' + Math.random().toString(36).substr(2, 4);
+                let connectTimer = null;
+
                 try {
                     const client = mqtt.connect(wsUrl, {
                         clientId,
@@ -4974,16 +4995,20 @@
                         password: state.password || undefined,
                         keepalive: 30,
                         clean: true,
-                        connectTimeout: 10000,
+                        connectTimeout: 8000, // Reduced timeout for faster failover
+                        reconnectPeriod: 0, // We manage reconnection manually
                     });
-                    let connectTimer = setTimeout(() => {
+
+                    // Set a timeout for this connection attempt
+                    connectTimer = setTimeout(() => {
                         if (state.mqttStatus === 'connecting') {
                             addDiagnostic(`⏱️ انتهت مهلة الاتصال بـ ${protocol}://${state.serverHost}:${port}`,
                                 'warning');
                             client.end(true);
                             tryConnectWithProtocol(protocols, index + 1);
                         }
-                    }, 12000);
+                    }, 10000);
+
                     client.on('connect', () => {
                         clearTimeout(connectTimer);
                         const wasDisconnected = state.mqttStatus !== 'connected';
@@ -4992,10 +5017,14 @@
                         state.lastError = '';
                         state.usingSecure = proto.secure;
                         state.isReconnecting = false;
+                        state.isManualDisconnect = false;
                         state.connectionStable = true;
                         state.lastConnectionChange = Date.now();
                         state.mqttClient = client;
+                        state.lastPong = Date.now();
+
                         addDiagnostic(`✅ متصل بنجاح عبر ${protocol}://${state.serverHost}:${port}`, 'success');
+
                         if (wasDisconnected) {
                             const now = Date.now();
                             if (now - state.lastConnectionNotify > state.connectionNotifyCooldown) {
@@ -5006,6 +5035,8 @@
                         }
                         updateConnectionBanner();
                         Sound.connected();
+
+                        // Subscribe to device topics
                         state.devices.forEach(dev => {
                             const statusTopic = getDeviceTopic(dev.id, dev.type, 'status');
                             client.subscribe(statusTopic, { qos: 1 });
@@ -5017,12 +5048,24 @@
                             client.subscribe(dev.id + '/system/vacation', { qos: 1 });
                             client.subscribe(dev.id + '/system/heartbeat', { qos: 1 });
                         });
+                        // Subscribe to pong
+                        client.subscribe('sge/pong', { qos: 0 });
+
+                        // Start ping/pong mechanism
+                        startPingPong();
+
                         debouncedUpdateUI();
                     });
+
                     client.on('message', (topic, payload) => {
                         const msg = payload.toString();
+                        if (topic === 'sge/pong') {
+                            state.lastPong = Date.now();
+                            return;
+                        }
                         handleMqttMessage(topic, msg);
                     });
+
                     client.on('error', (err) => {
                         clearTimeout(connectTimer);
                         const errMsg = err.message || String(err);
@@ -5033,70 +5076,140 @@
                             state.lastError = errMsg;
                             state.mqttStatus = 'disconnected';
                             state.connectionStable = false;
+                            state.isReconnecting = false;
                             updateConnectionBanner();
                             Sound.disconnected();
+                            stopPingPong();
                             markAllDevicesUnknown();
                             scheduleReconnect();
                         }
                     });
+
                     client.on('close', () => {
                         clearTimeout(connectTimer);
-                        if (state.mqttStatus !== 'disconnected') {
+                        if (state.mqttStatus !== 'disconnected' && !state.isManualDisconnect) {
                             state.mqttStatus = 'disconnected';
                             state.connectionStable = false;
+                            state.isReconnecting = false;
                             state.lastConnectionChange = Date.now();
                             addDiagnostic('🔌 انقطع الاتصال', 'warning');
                             addLog('🔌 انقطع الاتصال بالخادم', 'warning', true);
                             updateConnectionBanner();
                             Sound.disconnected();
+                            stopPingPong();
                             markAllDevicesUnknown();
                             scheduleReconnect();
                         }
                     });
+
                 } catch (e) {
+                    clearTimeout(connectTimer);
                     const errMsg = e.message || String(e);
                     addDiagnostic(`❌ استثناء: ${errMsg}`, 'error');
                     tryConnectWithProtocol(protocols, index + 1);
                 }
             }
 
+            // Improved reconnect with jitter and max attempts
             function scheduleReconnect() {
-                if (state.isReconnecting) return;
+                if (state.isReconnecting || state.isManualDisconnect) return;
                 state.isReconnecting = true;
+
+                // If we've exceeded max attempts, try switching to the next broker
                 if (state.reconnectAttempt >= K_MAX_RECONNECT) {
                     addDiagnostic('⚠️ تجاوز الحد الأقصى لمحاولات إعادة الاتصال', 'error');
                     state.reconnectAttempt = 0;
+
+                    // Try switching to another broker
                     const currentIdx = state.brokerAlternatives.findIndex(b => b.host === state.serverHost);
                     const nextIdx = (currentIdx + 1) % state.brokerAlternatives.length;
                     if (nextIdx !== currentIdx) {
                         const alt = state.brokerAlternatives[nextIdx];
                         addDiagnostic(`🔄 تبديل إلى خادم بديل: ${alt.host}`, 'warning');
                         state.serverHost = alt.host;
-                        saveConfig(state.serverHost, state.username, state.password);
+                        // Update settings field if visible
                         const settingsServer = document.getElementById('settingsServer');
                         if (settingsServer) settingsServer.value = state.serverHost;
                         state.isReconnecting = false;
                         setTimeout(connectMQTT, 2000);
                         return;
                     }
+                    // All brokers tried, fallback to primary after long wait
+                    if (state.serverHost !== state.primaryBroker) {
+                        state.serverHost = state.primaryBroker;
+                        const settingsServer = document.getElementById('settingsServer');
+                        if (settingsServer) settingsServer.value = state.serverHost;
+                        addDiagnostic(`🔁 العودة إلى الخادم الرئيسي: ${state.primaryBroker}`, 'info');
+                    }
                     state.isReconnecting = false;
                     setTimeout(connectMQTT, 60000);
                     return;
                 }
-                let delay = Math.min(Math.max(K_RECONNECT_DELAY * Math.pow(2, state.reconnectAttempt), 5), 60);
+
+                // Calculate delay with exponential backoff and jitter
+                let delay = Math.min(K_RECONNECT_DELAY * Math.pow(2, state.reconnectAttempt), K_MAX_RECONNECT_DELAY);
+                // Add jitter (±20%)
+                let jitter = delay * (K_JITTER_FACTOR * (Math.random() * 2 - 1));
+                delay = Math.max(1000, Math.round(delay + jitter));
+
                 state.reconnectAttempt++;
-                addDiagnostic(`🔄 إعادة الاتصال خلال ${delay} ث (محاولة ${state.reconnectAttempt}/${K_MAX_RECONNECT})`,
+                addDiagnostic(`🔄 إعادة الاتصال خلال ${Math.round(delay/1000)} ث (محاولة ${state.reconnectAttempt}/${K_MAX_RECONNECT})`,
                     'warning');
                 updateConnectionBanner();
+
                 if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
                 state.reconnectTimer = setTimeout(() => {
                     state.isReconnecting = false;
                     connectMQTT();
-                }, delay * 1000);
+                }, delay);
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT MESSAGE HANDLER (مع دعم الحساسات)
+            //  PING/PONG MECHANISM
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function startPingPong() {
+                stopPingPong();
+                state.lastPong = Date.now();
+
+                state.pingTimer = setInterval(() => {
+                    if (state.mqttStatus === 'connected' && state.mqttClient) {
+                        try {
+                            state.mqttClient.publish('sge/ping', 'ping', { qos: 0 });
+                            // Reset pong timeout
+                            if (state.pongTimeoutTimer) clearTimeout(state.pongTimeoutTimer);
+                            state.pongTimeoutTimer = setTimeout(() => {
+                                if (Date.now() - state.lastPong > K_PONG_TIMEOUT) {
+                                    addDiagnostic('⚠️ انتهت مهلة Pong، إعادة الاتصال...', 'warning');
+                                    addLog('⚠️ انقطاع الاتصال (Pong timeout)', 'warning');
+                                    if (state.mqttClient) {
+                                        try { state.mqttClient.end(true); } catch(_) {}
+                                        state.mqttClient = null;
+                                    }
+                                    state.mqttStatus = 'disconnected';
+                                    updateConnectionBanner();
+                                    scheduleReconnect();
+                                }
+                            }, K_PONG_TIMEOUT);
+                        } catch (e) {
+                            addDiagnostic(`⚠️ خطأ في Ping: ${e.message}`, 'error');
+                        }
+                    }
+                }, K_PING_INTERVAL);
+            }
+
+            function stopPingPong() {
+                if (state.pingTimer) {
+                    clearInterval(state.pingTimer);
+                    state.pingTimer = null;
+                }
+                if (state.pongTimeoutTimer) {
+                    clearTimeout(state.pongTimeoutTimer);
+                    state.pongTimeoutTimer = null;
+                }
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  MQTT MESSAGE HANDLER (with sensor support)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function resolveDeviceFromTopic(topic) {
                 let matched = null;
@@ -5285,6 +5398,7 @@
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let lastNotifSoundTime = 0;
             const NOTIF_SOUND_GAP = 600;
+            const MAX_NOTIFS = 50;
 
             function addNotification(title, desc, icon, type = 'info', silent = false) {
                 const last = state.notifications[0];
@@ -5444,13 +5558,12 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ACTIONS (تشمل الحساسات)
+            //  DEVICE ACTIONS (with sensor protection)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleDevice(id) {
                 const dev = state.deviceMap.get(id);
                 if (!dev) return;
                 const type = dev.type;
-                // إذا كان حساساً، لا نسمح بالتبديل اليدوي (فقط قراءة)
                 if (type >= 9 && type <= 12) {
                     showToast('⚠️ هذا الجهاز حساس ولا يمكن التحكم به يدوياً', 'warning');
                     return;
@@ -5816,7 +5929,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE SETTINGS (مع حقل الأمر الصوتي)
+            //  DEVICE SETTINGS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDeviceSettings(deviceId) {
                 state.editingDeviceId = deviceId;
@@ -7247,7 +7360,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SETTINGS
+            //  SETTINGS (with connection diagnostics)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderSettingsPage() {
                 const micStatus = state.permMicrophone;
@@ -7353,7 +7466,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 8.1.0 (اتصال محسّن + أصوات مخصصة + حساسات)<br>
+                                    الإصدار 8.1.0 (اتصال محسّن + حساسات)<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -7363,8 +7476,11 @@
             function saveSettings() {
                 const server = document.getElementById('settingsServer').value.trim();
                 if (!server) return showToast('⚠️ أدخل الخادم', 'error');
+                state.primaryBroker = server;
                 saveConfig(server, document.getElementById('settingsUser').value, document.getElementById('settingsPass')
                     .value);
+                // Force disconnect and reconnect
+                state.isManualDisconnect = true;
                 if (state.mqttClient) {
                     try { state.mqttClient.end(true); } catch (_) {}
                     state.mqttClient = null;
@@ -7373,8 +7489,10 @@
                 state.reconnectAttempt = 0;
                 state.connectionAttempts = 0;
                 state.connDiagnostics = [];
-                showToast('✅ تم الحفظ', 'success');
+                stopPingPong();
+                showToast('✅ تم الحفظ، جاري إعادة الاتصال...', 'success');
                 Sound.success();
+                state.isManualDisconnect = false;
                 setTimeout(connectMQTT, 500);
                 debouncedUpdateUI();
             }
@@ -7631,7 +7749,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  VOICE CONTROL – مع زر عائم فوق المنيو
+            //  VOICE CONTROL
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function initVoiceControl() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -7787,7 +7905,6 @@
                             'CLOSE'); } else if (action === 'stop') { doorCommand(dev.id, 'STOP'); } else if (action ===
                         'on') { doorCommand(dev.id, 'OPEN'); } else if (action === 'off') { doorCommand(dev.id, 'CLOSE'); }
                 } else if (type >= 9 && type <= 12) {
-                    // sensors لا يمكن التحكم بها
                     showToast(`⚠️ ${dev.name} حساس ولا يمكن التحكم به`, 'warning');
                     return;
                 } else {
@@ -7903,7 +8020,7 @@
                 document.querySelectorAll('.nav-item, .bottom-nav-item, .center-nav-btn').forEach(el => {
                     el.classList.toggle('active', el.dataset.page === page);
                 });
-                // تحديث زر الميكروفون العائم
+                // Update voice FAB
                 const voiceBtn = dom.voiceFabBtn;
                 if (voiceBtn) {
                     if (state.isListening) {
@@ -8110,6 +8227,7 @@
                 loadAll();
                 markAllDevicesUnknown();
                 updateUI();
+                // Start connection with improved stability
                 setTimeout(connectMQTT, 800);
                 startHeartbeatMonitor();
                 startScheduleChecker();
@@ -8117,11 +8235,13 @@
                 checkPermissions();
                 initScheduleDays();
 
+                // Global tap sound
                 document.addEventListener('click', (e) => {
                     if (e.target.closest('.nav-item, .bottom-nav-item, .center-nav-btn, .icon-btn, .see-all, .back-btn')) {
                         Sound.tap();
                     }
                 }, true);
+
                 dom.themeToggle.addEventListener('click', toggleTheme);
                 document.querySelectorAll('.nav-item, .bottom-nav-item, .center-nav-btn').forEach(el => {
                     el.addEventListener('click', () => {
@@ -8129,6 +8249,7 @@
                         if (page) navigateTo(page);
                     });
                 });
+
                 dom.notifBellBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     toggleNotifPanel();
@@ -8141,6 +8262,7 @@
                         closeNotifPanel();
                     }
                 });
+
                 dom.logBellBtn.addEventListener('click', (e) => {
                     e.stopPropagation();
                     toggleLogPanel();
@@ -8153,6 +8275,7 @@
                         closeLogPanel();
                     }
                 });
+
                 dom.scanQrBtn.addEventListener('click', showQrScanner);
                 dom.addDeviceBtn.addEventListener('click', () => openAddModal(null));
                 dom.addModalCancel.addEventListener('click', closeAddModal);
@@ -8173,6 +8296,7 @@
                     dom.addDeviceId.value = generateDeviceId(type, room);
                     Sound.tap();
                 });
+
                 dom.addRoomCancel.addEventListener('click', closeAddRoomModal);
                 dom.addRoomSubmit.addEventListener('click', handleAddRoom);
                 dom.addRoomModal.addEventListener('click', (e) => {
@@ -8181,6 +8305,7 @@
                 dom.addRoomName.addEventListener('keydown', (e) => {
                     if (e.key === 'Enter') handleAddRoom();
                 });
+
                 dom.detailBackBtn.addEventListener('click', closeDetailPage);
                 dom.detailDeleteBtn.addEventListener('click', () => {
                     if (state.activeDeviceId) deleteDevice(state.activeDeviceId);
@@ -8188,6 +8313,7 @@
                 dom.detailQrBtn.addEventListener('click', () => {
                     if (state.activeDeviceId) showQRCodeModal(state.activeDeviceId);
                 });
+
                 dom.roomDetailBack.addEventListener('click', closeRoomDetail);
                 dom.roomDetailEditBtn.addEventListener('click', () => {
                     if (state._currentRoom) openRoomEditModal(state._currentRoom);
@@ -8195,6 +8321,7 @@
                 dom.roomOverlay.addEventListener('click', (e) => {
                     if (e.target === dom.roomOverlay) closeRoomDetail();
                 });
+
                 dom.roomEditCancel.addEventListener('click', closeRoomEditModal);
                 dom.roomEditSave.addEventListener('click', saveRoomEdit);
                 dom.roomEditModal.addEventListener('click', (e) => {
@@ -8204,12 +8331,14 @@
                     if (e.key === 'Enter') saveRoomEdit();
                     if (e.key === 'Escape') closeRoomEditModal();
                 });
+
                 dom.qrClose.addEventListener('click', closeQrScanner);
                 dom.qrManualBtn.addEventListener('click', () => {
                     const val = dom.qrManualInput.value.trim();
                     if (val) { closeQrScanner();
                         handleQrData(val); } else showToast('⚠️ أدخل النص', 'error');
                 });
+
                 dom.deleteConfirm.addEventListener('click', () => {
                     if (state.pendingDeleteId && state.pendingDeleteCallback) {
                         state.pendingDeleteCallback(state.pendingDeleteId);
@@ -8230,12 +8359,14 @@
                         state.pendingDeleteCallback = null;
                     }
                 });
+
                 dom.deviceSettingsModal.addEventListener('click', (e) => {
                     if (e.target === dom.deviceSettingsModal) closeDeviceSettings();
                 });
                 dom.autoEditModal.addEventListener('click', (e) => {
                     if (e.target === dom.autoEditModal) closeAutomationEditor();
                 });
+
                 document.addEventListener('keydown', (e) => {
                     if (e.target.tagName === 'INPUT') return;
                     if (e.key === 'Escape') {
@@ -8264,14 +8395,17 @@
                         }
                     }
                 });
+
                 let resizeTimeout;
                 window.addEventListener('resize', () => {
                     clearTimeout(resizeTimeout);
                     resizeTimeout = setTimeout(() => { drawAllDoors(); }, 300);
                 });
+
                 window.addEventListener('beforeunload', () => {
                     stopHeartbeatMonitor();
                     stopScheduleChecker();
+                    stopPingPong();
                     if (state.mqttClient) { try { state.mqttClient.end(true); } catch (_) {} }
                     if (state.reconnectTimer) clearTimeout(state.reconnectTimer);
                     if (state.updateTimer) clearTimeout(state.updateTimer);
@@ -8279,8 +8413,9 @@
                         try { state.recognition.stop(); } catch (_) {}
                     }
                 });
+
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v8.1.0 – Advanced Automation + Sensors + Voice FAB');
+                console.log('⚡ Smart General Electric v8.1.0 – Improved Connection Stability');
                 console.log(`📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`);
             }
 
