@@ -3858,7 +3858,7 @@
     <div id="toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    JAVASCRIPT – Improved Connection Stability
+    JAVASCRIPT – Improved Connection with Multiple Brokers
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <script>
         (function() {
@@ -3926,23 +3926,32 @@
             ];
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  CONNECTION STABILITY SETTINGS
+            //  CONNECTION SETTINGS – Multiple Brokers with Fallback
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            const K_MAX_RECONNECT = 15; // More attempts before giving up
-            const K_RECONNECT_DELAY = 1000; // Start with 1 second
-            const K_MAX_RECONNECT_DELAY = 60000; // Max 60 seconds
-            const K_PING_INTERVAL = 25000; // 25 seconds
-            const K_PONG_TIMEOUT = 40000; // 40 seconds
-            const K_JITTER_FACTOR = 0.2; // 20% jitter
+            const BROKER_LIST = [
+                { host: 'yf2002d1.ala.eu-central-1.emqxsl.com', wsPort: 8084, wssPort: 8084, label: 'EMQX Custom' },
+                { host: 'broker.emqx.io', wsPort: 8083, wssPort: 8084, label: 'EMQX Public' },
+                { host: 'broker.hivemq.com', wsPort: 8000, wssPort: 8884, label: 'HiveMQ' },
+                { host: 'test.mosquitto.org', wsPort: 8080, wssPort: 8081, label: 'Mosquitto' },
+                { host: 'mqtt.eclipseprojects.io', wsPort: 80, wssPort: 443, label: 'Eclipse' },
+            ];
+
+            // Connection parameters
+            const K_MAX_RECONNECT = 20; // Max attempts before broker switch
+            const K_RECONNECT_DELAY = 1000; // Initial delay
+            const K_MAX_RECONNECT_DELAY = 60000; // Max delay
+            const K_PING_INTERVAL = 25000;
+            const K_PONG_TIMEOUT = 40000;
+            const K_JITTER_FACTOR = 0.2;
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  STATE (extended)
+            //  STATE
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             const state = {
                 mqttStatus: 'disconnected',
                 lastError: '',
                 reconnectAttempt: 0,
-                serverHost: 'broker.hivemq.com', // Default broker
+                serverHost: BROKER_LIST[0].host, // Start with first
                 username: '',
                 password: '',
                 devices: [],
@@ -3972,11 +3981,7 @@
                 usingSecure: false,
                 connectionAttempts: 0,
                 vacationMode: false,
-                brokerAlternatives: [
-                    { host: 'broker.hivemq.com', wsPort: 8000, wssPort: 8884, label: 'HiveMQ' },
-                    { host: 'test.mosquitto.org', wsPort: 8080, wssPort: 8081, label: 'Mosquitto' },
-                    { host: 'mqtt.eclipseprojects.io', wsPort: 80, wssPort: 443, label: 'Eclipse' },
-                ],
+                brokerAlternatives: BROKER_LIST,
                 editingDeviceId: null,
                 heartbeatInterval: null,
                 roomToEdit: null,
@@ -4014,14 +4019,16 @@
                     delete: null,
                 },
                 voiceCommands: {},
-                // New connection stability state
                 pingTimer: null,
                 pongTimeoutTimer: null,
                 lastPong: Date.now(),
                 isManualDisconnect: false,
-                primaryBroker: 'broker.hivemq.com',
+                primaryBroker: BROKER_LIST[0].host,
                 currentBrokerIndex: 0,
-                reconnectAttempt: 0,
+                brokerFailCount: {},
+                // Connection health
+                connectionQuality: 'unknown',
+                lastPingSuccess: Date.now(),
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4381,7 +4388,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  TOAST & LOGGING
+            //  TOAST & LOGGING (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let toastTimer = null;
 
@@ -4450,7 +4457,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  STORAGE
+            //  STORAGE (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function saveDevices() { try { localStorage.setItem('sge_devices', JSON.stringify(state.devices)); } catch (_) {} }
             function saveScenes() { try { localStorage.setItem('sge_scenes', JSON.stringify(state.scenes)); } catch (_) {} }
@@ -4463,8 +4470,7 @@
             function saveActiveDevice() { try { localStorage.setItem('sge_active_device', state.activeDeviceId || ''); } catch (
                 _) {} }
             function saveConfig(server, username, password) {
-                state.serverHost = server || 'broker.hivemq.com';
-                state.primaryBroker = state.serverHost;
+                state.serverHost = server || state.primaryBroker;
                 state.username = username || '';
                 state.password = password || '';
                 try {
@@ -4552,8 +4558,8 @@
                     state.soundEnabled = soundPref === null ? true : soundPref === 'on';
                     const notifPref = localStorage.getItem('sge_notify');
                     state.notifyStatusUpdates = notifPref === null ? true : notifPref === 'on';
-                    state.serverHost = localStorage.getItem('sge_server') || 'broker.hivemq.com';
-                    state.primaryBroker = state.serverHost;
+                    // Load custom server or default to first broker
+                    state.serverHost = localStorage.getItem('sge_server') || state.primaryBroker;
                     state.username = localStorage.getItem('sge_username') || '';
                     state.password = localStorage.getItem('sge_password') || '';
                     const vac = localStorage.getItem('sge_vacation');
@@ -4693,7 +4699,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  THEME & SOUND
+            //  THEME & SOUND (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleTheme() {
                 state.isDark = !state.isDark;
@@ -4730,7 +4736,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  HEARTBEAT MONITOR
+            //  HEARTBEAT MONITOR (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function startHeartbeatMonitor() {
                 if (state.heartbeatInterval) clearInterval(state.heartbeatInterval);
@@ -4807,7 +4813,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SCHEDULE CHECKER
+            //  SCHEDULE CHECKER (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function startScheduleChecker() {
                 if (state.scheduleCheckerInterval) clearInterval(state.scheduleCheckerInterval);
@@ -4850,7 +4856,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT – IMPROVED CONNECTION STABILITY
+            //  MQTT – IMPROVED CONNECTION WITH MULTIPLE BROKERS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateConnectionBanner() {
                 if (state.mqttStatus === 'connected') updateWifiStatus('connected', 'متصل');
@@ -4919,7 +4925,26 @@
                 return deviceId + '/' + base + '/' + suffix;
             }
 
-            // Enhanced connection attempt with promise chaining
+            // Try to connect to the next broker in the list
+            function tryNextBroker() {
+                // Find current index
+                let idx = state.brokerAlternatives.findIndex(b => b.host === state.serverHost);
+                if (idx === -1) idx = 0;
+                // Move to next
+                idx = (idx + 1) % state.brokerAlternatives.length;
+                const nextBroker = state.brokerAlternatives[idx];
+                state.serverHost = nextBroker.host;
+                state.currentBrokerIndex = idx;
+                addDiagnostic(`🔄 تبديل إلى خادم: ${nextBroker.host} (${nextBroker.label})`, 'info');
+                // Update settings field if visible
+                const settingsServer = document.getElementById('settingsServer');
+                if (settingsServer) settingsServer.value = state.serverHost;
+                // Reset attempt counter for new broker
+                state.reconnectAttempt = 0;
+                state.isReconnecting = false;
+                connectMQTT();
+            }
+
             function connectMQTT() {
                 if (state.mqttStatus === 'connecting' || state.isReconnecting || state.isManualDisconnect) return;
                 if (!state.serverHost) {
@@ -4956,6 +4981,7 @@
                         protocols.push({ port: alt.wssPort, secure: true });
                     }
                 } else {
+                    // Fallback: try common ports
                     if (isSecure) {
                         protocols.push({ port: 8884, secure: true });
                         protocols.push({ port: 8000, secure: false });
@@ -4970,12 +4996,14 @@
 
             function tryConnectWithProtocol(protocols, index) {
                 if (index >= protocols.length) {
+                    // All protocols failed for this broker
                     state.mqttStatus = 'disconnected';
-                    state.lastError = 'فشلت جميع محاولات الاتصال';
+                    state.lastError = 'فشلت جميع محاولات الاتصال لهذا الخادم';
                     state.isReconnecting = false;
                     updateConnectionBanner();
-                    addDiagnostic('❌ فشلت جميع محاولات الاتصال', 'error');
-                    scheduleReconnect();
+                    addDiagnostic(`❌ فشل الاتصال بخادم ${state.serverHost}`, 'error');
+                    // Try next broker
+                    tryNextBroker();
                     return;
                 }
 
@@ -4995,11 +5023,10 @@
                         password: state.password || undefined,
                         keepalive: 30,
                         clean: true,
-                        connectTimeout: 8000, // Reduced timeout for faster failover
-                        reconnectPeriod: 0, // We manage reconnection manually
+                        connectTimeout: 8000,
+                        reconnectPeriod: 0, // We manage reconnection
                     });
 
-                    // Set a timeout for this connection attempt
                     connectTimer = setTimeout(() => {
                         if (state.mqttStatus === 'connecting') {
                             addDiagnostic(`⏱️ انتهت مهلة الاتصال بـ ${protocol}://${state.serverHost}:${port}`,
@@ -5022,13 +5049,14 @@
                         state.lastConnectionChange = Date.now();
                         state.mqttClient = client;
                         state.lastPong = Date.now();
+                        state.connectionQuality = 'good';
 
                         addDiagnostic(`✅ متصل بنجاح عبر ${protocol}://${state.serverHost}:${port}`, 'success');
 
                         if (wasDisconnected) {
                             const now = Date.now();
                             if (now - state.lastConnectionNotify > state.connectionNotifyCooldown) {
-                                showToast('✅ تم الاتصال بالخادم', 'success', '📡');
+                                showToast(`✅ تم الاتصال بالخادم (${state.serverHost})`, 'success', '📡');
                                 state.lastConnectionNotify = now;
                             }
                             addLog('✅ متصل بخادم MQTT', 'success', true);
@@ -5048,12 +5076,9 @@
                             client.subscribe(dev.id + '/system/vacation', { qos: 1 });
                             client.subscribe(dev.id + '/system/heartbeat', { qos: 1 });
                         });
-                        // Subscribe to pong
                         client.subscribe('sge/pong', { qos: 0 });
 
-                        // Start ping/pong mechanism
                         startPingPong();
-
                         debouncedUpdateUI();
                     });
 
@@ -5110,50 +5135,27 @@
                 }
             }
 
-            // Improved reconnect with jitter and max attempts
             function scheduleReconnect() {
                 if (state.isReconnecting || state.isManualDisconnect) return;
                 state.isReconnecting = true;
 
-                // If we've exceeded max attempts, try switching to the next broker
-                if (state.reconnectAttempt >= K_MAX_RECONNECT) {
-                    addDiagnostic('⚠️ تجاوز الحد الأقصى لمحاولات إعادة الاتصال', 'error');
-                    state.reconnectAttempt = 0;
+                // Increase attempt counter
+                state.reconnectAttempt++;
 
-                    // Try switching to another broker
-                    const currentIdx = state.brokerAlternatives.findIndex(b => b.host === state.serverHost);
-                    const nextIdx = (currentIdx + 1) % state.brokerAlternatives.length;
-                    if (nextIdx !== currentIdx) {
-                        const alt = state.brokerAlternatives[nextIdx];
-                        addDiagnostic(`🔄 تبديل إلى خادم بديل: ${alt.host}`, 'warning');
-                        state.serverHost = alt.host;
-                        // Update settings field if visible
-                        const settingsServer = document.getElementById('settingsServer');
-                        if (settingsServer) settingsServer.value = state.serverHost;
-                        state.isReconnecting = false;
-                        setTimeout(connectMQTT, 2000);
-                        return;
-                    }
-                    // All brokers tried, fallback to primary after long wait
-                    if (state.serverHost !== state.primaryBroker) {
-                        state.serverHost = state.primaryBroker;
-                        const settingsServer = document.getElementById('settingsServer');
-                        if (settingsServer) settingsServer.value = state.serverHost;
-                        addDiagnostic(`🔁 العودة إلى الخادم الرئيسي: ${state.primaryBroker}`, 'info');
-                    }
-                    state.isReconnecting = false;
-                    setTimeout(connectMQTT, 60000);
+                // If we've tried too many times with current broker, switch
+                if (state.reconnectAttempt >= K_MAX_RECONNECT) {
+                    addDiagnostic(`⚠️ تجاوز الحد الأقصى للمحاولات لخادم ${state.serverHost}`, 'error');
+                    state.reconnectAttempt = 0;
+                    tryNextBroker();
                     return;
                 }
 
-                // Calculate delay with exponential backoff and jitter
-                let delay = Math.min(K_RECONNECT_DELAY * Math.pow(2, state.reconnectAttempt), K_MAX_RECONNECT_DELAY);
-                // Add jitter (±20%)
+                // Exponential backoff with jitter
+                let delay = Math.min(K_RECONNECT_DELAY * Math.pow(2, state.reconnectAttempt - 1), K_MAX_RECONNECT_DELAY);
                 let jitter = delay * (K_JITTER_FACTOR * (Math.random() * 2 - 1));
                 delay = Math.max(1000, Math.round(delay + jitter));
 
-                state.reconnectAttempt++;
-                addDiagnostic(`🔄 إعادة الاتصال خلال ${Math.round(delay/1000)} ث (محاولة ${state.reconnectAttempt}/${K_MAX_RECONNECT})`,
+                addDiagnostic(`🔄 إعادة الاتصال خلال ${Math.round(delay/1000)} ث (محاولة ${state.reconnectAttempt})`,
                     'warning');
                 updateConnectionBanner();
 
@@ -5165,7 +5167,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  PING/PONG MECHANISM
+            //  PING/PONG MECHANISM (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function startPingPong() {
                 stopPingPong();
@@ -5175,7 +5177,6 @@
                     if (state.mqttStatus === 'connected' && state.mqttClient) {
                         try {
                             state.mqttClient.publish('sge/ping', 'ping', { qos: 0 });
-                            // Reset pong timeout
                             if (state.pongTimeoutTimer) clearTimeout(state.pongTimeoutTimer);
                             state.pongTimeoutTimer = setTimeout(() => {
                                 if (Date.now() - state.lastPong > K_PONG_TIMEOUT) {
@@ -5186,7 +5187,9 @@
                                         state.mqttClient = null;
                                     }
                                     state.mqttStatus = 'disconnected';
+                                    state.connectionStable = false;
                                     updateConnectionBanner();
+                                    markAllDevicesUnknown();
                                     scheduleReconnect();
                                 }
                             }, K_PONG_TIMEOUT);
@@ -5209,7 +5212,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT MESSAGE HANDLER (with sensor support)
+            //  MQTT MESSAGE HANDLER (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function resolveDeviceFromTopic(topic) {
                 let matched = null;
@@ -5323,7 +5326,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  AUTOMATION EXECUTION
+            //  AUTOMATION EXECUTION (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function executeAutomationActions(auto) {
                 if (!auto.actions || auto.actions.length === 0) return;
@@ -5394,7 +5397,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  NOTIFICATIONS
+            //  NOTIFICATIONS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let lastNotifSoundTime = 0;
             const NOTIF_SOUND_GAP = 600;
@@ -5558,7 +5561,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ACTIONS (with sensor protection)
+            //  DEVICE ACTIONS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleDevice(id) {
                 const dev = state.deviceMap.get(id);
@@ -5737,7 +5740,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  QR CODE FUNCTIONS
+            //  QR CODE FUNCTIONS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function generateQRCodeData(device) {
                 return [
@@ -5815,7 +5818,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DOOR ANIMATION
+            //  DOOR ANIMATION (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function animateDoor(deviceId, targetProgress) {
                 const key = 'door_' + deviceId;
@@ -5929,7 +5932,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE SETTINGS
+            //  DEVICE SETTINGS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDeviceSettings(deviceId) {
                 state.editingDeviceId = deviceId;
@@ -6146,7 +6149,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE
+            //  DETAIL PAGE (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(deviceId) {
                 state.activeDeviceId = deviceId;
@@ -6434,7 +6437,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ROOM DETAIL
+            //  ROOM DETAIL (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openRoomDetail(roomName) {
                 state._currentRoom = roomName;
@@ -6482,7 +6485,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ROOM NAME EDITING
+            //  ROOM NAME EDITING (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openRoomEditModal(roomName) {
                 state.roomToEdit = roomName;
@@ -6536,7 +6539,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD ROOM
+            //  ADD ROOM (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAddRoomModal() {
                 dom.addRoomModal.classList.add('active');
@@ -6585,7 +6588,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD DEVICE FROM ROOM
+            //  ADD DEVICE FROM ROOM (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAddDeviceInRoom(room) {
                 if (!room) return;
@@ -6599,7 +6602,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE CARD HTML (with sensors)
+            //  DEVICE CARD HTML (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDeviceCardHtml(device) {
                 const typeInfo = DEVICE_TYPES[device.type] || DEVICE_TYPES[2];
@@ -6726,7 +6729,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ATTACH DEVICE CONTROLS
+            //  ATTACH DEVICE CONTROLS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function attachDeviceControls(container) {
                 container.querySelectorAll('[data-action="toggle-icon"]').forEach(el => {
@@ -6777,7 +6780,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  RENDER PAGES
+            //  RENDER PAGES (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDashboard() {
                 const scenesHtml = state.scenes.slice(0, 5).map(s =>
@@ -6893,7 +6896,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SCENE MODAL
+            //  SCENE MODAL (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openSceneModal() {
                 dom.sceneModal.classList.add('active');
@@ -6997,7 +7000,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SCENE & AUTOMATION CORE
+            //  SCENE & AUTOMATION CORE (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function runScene(id) {
                 const scene = state.scenes.find(s => s.id === id);
@@ -7056,7 +7059,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  AUTOMATIONS (Advanced Render & Editor)
+            //  AUTOMATIONS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderAutomationsPage() {
                 const total = state.automations.length;
@@ -7166,7 +7169,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  AUTOMATION EDITOR (Advanced)
+            //  AUTOMATION EDITOR (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAutomationEditor(autoId = null) {
                 dom.autoEditModal.classList.add('active');
@@ -7360,7 +7363,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SETTINGS (with connection diagnostics)
+            //  SETTINGS (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderSettingsPage() {
                 const micStatus = state.permMicrophone;
@@ -7466,7 +7469,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 8.1.0 (اتصال محسّن + حساسات)<br>
+                                    الإصدار 8.1.0 (اتصال محسّن مع خوادم متعددة)<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -7479,7 +7482,6 @@
                 state.primaryBroker = server;
                 saveConfig(server, document.getElementById('settingsUser').value, document.getElementById('settingsPass')
                     .value);
-                // Force disconnect and reconnect
                 state.isManualDisconnect = true;
                 if (state.mqttClient) {
                     try { state.mqttClient.end(true); } catch (_) {}
@@ -7547,7 +7549,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  NAVIGATION
+            //  NAVIGATION (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function navigateTo(page) {
                 state.currentPage = page;
@@ -7556,7 +7558,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  QR SCANNER
+            //  QR SCANNER (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function showQrScanner() {
                 if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
@@ -7646,7 +7648,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  ADD DEVICE
+            //  ADD DEVICE (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openAddModal(room) {
                 dom.addModal.classList.add('active');
@@ -7740,7 +7742,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  VACATION UI
+            //  VACATION UI (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function updateVacationUI() {
                 const banner = dom.vacationBanner;
@@ -7749,7 +7751,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  VOICE CONTROL
+            //  VOICE CONTROL (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function initVoiceControl() {
                 const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -7918,7 +7920,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  PERMISSION CHECK
+            //  PERMISSION CHECK (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             async function checkPermissions() {
                 try {
@@ -7979,7 +7981,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEBOUNCED UI UPDATE
+            //  DEBOUNCED UI UPDATE (unchanged)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let updateScheduled = false;
 
@@ -8020,7 +8022,6 @@
                 document.querySelectorAll('.nav-item, .bottom-nav-item, .center-nav-btn').forEach(el => {
                     el.classList.toggle('active', el.dataset.page === page);
                 });
-                // Update voice FAB
                 const voiceBtn = dom.voiceFabBtn;
                 if (voiceBtn) {
                     if (state.isListening) {
@@ -8227,7 +8228,6 @@
                 loadAll();
                 markAllDevicesUnknown();
                 updateUI();
-                // Start connection with improved stability
                 setTimeout(connectMQTT, 800);
                 startHeartbeatMonitor();
                 startScheduleChecker();
@@ -8235,7 +8235,6 @@
                 checkPermissions();
                 initScheduleDays();
 
-                // Global tap sound
                 document.addEventListener('click', (e) => {
                     if (e.target.closest('.nav-item, .bottom-nav-item, .center-nav-btn, .icon-btn, .see-all, .back-btn')) {
                         Sound.tap();
@@ -8415,7 +8414,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v8.1.0 – Improved Connection Stability');
+                console.log('⚡ Smart General Electric v8.1.0 – Robust Connection with Fallback Brokers');
                 console.log(`📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`);
             }
 
