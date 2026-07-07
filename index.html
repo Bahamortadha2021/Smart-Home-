@@ -3096,386 +3096,205 @@
         }
 
         /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           BLE Scanning Styles
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .ble-scan-btn {
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            padding: 8px 18px;
+            border-radius: 40px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(11,61,145,0.25);
+        }
+        .ble-scan-btn:active { transform: scale(0.94); }
+        .ble-scan-btn i { font-size: 1.1rem; }
+        .ble-scan-btn.scanning { background: var(--warning); animation: pulse-scan 1s infinite; }
+        @keyframes pulse-scan { 0%,100% { opacity:1; } 50% { opacity:0.6; } }
+        .ble-device-list {
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 12px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius-sm);
+            background: var(--bg-primary);
+            padding: 6px;
+        }
+        .ble-device-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: var(--surface);
+            border-radius: 12px;
+            margin-bottom: 4px;
+            border: 1px solid var(--border-color);
+            transition: var(--transition);
+        }
+        .ble-device-item:hover { border-color: var(--primary); }
+        .ble-device-item .info { flex:1; }
+        .ble-device-item .info .name { font-weight:700; font-size:0.95rem; }
+        .ble-device-item .info .id { font-size:0.7rem; color:var(--text-muted); direction:ltr; font-family:monospace; }
+        .ble-device-item .info .state { font-size:0.75rem; }
+        .ble-device-item .add-btn {
+            background: var(--success);
+            color: #fff;
+            border: none;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-weight:600;
+            font-size:0.75rem;
+            cursor: pointer;
+        }
+        .ble-device-item .add-btn:disabled { opacity:0.5; cursor:not-allowed; }
+        .ble-scan-status { font-size:0.85rem; color:var(--text-secondary); margin:6px 0; }
+        .ble-modal {
+            position: fixed;
+            inset: 0;
+            background: var(--modal-overlay-bg);
+            backdrop-filter: blur(6px);
+            z-index: 3000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .ble-modal.active { display: flex; }
+        .ble-modal .modal-box {
+            background: var(--surface);
+            border-radius: var(--border-radius);
+            padding: 28px;
+            max-width: 600px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: var(--shadow-lg);
+        }
+        .ble-modal .modal-title { font-size:1.3rem; font-weight:700; margin-bottom:16px; display:flex; align-items:center; gap:10px; }
+        .ble-modal .modal-actions { display:flex; gap:10px; margin-top:16px; justify-content:flex-end; }
+        .ble-modal .modal-actions .btn-secondary { padding:8px 20px; border:1px solid var(--border-color); border-radius:var(--border-radius-sm); background:transparent; color:var(--text-secondary); font-weight:600; cursor:pointer; }
+        .ble-modal .modal-actions .btn-primary { padding:8px 20px; border:none; border-radius:var(--border-radius-sm); background:var(--primary); color:#fff; font-weight:600; cursor:pointer; }
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
            Responsive
            ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
         @media (max-width: 992px) {
-            .sidebar {
-                display: none;
-            }
-            .bottom-nav {
-                display: flex;
-            }
-            .main-content {
-                padding: 16px 16px 100px;
-            }
-            .devices-grid {
-                grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
-            }
-            .rooms-grid {
-                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            }
-            #notifPanel,
-            #logPanel {
-                width: 320px;
-                right: 0;
-                left: auto;
-            }
-            .automation-stats {
-                grid-template-columns: repeat(3, 1fr);
-            }
-            .modal-box {
-                max-width: 440px;
-                padding: 20px;
-            }
-            .detail-icon-container {
-                width: 100px;
-                height: 100px;
-            }
-            .detail-icon-container .big-icon {
-                font-size: 5rem;
-            }
-            .detail-door-canvas {
-                max-width: 350px;
-            }
-            .fab-voice {
-                width: 54px;
-                height: 54px;
-                font-size: 1.5rem;
-                bottom: calc(var(--fab-bottom) + 5px);
-                right: 16px;
-            }
-            .gauge-container {
-                max-width: 180px;
-            }
-            .water-level-container {
-                max-width: 180px;
-            }
-            .dual-gauge-item {
-                min-width: 100px;
-                max-width: 140px;
-            }
+            .sidebar { display: none; }
+            .bottom-nav { display: flex; }
+            .main-content { padding: 16px 16px 100px; }
+            .devices-grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); }
+            .rooms-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+            #notifPanel, #logPanel { width: 320px; right: 0; left: auto; }
+            .automation-stats { grid-template-columns: repeat(3, 1fr); }
+            .modal-box { max-width: 440px; padding: 20px; }
+            .detail-icon-container { width: 100px; height: 100px; }
+            .detail-icon-container .big-icon { font-size: 5rem; }
+            .detail-door-canvas { max-width: 350px; }
+            .fab-voice { width: 54px; height: 54px; font-size: 1.5rem; bottom: calc(var(--fab-bottom) + 5px); right: 16px; }
+            .gauge-container { max-width: 180px; }
+            .water-level-container { max-width: 180px; }
+            .dual-gauge-item { min-width: 100px; max-width: 140px; }
         }
         @media (max-width: 768px) {
-            .modal-box {
-                max-width: 100%;
-                padding: 18px;
-            }
-            .modal-box .modal-title {
-                font-size: 1.1rem;
-            }
-            .scene-device-list .dev-item {
-                flex-wrap: wrap;
-                gap: 4px;
-            }
-            .scene-device-list .dev-item .dev-name {
-                font-size: 0.8rem;
-                flex: 1 1 60%;
-            }
-            .scene-device-list .dev-item .dev-actions {
-                flex: 1 1 100%;
-                justify-content: flex-start;
-                gap: 4px;
-            }
-            .scene-device-list .dev-item .dev-actions .act-btn {
-                font-size: 0.55rem;
-                padding: 2px 8px;
-            }
-            .icon-picker-grid {
-                grid-template-columns: repeat(5, 1fr);
-            }
-            .door-controls-modern .door-btn {
-                min-width: 60px;
-                padding: 8px 10px;
-                font-size: 0.75rem;
-            }
-            .door-controls-modern .door-btn .emoji {
-                font-size: 1.2rem;
-            }
-            .detail-icon-container {
-                width: 80px;
-                height: 80px;
-            }
-            .detail-icon-container .big-icon {
-                font-size: 4rem;
-            }
-            .detail-door-canvas {
-                max-width: 280px;
-            }
-            .detail-device-card .big-name {
-                font-size: 1.5rem;
-            }
-            .detail-controls .ctrl-row .toggle-switch.large {
-                width: 54px;
-                height: 28px;
-            }
-            .detail-controls .ctrl-row .toggle-switch.large::after {
-                width: 22px;
-                height: 22px;
-                top: 3px;
-                right: 3px;
-            }
-            .detail-controls .ctrl-row .toggle-switch.large.active::after {
-                transform: translateX(-24px);
-            }
-            .detail-controls .ctrl-row .slider.large {
-                min-width: 80px;
-            }
-            .fab-voice {
-                width: 50px;
-                height: 50px;
-                font-size: 1.3rem;
-                bottom: calc(var(--fab-bottom) + 2px);
-                right: 12px;
-            }
-            .gauge-container {
-                max-width: 150px;
-            }
-            .water-level-container {
-                max-width: 150px;
-            }
-            .dual-gauge-item {
-                min-width: 80px;
-                max-width: 120px;
-            }
-            .gauge-value .main {
-                font-size: 1.6rem;
-            }
-            .water-level-value .main {
-                font-size: 1.5rem;
-            }
+            .modal-box { max-width: 100%; padding: 18px; }
+            .modal-box .modal-title { font-size: 1.1rem; }
+            .scene-device-list .dev-item { flex-wrap: wrap; gap: 4px; }
+            .scene-device-list .dev-item .dev-name { font-size: 0.8rem; flex: 1 1 60%; }
+            .scene-device-list .dev-item .dev-actions { flex: 1 1 100%; justify-content: flex-start; gap: 4px; }
+            .scene-device-list .dev-item .dev-actions .act-btn { font-size: 0.55rem; padding: 2px 8px; }
+            .icon-picker-grid { grid-template-columns: repeat(5, 1fr); }
+            .door-controls-modern .door-btn { min-width: 60px; padding: 8px 10px; font-size: 0.75rem; }
+            .door-controls-modern .door-btn .emoji { font-size: 1.2rem; }
+            .detail-icon-container { width: 80px; height: 80px; }
+            .detail-icon-container .big-icon { font-size: 4rem; }
+            .detail-door-canvas { max-width: 280px; }
+            .detail-device-card .big-name { font-size: 1.5rem; }
+            .detail-controls .ctrl-row .toggle-switch.large { width: 54px; height: 28px; }
+            .detail-controls .ctrl-row .toggle-switch.large::after { width: 22px; height: 22px; top: 3px; right: 3px; }
+            .detail-controls .ctrl-row .toggle-switch.large.active::after { transform: translateX(-24px); }
+            .detail-controls .ctrl-row .slider.large { min-width: 80px; }
+            .fab-voice { width: 50px; height: 50px; font-size: 1.3rem; bottom: calc(var(--fab-bottom) + 2px); right: 12px; }
+            .gauge-container { max-width: 150px; }
+            .water-level-container { max-width: 150px; }
+            .dual-gauge-item { min-width: 80px; max-width: 120px; }
+            .gauge-value .main { font-size: 1.6rem; }
+            .water-level-value .main { font-size: 1.5rem; }
         }
         @media (max-width: 480px) {
-            .devices-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .rooms-grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-            }
-            .device-card {
-                padding: 12px;
-            }
-            .room-card {
-                padding: 14px 12px;
-            }
-            .toggle-switch {
-                width: 44px;
-                height: 24px;
-            }
-            .toggle-switch::after {
-                width: 18px;
-                height: 18px;
-            }
-            .toggle-switch.active::after {
-                transform: translateX(-20px);
-            }
-            #notifPanel,
-            #logPanel {
-                width: 280px;
-                max-height: 350px;
-            }
-            .vacation-banner {
-                flex-direction: column;
-                align-items: stretch;
-                text-align: center;
-            }
-            .vacation-banner .v-actions {
-                justify-content: center;
-            }
-            .bottom-nav-item {
-                font-size: 0.5rem;
-            }
-            .bottom-nav-item i {
-                font-size: 1.1rem;
-            }
-            .bottom-nav .center-btn-wrapper .center-nav-btn {
-                width: 48px;
-                height: 48px;
-                font-size: 1.3rem;
-            }
-            .fab-voice {
-                width: 44px;
-                height: 44px;
-                font-size: 1.2rem;
-                bottom: calc(var(--fab-bottom) + 0px);
-                right: 10px;
-            }
-            .scene-tile {
-                flex: 0 0 90px;
-                padding: 10px 8px;
-            }
-            .scene-tile .icon {
-                font-size: 1.5rem;
-            }
-            .scene-tile .name {
-                font-size: 0.7rem;
-            }
-            .room-overlay .room-devices-grid {
-                grid-template-columns: 1fr 1fr;
-            }
-            .automation-stats {
-                grid-template-columns: 1fr 1fr;
-            }
-            .automation-card .auto-top {
-                flex-direction: column;
-            }
-            .automation-card .auto-toggle-wrap {
-                align-self: flex-start;
-            }
-            .room-overlay .room-header {
-                flex-wrap: wrap;
-            }
-            .room-overlay .room-header .room-actions {
-                margin-right: 0;
-                width: 100%;
-                justify-content: flex-start;
-            }
-            #qrCodeModal .modal-box {
-                max-width: 340px;
-                padding: 16px;
-            }
-            .detail-icon-container {
-                width: 70px;
-                height: 70px;
-            }
-            .detail-icon-container .big-icon {
-                font-size: 3.5rem;
-            }
-            .detail-door-canvas {
-                max-width: 220px;
-            }
-            .detail-device-card {
-                padding: 24px 16px;
-            }
-            .detail-device-card .big-name {
-                font-size: 1.2rem;
-            }
-            .detail-controls {
-                padding: 16px;
-            }
-            .detail-controls .ctrl-row {
-                gap: 10px;
-            }
-            .detail-controls .ctrl-row .slider.large {
-                min-width: 60px;
-            }
-            .icon-picker-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            .modal-box .modal-actions {
-                flex-direction: column;
-            }
-            .modal-box .modal-actions .btn-primary,
-            .modal-box .modal-actions .btn-secondary {
-                width: 100%;
-            }
-            .scene-device-list .dev-item .dev-actions .act-btn {
-                font-size: 0.5rem;
-                padding: 2px 6px;
-            }
-            .detail-door-controls .door-controls-modern .door-btn {
-                min-width: 60px;
-                padding: 10px 12px;
-                font-size: 0.75rem;
-            }
-            .detail-door-controls .door-controls-modern .door-btn .emoji {
-                font-size: 1.4rem;
-            }
-            .detail-water-drops .drop {
-                width: 10px;
-                height: 16px;
-            }
-            .gauge-container {
-                max-width: 120px;
-            }
-            .water-level-container {
-                max-width: 120px;
-            }
-            .dual-gauge-item {
-                min-width: 70px;
-                max-width: 100px;
-            }
-            .gauge-value .main {
-                font-size: 1.2rem;
-            }
-            .water-level-value .main {
-                font-size: 1.2rem;
-            }
+            .devices-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .rooms-grid { grid-template-columns: 1fr 1fr; gap: 10px; }
+            .device-card { padding: 12px; }
+            .room-card { padding: 14px 12px; }
+            .toggle-switch { width: 44px; height: 24px; }
+            .toggle-switch::after { width: 18px; height: 18px; }
+            .toggle-switch.active::after { transform: translateX(-20px); }
+            #notifPanel, #logPanel { width: 280px; max-height: 350px; }
+            .vacation-banner { flex-direction: column; align-items: stretch; text-align: center; }
+            .vacation-banner .v-actions { justify-content: center; }
+            .bottom-nav-item { font-size: 0.5rem; }
+            .bottom-nav-item i { font-size: 1.1rem; }
+            .bottom-nav .center-btn-wrapper .center-nav-btn { width: 48px; height: 48px; font-size: 1.3rem; }
+            .fab-voice { width: 44px; height: 44px; font-size: 1.2rem; bottom: calc(var(--fab-bottom) + 0px); right: 10px; }
+            .scene-tile { flex: 0 0 90px; padding: 10px 8px; }
+            .scene-tile .icon { font-size: 1.5rem; }
+            .scene-tile .name { font-size: 0.7rem; }
+            .room-overlay .room-devices-grid { grid-template-columns: 1fr 1fr; }
+            .automation-stats { grid-template-columns: 1fr 1fr; }
+            .automation-card .auto-top { flex-direction: column; }
+            .automation-card .auto-toggle-wrap { align-self: flex-start; }
+            .room-overlay .room-header { flex-wrap: wrap; }
+            .room-overlay .room-header .room-actions { margin-right: 0; width: 100%; justify-content: flex-start; }
+            #qrCodeModal .modal-box { max-width: 340px; padding: 16px; }
+            .detail-icon-container { width: 70px; height: 70px; }
+            .detail-icon-container .big-icon { font-size: 3.5rem; }
+            .detail-door-canvas { max-width: 220px; }
+            .detail-device-card { padding: 24px 16px; }
+            .detail-device-card .big-name { font-size: 1.2rem; }
+            .detail-controls { padding: 16px; }
+            .detail-controls .ctrl-row { gap: 10px; }
+            .detail-controls .ctrl-row .slider.large { min-width: 60px; }
+            .icon-picker-grid { grid-template-columns: repeat(4, 1fr); }
+            .modal-box .modal-actions { flex-direction: column; }
+            .modal-box .modal-actions .btn-primary, .modal-box .modal-actions .btn-secondary { width: 100%; }
+            .scene-device-list .dev-item .dev-actions .act-btn { font-size: 0.5rem; padding: 2px 6px; }
+            .detail-door-controls .door-controls-modern .door-btn { min-width: 60px; padding: 10px 12px; font-size: 0.75rem; }
+            .detail-door-controls .door-controls-modern .door-btn .emoji { font-size: 1.4rem; }
+            .detail-water-drops .drop { width: 10px; height: 16px; }
+            .gauge-container { max-width: 120px; }
+            .water-level-container { max-width: 120px; }
+            .dual-gauge-item { min-width: 70px; max-width: 100px; }
+            .gauge-value .main { font-size: 1.2rem; }
+            .water-level-value .main { font-size: 1.2rem; }
         }
         @media (max-width: 380px) {
-            .devices-grid {
-                grid-template-columns: 1fr;
-            }
-            .rooms-grid {
-                grid-template-columns: 1fr;
-            }
-            .room-overlay .room-devices-grid {
-                grid-template-columns: 1fr;
-            }
-            .automation-stats {
-                grid-template-columns: 1fr;
-            }
-            .detail-icon-container {
-                width: 60px;
-                height: 60px;
-            }
-            .detail-icon-container .big-icon {
-                font-size: 3rem;
-            }
-            .detail-door-canvas {
-                max-width: 180px;
-            }
-            .fab-voice {
-                width: 40px;
-                height: 40px;
-                font-size: 1rem;
-                bottom: calc(var(--fab-bottom) - 4px);
-                right: 8px;
-            }
-            .gauge-container {
-                max-width: 100px;
-            }
-            .water-level-container {
-                max-width: 100px;
-            }
-            .dual-gauge-item {
-                min-width: 60px;
-                max-width: 80px;
-            }
+            .devices-grid { grid-template-columns: 1fr; }
+            .rooms-grid { grid-template-columns: 1fr; }
+            .room-overlay .room-devices-grid { grid-template-columns: 1fr; }
+            .automation-stats { grid-template-columns: 1fr; }
+            .detail-icon-container { width: 60px; height: 60px; }
+            .detail-icon-container .big-icon { font-size: 3rem; }
+            .detail-door-canvas { max-width: 180px; }
+            .fab-voice { width: 40px; height: 40px; font-size: 1rem; bottom: calc(var(--fab-bottom) - 4px); right: 8px; }
+            .gauge-container { max-width: 100px; }
+            .water-level-container { max-width: 100px; }
+            .dual-gauge-item { min-width: 60px; max-width: 80px; }
         }
 
-        .hidden {
-            display: none !important;
-        }
-        .text-center {
-            text-align: center;
-        }
-        .mt-8 {
-            margin-top: 8px;
-        }
-        .mt-12 {
-            margin-top: 12px;
-        }
-        .gap-4 {
-            gap: 4px;
-        }
-        .gap-8 {
-            gap: 8px;
-        }
-        .flex-center {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .flex-between {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .w-full {
-            width: 100%;
-        }
+        .hidden { display: none !important; }
+        .text-center { text-align: center; }
+        .mt-8 { margin-top: 8px; }
+        .mt-12 { margin-top: 12px; }
+        .gap-4 { gap: 4px; }
+        .gap-8 { gap: 8px; }
+        .flex-center { display: flex; align-items: center; justify-content: center; }
+        .flex-between { display: flex; justify-content: space-between; align-items: center; }
+        .w-full { width: 100%; }
 
         .id-change-warning {
             background: rgba(239, 68, 68, 0.08);
@@ -3487,12 +3306,8 @@
             display: none;
             margin-top: 6px;
         }
-        .id-change-warning.show {
-            display: block;
-        }
-        .id-change-warning i {
-            margin-left: 6px;
-        }
+        .id-change-warning.show { display: block; }
+        .id-change-warning i { margin-left: 6px; }
 
         .btn-primary {
             padding: 12px 28px;
@@ -3505,10 +3320,7 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: scale(1.01);
-        }
+        .btn-primary:hover { background: var(--primary-dark); transform: scale(1.01); }
         .btn-secondary {
             padding: 12px 28px;
             border: 1px solid var(--border-color);
@@ -3519,9 +3331,7 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        .btn-secondary:hover {
-            background: var(--gray-bg);
-        }
+        .btn-secondary:hover { background: var(--gray-bg); }
         .btn-danger {
             padding: 12px 28px;
             border: none;
@@ -3532,9 +3342,7 @@
             cursor: pointer;
             transition: var(--transition);
         }
-        .btn-danger:hover {
-            opacity: 0.85;
-        }
+        .btn-danger:hover { opacity: 0.85; }
         .perm-badge {
             display: inline-block;
             padding: 2px 10px;
@@ -3543,47 +3351,16 @@
             font-weight: 600;
             margin-left: 6px;
         }
-        .perm-badge.granted {
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--success);
-        }
-        .perm-badge.denied {
-            background: rgba(239, 68, 68, 0.2);
-            color: var(--danger);
-        }
-        .perm-badge.prompt {
-            background: rgba(245, 158, 11, 0.2);
-            color: var(--warning);
-        }
+        .perm-badge.granted { background: rgba(16, 185, 129, 0.2); color: var(--success); }
+        .perm-badge.denied { background: rgba(239, 68, 68, 0.2); color: var(--danger); }
+        .perm-badge.prompt { background: rgba(245, 158, 11, 0.2); color: var(--warning); }
 
-        .device-card .status-dot.online {
-            background: var(--success);
-            border-color: rgba(16, 185, 129, 0.3);
-            box-shadow: 0 0 12px rgba(16, 185, 129, 0.25);
-        }
-        .device-card .status-dot.offline {
-            background: var(--danger);
-            border-color: rgba(239, 68, 68, 0.3);
-            box-shadow: 0 0 8px rgba(239, 68, 68, 0.15);
-        }
-        .device-card .status-dot.connecting {
-            background: var(--warning);
-            border-color: rgba(245, 158, 11, 0.3);
-            box-shadow: 0 0 10px rgba(245, 158, 11, 0.2);
-            animation: pulse-dot 1s infinite;
-        }
-        .badge-online {
-            background: rgba(16, 185, 129, 0.15);
-            color: var(--success);
-        }
-        .badge-offline {
-            background: rgba(239, 68, 68, 0.12);
-            color: var(--danger);
-        }
-        .badge-connecting {
-            background: rgba(245, 158, 11, 0.15);
-            color: var(--warning);
-        }
+        .device-card .status-dot.online { background: var(--success); border-color: rgba(16, 185, 129, 0.3); box-shadow: 0 0 12px rgba(16, 185, 129, 0.25); }
+        .device-card .status-dot.offline { background: var(--danger); border-color: rgba(239, 68, 68, 0.3); box-shadow: 0 0 8px rgba(239, 68, 68, 0.15); }
+        .device-card .status-dot.connecting { background: var(--warning); border-color: rgba(245, 158, 11, 0.3); box-shadow: 0 0 10px rgba(245, 158, 11, 0.2); animation: pulse-dot 1s infinite; }
+        .badge-online { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .badge-offline { background: rgba(239, 68, 68, 0.12); color: var(--danger); }
+        .badge-connecting { background: rgba(245, 158, 11, 0.15); color: var(--warning); }
 
         .days-grid {
             display: flex;
@@ -3603,14 +3380,8 @@
             min-width: 32px;
             text-align: center;
         }
-        .days-grid .day-btn.active {
-            background: var(--primary);
-            color: #fff;
-            border-color: var(--primary);
-        }
-        .days-grid .day-btn:hover {
-            transform: scale(1.05);
-        }
+        .days-grid .day-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+        .days-grid .day-btn:hover { transform: scale(1.05); }
 
         .voice-command-input {
             direction: ltr;
@@ -3623,16 +3394,8 @@
             color: var(--text-primary);
             font-size: 0.95rem;
         }
-        .voice-command-input:focus {
-            border-color: var(--primary);
-            outline: none;
-            box-shadow: 0 0 0 3px var(--primary-light);
-        }
-        .voice-command-hint {
-            font-size: 0.7rem;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
+        .voice-command-input:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px var(--primary-light); }
+        .voice-command-hint { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
     </style>
 </head>
 <body>
@@ -4000,6 +3763,19 @@
         </div>
     </div>
 
+    <!-- BLE Scan Modal -->
+    <div class="ble-modal" id="bleScanModal">
+        <div class="modal-box">
+            <div class="modal-title"><i class="fas fa-bluetooth-b"></i> البحث عن أجهزة قريبة</div>
+            <div class="ble-scan-status" id="bleScanStatus">اضغط زر "مسح" للعثور على أجهزة SGE.</div>
+            <button class="ble-scan-btn" id="bleScanBtn"><i class="fas fa-sync-alt"></i> مسح</button>
+            <div class="ble-device-list" id="bleDeviceList"></div>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="bleModalClose">إغلاق</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Bottom Nav -->
     <nav class="bottom-nav" id="bottomNav">
         <button class="bottom-nav-item" data-page="devices"><i class="fas fa-microchip"></i> الأجهزة</button>
@@ -4013,7 +3789,7 @@
     <div id="toast"><span class="toast-icon"></span><span class="toast-msg"></span></div>
 
     <!-- ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-    JAVASCRIPT – Full Version with New Device Types
+    JAVASCRIPT – Full Version with New Device Types + BLE
     ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ -->
     <script>
         (function() {
@@ -4090,6 +3866,13 @@
                 'fa-tv', 'fa-music', 'fa-book', 'fa-briefcase', 'fa-gem',
                 'fa-palette', 'fa-crown', 'fa-moon', 'fa-sun', 'fa-star'
             ];
+
+            // BLE UUIDs
+            const BLE_SERVICE_UUID = '4fafc201-1fb5-459e-8fcc-c5c9c331914b';
+            const BLE_CHAR_ID      = 'beb5483e-36e1-4688-b7f5-ea07361b26a8';
+            const BLE_CHAR_NAME    = 'beb5483e-36e1-4688-b7f5-ea07361b26a9';
+            const BLE_CHAR_STATE   = 'beb5483e-36e1-4688-b7f5-ea07361b26aa';
+            const BLE_CHAR_TYPE    = 'beb5483e-36e1-4688-b7f5-ea07361b26ab';
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  CONNECTION SETTINGS
@@ -4204,6 +3987,9 @@
                 // Temp humidity
                 tempCurrent: 0,
                 humidityCurrent: 0,
+                // BLE
+                bleScanning: false,
+                bleDevices: [],
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4315,6 +4101,11 @@
                 editScheduleGroup: $('editScheduleGroup'),
                 editTimeRangeGroup: $('editTimeRangeGroup'),
                 autoEditTitle: $('autoEditTitle'),
+                bleScanModal: $('bleScanModal'),
+                bleScanBtn: $('bleScanBtn'),
+                bleScanStatus: $('bleScanStatus'),
+                bleDeviceList: $('bleDeviceList'),
+                bleModalClose: $('bleModalClose'),
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4376,7 +4167,7 @@
             function clamp(v, min, max) { return Math.max(min, Math.min(max, v)); }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  SOUND ENGINE
+            //  SOUND ENGINE (مختصر لكن كامل)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             let audioCtx = null;
             let soundCache = {};
@@ -4851,11 +4642,9 @@
                     { id: 'motion/living_room/m9W5qR7v', type: 12, room: 'غرفة المعيشة', name: 'حساس حركة الصالة',
                         status: false, online: false, lastHeartbeat: null, icon: 'fa-running',
                     _connecting: true },
-                    // New: Water Level Sensor
                     { id: 'water/tank/wT8kL2mN', type: 13, room: 'الحديقة', name: 'مستشعر خزان الماء',
                         status: 45, waterLevel: 45, liters: 450, tankCapacity: 1000,
                         online: false, lastHeartbeat: null, icon: 'fa-water', _connecting: true },
-                    // New: Temp & Humidity Sensor
                     { id: 'temp_humid/living_room/tH9pR5xQ', type: 14, room: 'غرفة المعيشة',
                         name: 'حساس الحرارة والرطوبة', status: 24.5, temp: 24.5, humidity: 55,
                         online: false, lastHeartbeat: null, icon: 'fa-thermometer-half', _connecting: true },
@@ -4930,7 +4719,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT – CONNECTION (simplified)
+            //  MQTT – CONNECTION (مختصر)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function getDeviceTopic(deviceId, type, suffix) {
                 const topicMap = {
@@ -4968,7 +4757,6 @@
                 return deviceId + '/' + base + '/' + suffix;
             }
 
-            // Connection functions (simplified but functional)
             function connectMQTT() {
                 if (state.mqttStatus === 'connecting' || state.isReconnecting) return;
                 if (!state.serverHost) {
@@ -5103,7 +4891,6 @@
                 state.reconnectTimer = setTimeout(() => {
                     state.isReconnecting = false;
                     if (state.reconnectAttempt > 15) {
-                        // Try next broker
                         const idx = (state.brokerAlternatives.findIndex(b => b.host === state.serverHost) + 1) % state
                             .brokerAlternatives.length;
                         state.serverHost = state.brokerAlternatives[idx].host;
@@ -5344,7 +5131,6 @@
                     if (!isNaN(val) && val >= 16 && val <= 30) { device.temp = val;
                         updated = true; }
                 } else if (sub === 'water/level') {
-                    // Water level: format "45|450" or just "45"
                     const parts = msg.split('|');
                     const level = parseFloat(parts[0]);
                     if (!isNaN(level) && level >= 0 && level <= 100) {
@@ -5359,7 +5145,6 @@
                         addLog(`💧 ${device.name}: مستوى الماء ${Math.round(level)}%`, 'info');
                     }
                 } else if (sub === 'temp_humid/data') {
-                    // Format: "24.5|55" or "24.5,55"
                     const parts = msg.split(/[|,]/);
                     const temp = parseFloat(parts[0]);
                     const humid = parseFloat(parts[1]);
@@ -5379,7 +5164,6 @@
                 if (updated) {
                     saveDevices();
                     debouncedUpdateUI();
-                    // Re-render detail if open
                     if (dom.detailPage.classList.contains('active') && state.activeDeviceId === device.id) {
                         renderDetailPage(device.id);
                     }
@@ -5800,7 +5584,6 @@
             //  WATER LEVEL GAUGE - Animation & Drawing
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function initWaterLevelAnimation() {
-                // Request device orientation for slosh effect
                 if (window.DeviceOrientationEvent) {
                     window.addEventListener('deviceorientation', (e) => {
                         state.gyroBeta = e.beta || 0;
@@ -5808,7 +5591,6 @@
                         state.gyroAvailable = true;
                     });
                 }
-                // Fallback: use mouse/touch for desktop testing
                 let mouseX = 0,
                     mouseY = 0;
                 document.addEventListener('mousemove', (e) => {
@@ -5817,8 +5599,7 @@
                         mouseY = (e.clientY / window.innerHeight - 0.5) * 30;
                     }
                 });
-                // Override: use mouse for desktop
-                state.gyroAvailable = false; // Force mouse fallback
+                state.gyroAvailable = false;
                 window.getSloshAngle = function() {
                     if (state.gyroAvailable) {
                         return (state.gyroGamma || 0) * 0.05;
@@ -5851,14 +5632,12 @@
                 const angle = sloshAngle || 0;
                 const tilt = sloshTilt || 0;
 
-                // Background ring
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
                 ctx.strokeStyle = 'var(--border-color)';
                 ctx.lineWidth = 4 * dpr;
                 ctx.stroke();
 
-                // Water fill with slosh
                 const waterY = centerY + radius * (0.5 - waterLevel * 0.85);
                 const gradient = ctx.createLinearGradient(centerX, centerY - radius, centerX, centerY + radius);
                 const color1 = '#1e88e5';
@@ -5872,7 +5651,6 @@
                 ctx.arc(centerX, centerY, radius - 2 * dpr, 0, Math.PI * 2);
                 ctx.clip();
 
-                // Water body with wave
                 ctx.beginPath();
                 const waveAmplitude = 8 * dpr * (0.3 + 0.7 * waterLevel);
                 const freq = 0.04;
@@ -5890,7 +5668,6 @@
                 ctx.fill();
                 ctx.restore();
 
-                // Water surface highlight
                 ctx.save();
                 ctx.globalAlpha = 0.15;
                 const hlY = waterY + 6 * dpr;
@@ -5900,14 +5677,12 @@
                 ctx.fill();
                 ctx.restore();
 
-                // Border ring
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, radius, 0, Math.PI * 2);
                 ctx.strokeStyle = 'var(--primary)';
                 ctx.lineWidth = 3 * dpr;
                 ctx.stroke();
 
-                // Percentage text
                 ctx.fillStyle = 'var(--text-primary)';
                 ctx.font = `bold ${24 * dpr}px 'Cairo', sans-serif`;
                 ctx.textAlign = 'center';
@@ -5934,19 +5709,16 @@
                     cy = h / 2;
                 const r = (Math.min(w, h) / 2) - 12 * dpr;
 
-                // Temperature gauge (left semicircle or full)
                 const tempNorm = clamp((temp - (-10)) / 50, 0, 1);
                 const hue = 200 - tempNorm * 200;
                 const tempColor = `hsl(${hue}, 90%, 55%)`;
 
-                // Background
                 ctx.beginPath();
                 ctx.arc(cx, cy, r, 0, Math.PI * 2);
                 ctx.strokeStyle = 'var(--border-color)';
                 ctx.lineWidth = 4 * dpr;
                 ctx.stroke();
 
-                // Temp arc (270 degrees from -135 to 135)
                 const startAngle = -Math.PI * 0.75;
                 const endAngle = Math.PI * 0.75;
                 const range = endAngle - startAngle;
@@ -5959,7 +5731,6 @@
                 ctx.lineCap = 'round';
                 ctx.stroke();
 
-                // Temperature value
                 ctx.fillStyle = 'var(--text-primary)';
                 ctx.font = `bold ${26 * dpr}px 'Cairo', sans-serif`;
                 ctx.textAlign = 'center';
@@ -5970,7 +5741,6 @@
                 ctx.font = `${12 * dpr}px 'Cairo', sans-serif`;
                 ctx.fillText(`💧 ${Math.round(humidity)}%`, cx, cy + 28 * dpr);
 
-                // Small humidity arc inside
                 const humidNorm = clamp(humidity / 100, 0, 1);
                 const humidAngle = startAngle + range * humidNorm;
                 ctx.beginPath();
@@ -5980,7 +5750,60 @@
                 ctx.lineCap = 'round';
                 ctx.stroke();
 
-                // Border
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.strokeStyle = 'var(--primary)';
+                ctx.lineWidth = 2 * dpr;
+                ctx.stroke();
+            }
+
+            function drawHumidityGauge(canvas, humidity) {
+                if (!canvas) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const size = Math.min(rect.width || 200, rect.height || 200);
+                const dpr = window.devicePixelRatio || 1;
+                const w = size * dpr;
+                const h = size * dpr;
+                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
+                    canvas.height = h; }
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, w, h);
+                const cx = w / 2,
+                    cy = h / 2;
+                const r = (Math.min(w, h) / 2) - 12 * dpr;
+                const humidNorm = clamp(humidity / 100, 0, 1);
+                const startAngle = -Math.PI * 0.75;
+                const endAngle = Math.PI * 0.75;
+                const range = endAngle - startAngle;
+                const humidAngle = startAngle + range * humidNorm;
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, r, 0, Math.PI * 2);
+                ctx.strokeStyle = 'var(--border-color)';
+                ctx.lineWidth = 4 * dpr;
+                ctx.stroke();
+
+                const grad = ctx.createLinearGradient(cx - r, cy, cx + r, cy);
+                grad.addColorStop(0, '#42a5f5');
+                grad.addColorStop(0.5, '#1e88e5');
+                grad.addColorStop(1, '#0d47a1');
+                ctx.beginPath();
+                ctx.arc(cx, cy, r - 4 * dpr, startAngle, humidAngle);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = 8 * dpr;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                ctx.fillStyle = 'var(--text-primary)';
+                ctx.font = `bold ${26 * dpr}px 'Cairo', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.fillText(`${Math.round(humidity)}%`, cx, cy - 8 * dpr);
+
+                ctx.fillStyle = 'var(--text-muted)';
+                ctx.font = `${12 * dpr}px 'Cairo', sans-serif`;
+                ctx.fillText('💧 رطوبة', cx, cy + 28 * dpr);
+
                 ctx.beginPath();
                 ctx.arc(cx, cy, r, 0, Math.PI * 2);
                 ctx.strokeStyle = 'var(--primary)';
@@ -6026,7 +5849,6 @@
                 const openCmd = voiceCmd.open || '';
                 const closeCmd = voiceCmd.close || '';
 
-                // Tank capacity for water level
                 const tankCap = dev.tankCapacity || 1000;
 
                 dom.deviceSettingsBody.innerHTML = `
@@ -6223,7 +6045,6 @@
                 let mainContent = '';
                 let controlsHtml = '';
 
-                // Water Level Sensor (type 13)
                 if (dev.type === 13) {
                     const level = dev.waterLevel || 0;
                     const liters = dev.liters || (level / 100 * (dev.tankCapacity || 1000));
@@ -6260,12 +6081,10 @@
                                 </div>
                             </div>
                         `;
-                    // Schedule water gauge animation
                     setTimeout(() => {
                         const canvas = document.getElementById('waterGaugeCanvas');
                         if (canvas) {
                             drawWaterGauge(canvas, level, 100, liters, capacity, 0, 0);
-                            // Start animation loop
                             if (state.waterAnimationFrame) cancelAnimationFrame(state.waterAnimationFrame);
                             let lastTime = 0;
 
@@ -6287,9 +6106,7 @@
                             state.waterAnimationFrame = requestAnimationFrame(animateWater);
                         }
                     }, 50);
-                }
-                // Temp & Humidity (type 14)
-                else if (dev.type === 14) {
+                } else if (dev.type === 14) {
                     const temp = dev.temp || 0;
                     const humidity = dev.humidity || 0;
                     state.tempCurrent = temp;
@@ -6341,13 +6158,10 @@
                             drawTempGauge(tempCanvas, temp, humidity);
                         }
                         if (humidCanvas) {
-                            // Draw humidity gauge
                             drawHumidityGauge(humidCanvas, humidity);
                         }
                     }, 50);
-                }
-                // Door (type 1)
-                else if (dev.type === 1) {
+                } else if (dev.type === 1) {
                     const progress = dev.open ? 1 : 0;
                     const key = 'door_' + dev.id;
                     if (!state.doorAnimations[key]) {
@@ -6381,7 +6195,6 @@
                     }, 50);
                     controlsHtml = '';
                 } else {
-                    // Default icon display for other devices
                     const isLightOn = isOn;
                     const statusText = dev.type === 1 ? (dev.open ? 'مفتوح' : 'مغلق') :
                         (dev.status ? 'تشغيل' : 'إيقاف');
@@ -6486,7 +6299,6 @@
                         ${controlsHtml}
                     `;
 
-                // Event listeners
                 const iconToggle = document.querySelector('.big-icon[data-action="toggle-icon"]');
                 if (iconToggle) iconToggle.addEventListener('click', () => toggleDevice(iconToggle.dataset.id));
 
@@ -6544,67 +6356,6 @@
                     });
                     obs.observe(detailCanvas.parentElement);
                 }
-            }
-
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  HUMIDITY GAUGE
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function drawHumidityGauge(canvas, humidity) {
-                if (!canvas) return;
-                const rect = canvas.parentElement.getBoundingClientRect();
-                const size = Math.min(rect.width || 200, rect.height || 200);
-                const dpr = window.devicePixelRatio || 1;
-                const w = size * dpr;
-                const h = size * dpr;
-                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
-                    canvas.height = h; }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, w, h);
-                const cx = w / 2,
-                    cy = h / 2;
-                const r = (Math.min(w, h) / 2) - 12 * dpr;
-                const humidNorm = clamp(humidity / 100, 0, 1);
-                const startAngle = -Math.PI * 0.75;
-                const endAngle = Math.PI * 0.75;
-                const range = endAngle - startAngle;
-                const humidAngle = startAngle + range * humidNorm;
-
-                // Background
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.strokeStyle = 'var(--border-color)';
-                ctx.lineWidth = 4 * dpr;
-                ctx.stroke();
-
-                // Humidity arc
-                const grad = ctx.createLinearGradient(cx - r, cy, cx + r, cy);
-                grad.addColorStop(0, '#42a5f5');
-                grad.addColorStop(0.5, '#1e88e5');
-                grad.addColorStop(1, '#0d47a1');
-                ctx.beginPath();
-                ctx.arc(cx, cy, r - 4 * dpr, startAngle, humidAngle);
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 8 * dpr;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-
-                // Value
-                ctx.fillStyle = 'var(--text-primary)';
-                ctx.font = `bold ${26 * dpr}px 'Cairo', sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(`${Math.round(humidity)}%`, cx, cy - 8 * dpr);
-
-                ctx.fillStyle = 'var(--text-muted)';
-                ctx.font = `${12 * dpr}px 'Cairo', sans-serif`;
-                ctx.fillText('💧 رطوبة', cx, cy + 28 * dpr);
-
-                // Border
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.strokeStyle = 'var(--primary)';
-                ctx.lineWidth = 2 * dpr;
-                ctx.stroke();
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -6788,7 +6539,6 @@
                 let statusText = '';
                 let statusColor = 'var(--text-muted)';
 
-                // Water Level (type 13)
                 if (device.type === 13) {
                     const level = device.waterLevel || 0;
                     const capacity = device.tankCapacity || 1000;
@@ -6813,9 +6563,7 @@
                             drawWaterGauge(canvas, level, 100, liters, capacity, 0, 0);
                         }
                     }, 50);
-                }
-                // Temp & Humidity (type 14)
-                else if (device.type === 14) {
+                } else if (device.type === 14) {
                     const temp = device.temp || 0;
                     const humidity = device.humidity || 0;
                     statusText = `${Math.round(temp)}°C · ${Math.round(humidity)}%`;
@@ -6827,9 +6575,7 @@
                             </div>
                         `;
                     controls = '';
-                }
-                // Door (type 1)
-                else if (device.type === 1) {
+                } else if (device.type === 1) {
                     const key = 'door_' + device.id;
                     if (!state.doorAnimations[key]) {
                         state.doorAnimations[key] = { current: device.open ? 1 : 0, target: device.open ? 1 : 0,
@@ -6856,7 +6602,6 @@
                     statusText = device.open ? 'مفتوح' : 'مغلق';
                     statusColor = device.open ? 'var(--success)' : 'var(--danger)';
                 } else {
-                    // Other devices
                     statusText = device.status ? 'تشغيل' : 'إيقاف';
                     statusColor = device.status ? 'var(--success)' : 'var(--text-muted)';
                     if (device.type === 3) {
@@ -6872,7 +6617,6 @@
                         controls =
                             `<div class="controls"><button class="toggle-switch ${isOn?'active':''}" data-id="${device.id}"></button></div>`;
                     } else {
-                        // Sensors (type 9-12) - show status only
                         controls = `<div class="controls"><span style="font-size:0.75rem;color:var(--text-muted);">${isOn ? '🟢 مفعل' : '⚪ خامل'}</span></div>`;
                     }
                 }
@@ -7027,10 +6771,16 @@
 
             function renderDevicesPage() {
                 const allDevices = state.devices;
+                const scanBtn = `
+                        <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+                            <button class="ble-scan-btn" id="bleScanPageBtn"><i class="fas fa-bluetooth-b"></i> بحث عن أجهزة قريبة</button>
+                        </div>
+                    `;
                 if (allDevices.length === 0) {
-                    return `<div class="room-empty-state"><i class="fas fa-microchip"></i>لا توجد أجهزة<br><small>أضف جهازاً جديداً باستخدام زر +</small></div>`;
+                    return scanBtn + `<div class="room-empty-state"><i class="fas fa-microchip"></i>لا توجد أجهزة<br><small>أضف جهازاً جديداً باستخدام زر + أو ابحث عن أجهزة قريبة</small></div>`;
                 }
                 return `
+                            ${scanBtn}
                             <div class="section-header"><span class="title">📱 جميع الأجهزة <span class="count">${allDevices.length}</span></span></div>
                             <div class="devices-grid">${allDevices.map(d => renderDeviceCardHtml(d)).join('')}</div>
                         `;
@@ -7253,7 +7003,7 @@
                                 <div style="text-align:center;padding:8px 0;color:var(--text-secondary);font-size:0.85rem;line-height:1.8;">
                                     ⚡ <strong style="color:var(--primary);">Smart General Electric™</strong><br>
                                     منصة التحكم الذكي الاحترافي للمنازل والمنشآت التجارية<br>
-                                    الإصدار 8.1.0 (مستشعرات متطورة)<br>
+                                    الإصدار 8.1.0 (مستشعرات متطورة + BLE)<br>
                                     © ${new Date().getFullYear()} جميع الحقوق محفوظة
                                 </div>
                             </div>
@@ -7656,6 +7406,190 @@
                     client.end();
                 });
                 client.on('close', () => { if (!timedOut) addDiagnostic('🔌 تم إغلاق الاتصال', 'warning'); });
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  BLE SCANNING
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function showBleScanModal() {
+                dom.bleScanModal.classList.add('active');
+                dom.bleDeviceList.innerHTML = '';
+                dom.bleScanStatus.textContent = 'اضغط زر "مسح" للعثور على أجهزة SGE.';
+                if (state.bleScanning) {
+                    dom.bleScanBtn.textContent = '⏳ جاري المسح...';
+                    dom.bleScanBtn.classList.add('scanning');
+                } else {
+                    dom.bleScanBtn.textContent = '<i class="fas fa-sync-alt"></i> مسح';
+                    dom.bleScanBtn.classList.remove('scanning');
+                }
+            }
+
+            function closeBleScanModal() {
+                dom.bleScanModal.classList.remove('active');
+                state.bleScanning = false;
+            }
+
+            async function scanBleDevices() {
+                if (!navigator.bluetooth) {
+                    showToast('⚠️ المتصفح لا يدعم Web Bluetooth', 'error');
+                    return;
+                }
+                if (state.bleScanning) {
+                    showToast('⚠️ مسح قيد التنفيذ بالفعل', 'warning');
+                    return;
+                }
+
+                state.bleScanning = true;
+                const btn = dom.bleScanBtn;
+                btn.innerHTML = '⏳ جاري المسح...';
+                btn.classList.add('scanning');
+                dom.bleScanStatus.textContent = '⏳ جاري البحث عن الأجهزة...';
+
+                try {
+                    const device = await navigator.bluetooth.requestDevice({
+                        filters: [{ services: [BLE_SERVICE_UUID] }],
+                        optionalServices: [BLE_SERVICE_UUID]
+                    });
+
+                    state.bleScanning = false;
+                    btn.innerHTML = '<i class="fas fa-sync-alt"></i> مسح';
+                    btn.classList.remove('scanning');
+
+                    dom.bleScanStatus.textContent = '✅ تم العثور على جهاز، جاري قراءة البيانات...';
+
+                    const server = await device.gatt.connect();
+                    const service = await server.getPrimaryService(BLE_SERVICE_UUID);
+
+                    const charId = await service.getCharacteristic(BLE_CHAR_ID);
+                    const charName = await service.getCharacteristic(BLE_CHAR_NAME);
+                    const charState = await service.getCharacteristic(BLE_CHAR_STATE);
+                    const charType = await service.getCharacteristic(BLE_CHAR_TYPE);
+
+                    const idValue = await charId.readValue();
+                    const nameValue = await charName.readValue();
+                    const stateValue = await charState.readValue();
+                    const typeValue = await charType.readValue();
+
+                    const deviceId = new TextDecoder().decode(idValue);
+                    const deviceName = new TextDecoder().decode(nameValue).trim() || 'جهاز SGE';
+                    const stateStr = new TextDecoder().decode(stateValue);
+                    const typeStr = new TextDecoder().decode(typeValue).trim() || 'garage';
+
+                    // Add to list if not present
+                    if (!state.deviceMap.has(deviceId)) {
+                        const typeMap = { 'garage': 1, 'light': 2, 'dimmable': 3, 'plug': 4, 'fan': 5, 'ac': 6, 'pump': 7, 'faucet': 8 };
+                        const type = typeMap[typeStr] || 1;
+                        const newDev = {
+                            id: deviceId,
+                            type: type,
+                            room: 'جديد',
+                            name: deviceName || deviceId,
+                            status: stateStr === '1' ? true : false,
+                            online: false,
+                            brightness: 50,
+                            color: '#ffaa33',
+                            temp: 22,
+                            speed: 1,
+                            open: stateStr === '1' ? true : false,
+                            doorColor: '#3b82f6',
+                            lastHeartbeat: Date.now(),
+                            icon: DEVICE_TYPES[type]?.icon || 'fa-microchip',
+                            _connecting: false,
+                            tankCapacity: 1000,
+                            waterLevel: 0,
+                            liters: 0,
+                            humidity: 0,
+                        };
+                        state.devices.push(newDev);
+                        state.deviceMap.set(deviceId, newDev);
+                        state.deviceLastHb.set(deviceId, Date.now());
+                        state.deviceConnecting.set(deviceId, false);
+                        saveDevices();
+                        showToast(`✅ تم إضافة ${deviceName}`, 'success');
+                        addLog(`➕ إضافة عبر BLE: ${deviceName} (${deviceId})`, 'success');
+                        debouncedUpdateUI();
+                    } else {
+                        showToast(`ℹ️ الجهاز ${deviceName} موجود بالفعل`, 'info');
+                    }
+
+                    await server.disconnect();
+                    renderBleDeviceItem(deviceId, deviceName, stateStr, typeStr);
+
+                } catch (error) {
+                    if (error.message.includes('cancelled')) {
+                        dom.bleScanStatus.textContent = '❌ تم إلغاء البحث.';
+                    } else {
+                        console.error('BLE error:', error);
+                        dom.bleScanStatus.textContent = '❌ خطأ: ' + error.message;
+                        showToast('❌ فشل البحث: ' + error.message, 'error');
+                    }
+                } finally {
+                    state.bleScanning = false;
+                    btn.innerHTML = '<i class="fas fa-sync-alt"></i> مسح';
+                    btn.classList.remove('scanning');
+                }
+            }
+
+            function renderBleDeviceItem(id, name, stateStr, type) {
+                const list = dom.bleDeviceList;
+                const existing = list.querySelector(`[data-id="${id}"]`);
+                if (existing) return;
+                const div = document.createElement('div');
+                div.className = 'ble-device-item';
+                div.dataset.id = id;
+                const stateLabel = stateStr === '1' ? '🟢 مفتوح' : (stateStr === '0' ? '🔴 مغلق' : '⚪ غير معروف');
+                div.innerHTML = `
+                        <div class="info">
+                            <div class="name">${escHtml(name)}</div>
+                            <div class="id">${escHtml(id)}</div>
+                            <div class="state">${stateLabel} | ${escHtml(type)}</div>
+                        </div>
+                        <button class="add-btn" data-id="${id}" data-name="${escHtml(name)}" data-type="${escHtml(type)}">➕ إضافة</button>
+                    `;
+                list.appendChild(div);
+                const addBtn = div.querySelector('.add-btn');
+                addBtn.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const devId = this.dataset.id;
+                    const devName = this.dataset.name;
+                    if (state.deviceMap.has(devId)) {
+                        showToast('⚠️ الجهاز موجود بالفعل', 'warning');
+                        return;
+                    }
+                    const typeMap = { 'garage': 1, 'light': 2, 'dimmable': 3, 'plug': 4, 'fan': 5, 'ac': 6, 'pump': 7, 'faucet': 8 };
+                    const t = typeMap[this.dataset.type] || 1;
+                    const newDev = {
+                        id: devId,
+                        type: t,
+                        room: 'جديد',
+                        name: devName || devId,
+                        status: false,
+                        online: false,
+                        brightness: 50,
+                        color: '#ffaa33',
+                        temp: 22,
+                        speed: 1,
+                        open: false,
+                        doorColor: '#3b82f6',
+                        lastHeartbeat: Date.now(),
+                        icon: DEVICE_TYPES[t]?.icon || 'fa-microchip',
+                        _connecting: false,
+                        tankCapacity: 1000,
+                        waterLevel: 0,
+                        liters: 0,
+                        humidity: 0,
+                    };
+                    state.devices.push(newDev);
+                    state.deviceMap.set(devId, newDev);
+                    state.deviceLastHb.set(devId, Date.now());
+                    state.deviceConnecting.set(devId, false);
+                    saveDevices();
+                    showToast(`✅ تم إضافة ${devName}`, 'success');
+                    addLog(`➕ إضافة عبر BLE: ${devName} (${devId})`, 'success');
+                    debouncedUpdateUI();
+                    this.disabled = true;
+                    this.textContent = '✅ مضافة';
+                });
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -8150,14 +8084,20 @@
                         } else { showToast('⚠️ لا يوجد معرف للنسخ', 'warning'); }
                     });
                 }
-                // Tank capacity visibility on type change
                 const typeSelect = dom.addDeviceType;
                 if (typeSelect) {
                     typeSelect.addEventListener('change', function() {
                         updateTankCapacityField(parseInt(this.value));
                     });
                 }
-                // Re-apply water gauge animations for cards
+                // BLE scan button
+                const scanPageBtn = document.getElementById('bleScanPageBtn');
+                if (scanPageBtn) {
+                    scanPageBtn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        showBleScanModal();
+                    });
+                }
                 setTimeout(() => {
                     document.querySelectorAll('.water-card-canvas').forEach(canvas => {
                         const id = canvas.dataset.deviceId;
@@ -8287,10 +8227,16 @@
                     newActions.push({ deviceId, command });
                     renderActionRows(newActions);
                 });
+                // BLE modal events
+                dom.bleScanBtn.addEventListener('click', scanBleDevices);
+                dom.bleModalClose.addEventListener('click', closeBleScanModal);
+                dom.bleScanModal.addEventListener('click', (e) => {
+                    if (e.target === dom.bleScanModal) closeBleScanModal();
+                });
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  NOTIFICATIONS – IMPROVED
+            //  NOTIFICATIONS
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleNotifMute() {
                 state.notificationsMuted = !state.notificationsMuted;
@@ -8688,7 +8634,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ Smart General Electric v8.1.0 – Water Level & Temp/Humidity Sensors');
+                console.log('⚡ Smart General Electric v8.1.0 – Water Level, Temp/Humidity, BLE Scanning');
                 console.log(
                     `📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`
                     );
@@ -8726,6 +8672,9 @@
             window.uploadCustomSound = uploadCustomSound;
             window.resetCustomSound = resetCustomSound;
             window.playCustomSound = playCustomSound;
+            window.showBleScanModal = showBleScanModal;
+            window.closeBleScanModal = closeBleScanModal;
+            window.scanBleDevices = scanBleDevices;
 
             if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);
             else init();
