@@ -49,6 +49,13 @@
             --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.15);
             --modal-overlay-bg: rgba(0, 0, 0, 0.55);
             --fab-bottom: 80px;
+            /* متغيرات الباب الجديد */
+            --door-width: 100%;
+            --door-height: 200px;
+            --panel-count: 8;
+            --panel-height: calc(var(--door-height) / var(--panel-count));
+            --track-width: 12px;
+            --gap: 2px;
         }
         body.dark {
             --bg-primary: #0f172a;
@@ -1039,130 +1046,484 @@
             color: var(--text-muted);
             margin-bottom: 6px;
         }
-        /* ── Door Controls ── */
-        .door-canvas-wrap {
-            width: 100%;
-            max-width: 160px;
-            margin: 0 auto 4px;
-            aspect-ratio: 1.2 / 1;
-            display: block;
+
+        /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+           أنيميشن الباب الجديد (باب كراج - لوحة علوية ثابتة)
+           ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+        .door-html-wrapper {
+            background: linear-gradient(145deg, #1a2835, #0c1620);
+            padding: 8px 6px 6px;
+            border-radius: 24px 24px 12px 12px;
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.6), inset 0 1px 2px rgba(255, 255, 255, 0.04);
+            border-bottom: 2px solid #070e14;
+            margin: 4px 0;
+        }
+        .door-html {
             position: relative;
+            width: 100%;
+            aspect-ratio: 1.35 / 1;
+            max-height: 220px;
+            background: linear-gradient(180deg, #3d5162, #1f2e3b);
+            border-radius: 16px 16px 8px 8px;
+            box-shadow: inset 0 -4px 0 #0e1720, inset 0 6px 16px rgba(0, 0, 0, 0.6), 0 0 0 1px #1f2e3b;
+            overflow: hidden;
+            transition: box-shadow 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .door-canvas-wrap canvas {
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: 12px;
-            background: transparent;
-            display: block;
-            image-rendering: auto;
+        .door-html.open-shadow {
+            box-shadow: inset 0 -4px 0 #0e1720, inset 0 6px 24px rgba(0, 0, 0, 0.7), 0 0 0 1px #1f2e3b,
+                0 0 30px rgba(0, 0, 0, 0.3);
         }
+        .door-html .brick-wall {
+            position: absolute;
+            inset: 0;
+            background:
+                repeating-linear-gradient(90deg,
+                    transparent 0px,
+                    transparent 56px,
+                    rgba(0, 0, 0, 0.10) 56px,
+                    rgba(0, 0, 0, 0.10) 58px),
+                repeating-linear-gradient(0deg,
+                    transparent 0px,
+                    transparent 26px,
+                    rgba(0, 0, 0, 0.06) 26px,
+                    rgba(0, 0, 0, 0.06) 28px);
+            opacity: 0.4;
+            z-index: 0;
+            pointer-events: none;
+        }
+        .door-html .track-left,
+        .door-html .track-right {
+            position: absolute;
+            top: 0;
+            width: var(--track-width);
+            height: 100%;
+            background: linear-gradient(90deg, #141f28, #344957, #141f28);
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+            z-index: 1;
+            border-left: 1px solid #0a1118;
+            border-right: 1px solid #0a1118;
+        }
+        .door-html .track-left {
+            left: 0;
+            border-radius: 0 8px 8px 0;
+        }
+        .door-html .track-right {
+            right: 0;
+            border-radius: 8px 0 0 8px;
+        }
+        .door-html .cable-left,
+        .door-html .cable-right {
+            position: absolute;
+            top: 0;
+            width: 2px;
+            height: 100%;
+            background: repeating-linear-gradient(0deg,
+                    #6a7a8a 0px,
+                    #6a7a8a 3px,
+                    #2a3a4a 3px,
+                    #2a3a4a 6px);
+            opacity: 0.15;
+            z-index: 1;
+            pointer-events: none;
+        }
+        .door-html .cable-left {
+            left: 10px;
+        }
+        .door-html .cable-right {
+            right: 10px;
+        }
+        .door-html .door-container-html {
+            position: absolute;
+            top: 0;
+            left: var(--track-width);
+            right: var(--track-width);
+            height: 100%;
+            z-index: 2;
+            overflow: hidden;
+        }
+        .door-html .door-panel-html {
+            position: absolute;
+            left: 0;
+            right: 0;
+            height: calc(var(--panel-height) - var(--gap));
+            background: linear-gradient(180deg,
+                    #eae3d6 0%,
+                    #d6cebe 20%,
+                    #c2b8a8 50%,
+                    #b0a696 85%,
+                    #9c9080 100%);
+            border-radius: 3px;
+            box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.3), inset 0 -2px 6px rgba(0, 0, 0, 0.2),
+                0 1px 3px rgba(0, 0, 0, 0.12);
+            border: 1px solid #8a7e6e;
+            border-left: none;
+            border-right: none;
+            overflow: hidden;
+            will-change: transform;
+            transition: none;
+        }
+        .door-html .panel-0-html {
+            top: 0;
+            height: calc(var(--panel-height) - 1px);
+            border-radius: 6px 6px 3px 3px;
+            border-top: 2px solid #a99d8d;
+        }
+        .door-html .panel-1-html {
+            top: calc(var(--panel-height) * 1);
+        }
+        .door-html .panel-2-html {
+            top: calc(var(--panel-height) * 2);
+        }
+        .door-html .panel-3-html {
+            top: calc(var(--panel-height) * 3);
+        }
+        .door-html .panel-4-html {
+            top: calc(var(--panel-height) * 4);
+        }
+        .door-html .panel-5-html {
+            top: calc(var(--panel-height) * 5);
+        }
+        .door-html .panel-6-html {
+            top: calc(var(--panel-height) * 6);
+        }
+        .door-html .panel-7-html {
+            top: calc(var(--panel-height) * 7);
+            height: calc(var(--panel-height) - 1px);
+            border-radius: 3px 3px 6px 6px;
+            border-bottom: 2px solid #8a7e6e;
+        }
+        .door-html .panel-groove-html {
+            position: absolute;
+            left: 10%;
+            right: 10%;
+            height: 1.5px;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(0, 0, 0, 0.06) 30%,
+                    rgba(0, 0, 0, 0.06) 70%,
+                    transparent);
+            border-radius: 3px;
+        }
+        .door-html .groove-1-html {
+            top: 30%;
+        }
+        .door-html .groove-2-html {
+            top: 70%;
+        }
+        .door-html .groove-3-html {
+            top: 50%;
+        }
+        .door-html .windows-html {
+            position: absolute;
+            top: 4px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            padding: 0 8px;
+            z-index: 2;
+        }
+        .door-html .window-html {
+            width: 36px;
+            height: 26px;
+            background: radial-gradient(ellipse at 30% 30%, #b8ddf5, #35799c);
+            border-radius: 4px 4px 8px 8px;
+            box-shadow: inset 0 -2px 4px rgba(0, 0, 0, 0.3), inset 0 3px 10px rgba(255, 255, 255, 0.4),
+                0 1px 4px rgba(0, 0, 0, 0.1);
+            border: 1.5px solid #6a7a6a;
+            position: relative;
+            overflow: hidden;
+        }
+        .door-html .window-html::before {
+            content: '';
+            position: absolute;
+            top: 2px;
+            left: 4px;
+            width: 12px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            transform: rotate(-25deg);
+            filter: blur(2px);
+        }
+        .door-html .window-cross-html {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+        }
+        .door-html .window-cross-html::before {
+            content: '';
+            width: 1.5px;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.12);
+        }
+        .door-html .window-cross-html::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 1.5px;
+            background: rgba(0, 0, 0, 0.12);
+        }
+        .door-html .handle-html {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 32px;
+            height: 8px;
+            background: linear-gradient(180deg, #d0c8b8, #7a6e5e);
+            border-radius: 16px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), inset 0 1px 4px rgba(255, 255, 255, 0.4);
+            border: 1px solid #5a4e3e;
+            z-index: 3;
+        }
+        .door-html .handle-html::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 40% 35%, #e0d8c8, #7a6e5e);
+            box-shadow: inset 0 -1px 4px rgba(0, 0, 0, 0.4);
+            border: 1px solid #5a4e3e;
+        }
+        .door-html .hinge-html {
+            position: absolute;
+            width: 8px;
+            height: 18px;
+            background: linear-gradient(180deg, #5a6a6a, #2a3a3a);
+            border-radius: 4px;
+            box-shadow: inset 0 0 4px rgba(0, 0, 0, 0.5);
+            border: 1px solid #1a2a2a;
+            z-index: 1;
+            opacity: 0.35;
+        }
+        .door-html .hinge-left-html {
+            left: 3px;
+        }
+        .door-html .hinge-right-html {
+            right: 3px;
+        }
+        .door-html .hinge-mid-html {
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        .door-html .brand-text-html {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            text-align: center;
+            font-family: 'Segoe UI', 'Arial', sans-serif;
+            font-weight: 900;
+            font-size: 16px;
+            letter-spacing: 2px;
+            color: #ffffff;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.9), 0 2px 10px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 0, 0, 0.6);
+            z-index: 10;
+            line-height: 1.2;
+            pointer-events: none;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 6px 0;
+            border-radius: 20px;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(255, 215, 0, 0.2);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+            white-space: nowrap;
+            background: linear-gradient(135deg, #f5e6b0, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 20px rgba(212, 175, 55, 0.3));
+            font-size: clamp(10px, 2vw, 18px);
+        }
+        .door-html .brand-text-html::before {
+            content: '✦';
+            position: absolute;
+            left: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #d4af37;
+            -webkit-text-fill-color: #d4af37;
+            opacity: 0.8;
+        }
+        .door-html .brand-text-html::after {
+            content: '✦';
+            position: absolute;
+            right: 6px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: #d4af37;
+            -webkit-text-fill-color: #d4af37;
+            opacity: 0.8;
+        }
+        .door-html .brand-backdrop-html {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 92%;
+            height: 34px;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            z-index: 5;
+            pointer-events: none;
+            border: 1px solid rgba(255, 215, 0, 0.15);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+        }
+        .door-html .ceiling-light-html {
+            position: absolute;
+            top: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 14px;
+            background: linear-gradient(180deg, #f7ead0, #d4c4a8);
+            border-radius: 20px 20px 6px 6px;
+            box-shadow: 0 0 40px rgba(255, 220, 140, 0.12), inset 0 1px 8px rgba(255, 255, 240, 0.6);
+            z-index: 5;
+            border-bottom: 2px solid #b5a88a;
+            transition: box-shadow 0.6s ease;
+        }
+        .door-html .sweep-light-html {
+            position: absolute;
+            inset: 0;
+            z-index: 4;
+            pointer-events: none;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.2s ease;
+        }
+        .door-html .sweep-light-html.active {
+            opacity: 1;
+        }
+        .door-html .sweep-light-html::before {
+            content: '';
+            position: absolute;
+            left: -100%;
+            top: 0;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(90deg,
+                    transparent,
+                    rgba(255, 255, 255, 0.06) 20%,
+                    rgba(255, 255, 255, 0.12) 50%,
+                    rgba(255, 255, 255, 0.06) 80%,
+                    transparent);
+            transform: skewX(-20deg);
+        }
+        .door-html .sweep-light-html.open-sweep::before {
+            animation: sweepUpHtml 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        .door-html .sweep-light-html.close-sweep::before {
+            animation: sweepDownHtml 1.0s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes sweepUpHtml {
+            0% {
+                left: -100%;
+                top: 100%;
+            }
+            100% {
+                left: 100%;
+                top: -20%;
+            }
+        }
+        @keyframes sweepDownHtml {
+            0% {
+                left: -100%;
+                top: -20%;
+            }
+            100% {
+                left: 100%;
+                top: 100%;
+            }
+        }
+
+        /* ── Door Controls (موجودة سابقاً) ── */
         .door-controls-modern {
             display: flex;
-            gap: 12px;
+            gap: 8px;
             justify-content: center;
             flex-wrap: wrap;
-            margin: 8px 0;
+            margin: 6px 0;
         }
         .door-controls-modern .door-btn {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 12px 20px;
-            min-width: 80px;
+            padding: 8px 12px;
+            min-width: 60px;
             border: none;
-            border-radius: 16px;
+            border-radius: 12px;
             font-weight: 700;
-            font-size: 0.85rem;
+            font-size: 0.75rem;
             color: #fff;
             cursor: pointer;
             transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.15);
             position: relative;
             overflow: hidden;
             background: var(--gray-bg);
             color: var(--text-primary);
-            gap: 4px;
+            gap: 2px;
             flex: 1;
-            max-width: 130px;
+            max-width: 100px;
         }
         .door-controls-modern .door-btn .emoji {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             line-height: 1.2;
         }
         .door-controls-modern .door-btn .label {
-            font-size: 0.7rem;
+            font-size: 0.6rem;
             letter-spacing: 0.3px;
             font-weight: 600;
-        }
-        .door-controls-modern .door-btn .sub-label {
-            font-size: 0.55rem;
-            opacity: 0.7;
         }
         .door-controls-modern .door-btn-open {
             background: linear-gradient(135deg, #00C853, #69F0AE);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+            box-shadow: 0 3px 12px rgba(0, 200, 83, 0.25);
         }
         .door-controls-modern .door-btn-open:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(0, 200, 83, 0.4);
-        }
-        .door-controls-modern .door-btn-open:active {
-            transform: scale(0.94);
-            box-shadow: 0 2px 8px rgba(0, 200, 83, 0.2);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(0, 200, 83, 0.35);
         }
         .door-controls-modern .door-btn-stop {
             background: linear-gradient(135deg, #FF6F00, #FFCA28);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(255, 111, 0, 0.3);
+            box-shadow: 0 3px 12px rgba(255, 111, 0, 0.25);
         }
         .door-controls-modern .door-btn-stop:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(255, 111, 0, 0.4);
-        }
-        .door-controls-modern .door-btn-stop:active {
-            transform: scale(0.94);
-            box-shadow: 0 2px 8px rgba(255, 111, 0, 0.2);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 111, 0, 0.35);
         }
         .door-controls-modern .door-btn-close {
             background: linear-gradient(135deg, #C62828, #EF5350);
             color: #fff;
-            box-shadow: 0 4px 15px rgba(198, 40, 40, 0.3);
+            box-shadow: 0 3px 12px rgba(198, 40, 40, 0.25);
         }
         .door-controls-modern .door-btn-close:hover {
-            transform: translateY(-3px) scale(1.02);
-            box-shadow: 0 8px 25px rgba(198, 40, 40, 0.4);
+            transform: translateY(-2px) scale(1.02);
+            box-shadow: 0 6px 20px rgba(198, 40, 40, 0.35);
         }
-        .door-controls-modern .door-btn-close:active {
-            transform: scale(0.94);
-            box-shadow: 0 2px 8px rgba(198, 40, 40, 0.2);
-        }
-        .door-controls-modern .door-btn:active::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
-            transform: translate(-50%, -50%);
-            opacity: 1;
-            transition: width 0.6s, height 0.6s, opacity 0.6s;
-            pointer-events: none;
-        }
-        .door-controls-modern .door-btn.disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-            transform: none !important;
-            box-shadow: none !important;
+        .door-controls-modern .door-btn:active {
+            transform: scale(0.92);
         }
         .door-status-label {
-            font-size: 0.7rem;
+            font-size: 0.65rem;
             font-weight: 600;
             text-align: center;
-            margin-top: 4px;
+            margin-top: 2px;
         }
         .door-status-label.open {
             color: var(--success);
@@ -1170,6 +1531,27 @@
         .door-status-label.closed {
             color: var(--danger);
         }
+        .door-status-label.moving {
+            color: var(--warning);
+            animation: pulse-text 1s ease-in-out infinite;
+        }
+        @keyframes pulse-text {
+            0%,
+            100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+        .door-progress-indicator {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-top: 2px;
+            font-variant-numeric: tabular-nums;
+        }
+
         /* ── Toggle & Controls ── */
         .toggle-switch {
             width: 52px;
@@ -2137,11 +2519,6 @@
                 0 0 150px rgba(255, 193, 7, 0.08);
             animation: glow-pulse-detail 1.8s ease-in-out infinite;
         }
-        .detail-icon-container .big-icon.light-bulb.state-off {
-            color: var(--text-muted);
-            text-shadow: none;
-            animation: none;
-        }
         @keyframes glow-pulse-detail {
             0%,
             100% {
@@ -2562,73 +2939,23 @@
             border-color: var(--primary);
             box-shadow: 0 0 0 3px var(--primary-light);
         }
-        .detail-door-canvas {
+        /* تفاصيل الباب الجديد في صفحة التفاصيل */
+        .detail-door-container {
             width: 100%;
-            max-width: 400px;
+            max-width: 420px;
             margin: 0 auto;
-            aspect-ratio: 1.2 / 1;
-            display: block;
-            position: relative;
-            background: var(--bg-primary);
-            border-radius: var(--border-radius-sm);
-            border: 2px solid var(--border-color);
-            overflow: hidden;
-            padding: 4px;
+            aspect-ratio: 1.35 / 1;
         }
-        .detail-door-canvas canvas {
-            width: 100% !important;
-            height: 100% !important;
-            border-radius: calc(var(--border-radius-sm) - 4px);
-            display: block;
-            background: transparent;
+        .detail-door-container .door-html {
+            max-height: 100%;
+            border-radius: 20px 20px 12px 12px;
         }
-        .detail-door-controls {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            width: 100%;
+        .detail-door-container .door-html .brand-text-html {
+            font-size: clamp(12px, 2.5vw, 22px);
         }
-        .detail-door-controls .door-controls-modern .door-btn {
-            min-width: 90px;
-            padding: 14px 18px;
-            font-size: 0.9rem;
-        }
-        .detail-door-controls .door-controls-modern .door-btn .emoji {
-            font-size: 1.8rem;
-        }
-        .detail-door-controls .door-status-large {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 12px;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-        .detail-door-controls .door-status-large .status-open {
-            color: var(--success);
-        }
-        .detail-door-controls .door-status-large .status-closed {
-            color: var(--danger);
-        }
-        .detail-door-controls .door-color-picker {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-        .detail-door-controls .door-color-picker label {
-            font-weight: 500;
-            color: var(--text-secondary);
-        }
-        .detail-door-controls .door-color-picker input[type="color"] {
+        .detail-door-container .door-html .window-html {
             width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 2px solid var(--border-color);
-            padding: 2px;
-            cursor: pointer;
-            background: none;
+            height: 32px;
         }
         /* ── Toast ── */
         #toast {
@@ -3087,9 +3414,6 @@
             .detail-icon-container .big-icon {
                 font-size: 5rem;
             }
-            .detail-door-canvas {
-                max-width: 350px;
-            }
             .fab-voice {
                 width: 54px;
                 height: 54px;
@@ -3106,6 +3430,13 @@
             .dual-gauge-item {
                 min-width: 100px;
                 max-width: 140px;
+            }
+            .door-html .window-html {
+                width: 30px;
+                height: 22px;
+            }
+            .door-html .brand-text-html {
+                font-size: 14px;
             }
         }
         @media(max-width:768px) {
@@ -3137,12 +3468,12 @@
                 grid-template-columns: repeat(5, 1fr);
             }
             .door-controls-modern .door-btn {
-                min-width: 60px;
-                padding: 8px 10px;
-                font-size: 0.75rem;
+                min-width: 50px;
+                padding: 6px 8px;
+                font-size: 0.65rem;
             }
             .door-controls-modern .door-btn .emoji {
-                font-size: 1.2rem;
+                font-size: 1rem;
             }
             .detail-icon-container {
                 width: 80px;
@@ -3150,9 +3481,6 @@
             }
             .detail-icon-container .big-icon {
                 font-size: 4rem;
-            }
-            .detail-door-canvas {
-                max-width: 280px;
             }
             .detail-device-card .big-name {
                 font-size: 1.5rem;
@@ -3195,6 +3523,21 @@
             }
             .water-level-value .main {
                 font-size: 1.5rem;
+            }
+            .door-html .window-html {
+                width: 24px;
+                height: 18px;
+            }
+            .door-html .brand-text-html {
+                font-size: 12px;
+            }
+            .door-html .handle-html {
+                width: 24px;
+                height: 6px;
+            }
+            .door-html .handle-html::before {
+                width: 10px;
+                height: 10px;
             }
         }
         @media(max-width:480px) {
@@ -3295,9 +3638,6 @@
             .detail-icon-container .big-icon {
                 font-size: 3.5rem;
             }
-            .detail-door-canvas {
-                max-width: 220px;
-            }
             .detail-device-card {
                 padding: 24px 16px;
             }
@@ -3327,13 +3667,13 @@
                 font-size: 0.5rem;
                 padding: 2px 6px;
             }
-            .detail-door-controls .door-controls-modern .door-btn {
-                min-width: 60px;
-                padding: 10px 12px;
-                font-size: 0.75rem;
+            .detail-door-container .door-controls-modern .door-btn {
+                min-width: 50px;
+                padding: 6px 8px;
+                font-size: 0.6rem;
             }
-            .detail-door-controls .door-controls-modern .door-btn .emoji {
-                font-size: 1.4rem;
+            .detail-door-container .door-controls-modern .door-btn .emoji {
+                font-size: 1rem;
             }
             .detail-water-drops .drop {
                 width: 10px;
@@ -3355,6 +3695,22 @@
             .water-level-value .main {
                 font-size: 1.2rem;
             }
+            .door-html .window-html {
+                width: 18px;
+                height: 14px;
+            }
+            .door-html .brand-text-html {
+                font-size: 10px;
+                letter-spacing: 1px;
+            }
+            .door-html .handle-html {
+                width: 18px;
+                height: 5px;
+            }
+            .door-html .handle-html::before {
+                width: 8px;
+                height: 8px;
+            }
         }
         @media(max-width:380px) {
             .devices-grid {
@@ -3375,9 +3731,6 @@
             }
             .detail-icon-container .big-icon {
                 font-size: 3rem;
-            }
-            .detail-door-canvas {
-                max-width: 180px;
             }
             .fab-voice {
                 width: 40px;
@@ -3893,7 +4246,7 @@
                 automations: [],
                 rooms: [],
                 schedules: [],
-                doorAnimations: {},
+                doorAnimations: {}, // سنستخدمها لتخزين حالة التقدم للباب الجديد
                 pendingDeleteId: null,
                 pendingDeleteCallback: null,
                 notifications: [],
@@ -3945,6 +4298,14 @@
                 tempCurrent: 0,
                 humidityCurrent: 0,
                 bleScanning: false,
+                doorMoving: new Set(), // track doors currently in motion
+                // متغيرات الباب الجديد
+                doorProgress: {}, // progress لكل باب (0-1)
+                doorTargets: {}, // الهدف المطلوب
+                doorAnimating: {}, // هل الباب يتحرك حاليًا
+                doorStartTime: {},
+                doorStartProgress: {},
+                DOOR_DURATION: 7000, // مدة الأنيميشن
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4721,6 +5082,18 @@
             function markAllDevicesUnknown() {
                 let changed = false;
                 for (const dev of state.devices) {
+                    // إذا كان الجهاز باب جراج (type 1) ويفتقد الاتصال، نعتبره مفتوحاً
+                    if (dev.type === 1) {
+                        if (!dev.online || dev._connecting) {
+                            dev.open = true;
+                            dev.status = true;
+                            // تحديث الأنيميشن لفتح الباب (progress = 1)
+                            animateDoor(dev.id, 1);
+                            addLog(`🚪 ${dev.name}: تم فتحه تلقائياً (انقطاع الاتصال)`, 'warning');
+                            changed = true;
+                        }
+                    }
+                    // تحديث حالة الاتصال للأجهزة الأخرى
                     if (dev.online || !dev._connecting) {
                         dev.online = false;
                         dev._connecting = true;
@@ -4749,8 +5122,16 @@
                             dev.online = false;
                             dev._connecting = false;
                             state.deviceConnecting.set(dev.id, false);
-                            if (wasOnline) { addLog(`🔴 ${dev.name} غير متصل`, 'error', true);
-                                Sound.offline(); }
+                            if (wasOnline) {
+                                addLog(`🔴 ${dev.name} غير متصل`, 'error', true);
+                                Sound.offline();
+                                if (dev.type === 1) {
+                                    dev.open = true;
+                                    dev.status = true;
+                                    animateDoor(dev.id, 1);
+                                    addLog(`🚪 ${dev.name}: تم فتحه تلقائياً (فقدان الاتصال)`, 'warning');
+                                }
+                            }
                         } else if (hb && (now - hb) <= HEARTBEAT_TIMEOUT) {
                             dev.online = true;
                             dev._connecting = false;
@@ -4797,8 +5178,16 @@
                         device.lastHeartbeat = null;
                         state.deviceLastHb.set(device.id, null);
                         state.deviceConnecting.set(device.id, false);
-                        if (was) { addLog(`🔴 ${device.name} غير متصل`, 'error', true);
-                            Sound.offline(); }
+                        if (was) {
+                            addLog(`🔴 ${device.name} غير متصل`, 'error', true);
+                            Sound.offline();
+                            if (device.type === 1) {
+                                device.open = true;
+                                device.status = true;
+                                animateDoor(device.id, 1);
+                                addLog(`🚪 ${device.name}: تم فتحه تلقائياً (فقدان الاتصال)`, 'warning');
+                            }
+                        }
                         saveDevices();
                         debouncedUpdateUI();
                         return;
@@ -4823,17 +5212,31 @@
                         updateVacationUI(); }
                     updated = true;
                 } else if (sub === 'garage/status') {
-                    if (msg === 'open') { device.open = true;
+                    if (msg === 'open') {
+                        device.open = true;
                         device.status = true;
                         updated = true;
                         animateDoor(device.id, 1);
+                        state.doorMoving.delete(device.id);
                         addLog(`🚪 ${device.name}: مفتوح`, 'success');
-                        processAutomations(device); } else if (msg === 'closed') { device.open = false;
+                        processAutomations(device);
+                    } else if (msg === 'closed') {
+                        device.open = false;
                         device.status = false;
                         updated = true;
                         animateDoor(device.id, 0);
+                        state.doorMoving.delete(device.id);
                         addLog(`🚪 ${device.name}: مغلق`, 'success');
-                        processAutomations(device); }
+                        processAutomations(device);
+                    } else if (msg === 'stopped') {
+                        state.doorMoving.delete(device.id);
+                        // إيقاف الأنيميشن عند الوضع الحالي
+                        const id = device.id;
+                        if (state.doorAnimating[id]) {
+                            state.doorAnimating[id] = false;
+                        }
+                        addLog(`🚪 ${device.name}: متوقف`, 'info');
+                    }
                 } else if (['light/status', 'plug/status', 'fan/status', 'ac/status', 'pump/status', 'faucet/status',
                         'gas/status', 'smoke/status', 'heat/status', 'motion/status'
                     ].includes(sub)) {
@@ -4943,7 +5346,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ACTIONS (محسّنة)
+            //  DEVICE ACTIONS (محسّنة) – باستخدام الباب الجديد
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleDevice(id) {
                 const dev = state.deviceMap.get(id);
@@ -5009,6 +5412,274 @@
                 saveDevices();
                 debouncedUpdateUI(); }
 
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  DOOR ANIMATION (الجديد – HTML/CSS)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function animateDoor(id, target) {
+                // target: 0 = مغلق, 1 = مفتوح
+                const dev = state.deviceMap.get(id);
+                if (!dev || dev.type !== 1) return;
+
+                // تهيئة المتغيرات
+                if (state.doorProgress[id] === undefined) {
+                    state.doorProgress[id] = dev.open ? 1 : 0;
+                }
+                if (state.doorTargets[id] === undefined) {
+                    state.doorTargets[id] = state.doorProgress[id];
+                }
+                if (state.doorAnimating[id] === undefined) {
+                    state.doorAnimating[id] = false;
+                }
+
+                // إذا كان الهدف مطابقاً للقيمة الحالية ولا توجد حركة، نوقف
+                const current = state.doorProgress[id];
+                if (Math.abs(current - target) < 0.001 && !state.doorAnimating[id]) {
+                    // نحدث حالة الباب في الجهاز
+                    dev.open = (target >= 0.5);
+                    dev.status = dev.open;
+                    state.doorMoving.delete(id);
+                    updateDoorHTML(id, target);
+                    return;
+                }
+
+                // تحديث الهدف
+                state.doorTargets[id] = target;
+
+                // إذا كانت الحركة قيد التنفيذ، نكتفي بتحديث الهدف
+                if (state.doorAnimating[id]) {
+                    return;
+                }
+
+                // بدء حركة جديدة
+                state.doorAnimating[id] = true;
+                state.doorStartTime[id] = performance.now();
+                state.doorStartProgress[id] = current;
+                state.doorMoving.add(id);
+
+                // تشغيل مؤثر الضوء
+                triggerSweepLight(id, target > current ? 'open' : 'close');
+
+                // دالة التحديث
+                function step(timestamp) {
+                    if (!state.doorAnimating[id]) {
+                        // إذا تم إيقاف الحركة، ننهي
+                        updateDoorHTML(id, state.doorProgress[id]);
+                        return;
+                    }
+
+                    const elapsed = timestamp - state.doorStartTime[id];
+                    const duration = state.DOOR_DURATION || 7000;
+                    const progress = Math.min(elapsed / duration, 1);
+                    // دالة easing (easeInOutQuad)
+                    const ease = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+                    const startVal = state.doorStartProgress[id];
+                    const targetVal = state.doorTargets[id];
+                    const newVal = startVal + (targetVal - startVal) * ease;
+                    state.doorProgress[id] = Math.max(0, Math.min(1, newVal));
+
+                    // تحديث HTML
+                    updateDoorHTML(id, state.doorProgress[id]);
+
+                    if (progress < 1 && state.doorAnimating[id]) {
+                        requestAnimationFrame(step);
+                    } else {
+                        // انتهت الحركة
+                        state.doorProgress[id] = targetVal;
+                        state.doorAnimating[id] = false;
+                        state.doorMoving.delete(id);
+                        updateDoorHTML(id, targetVal);
+                        // تحديث حالة الجهاز
+                        dev.open = (targetVal >= 0.5);
+                        dev.status = dev.open;
+                        saveDevices();
+                        debouncedUpdateUI();
+                    }
+                }
+
+                requestAnimationFrame(step);
+            }
+
+            function updateDoorHTML(id, progress) {
+                // تحديث جميع عناصر الباب لهذا المعرف
+                const containers = document.querySelectorAll(`.door-html-container[data-device-id="${id}"]`);
+                containers.forEach(container => {
+                    const garage = container.querySelector('.door-html');
+                    const panels = container.querySelectorAll('.door-panel-html');
+                    const sweep = container.querySelector('.sweep-light-html');
+                    const light = container.querySelector('.ceiling-light-html');
+                    const indicator = container.querySelector('.door-progress-indicator');
+
+                    // تحديث وضع الظل
+                    if (garage) {
+                        garage.classList.toggle('open-shadow', progress > 0.05);
+                    }
+
+                    // تحديث إضاءة السقف
+                    if (light) {
+                        if (progress > 0.1) {
+                            light.style.boxShadow =
+                                '0 0 60px rgba(255, 220, 140, 0.25), inset 0 1px 8px rgba(255, 255, 240, 0.8)';
+                        } else {
+                            light.style.boxShadow =
+                                '0 0 40px rgba(255, 220, 140, 0.12), inset 0 1px 8px rgba(255, 255, 240, 0.6)';
+                        }
+                    }
+
+                    // تحديث تقدم الباب
+                    if (indicator) {
+                        const percent = Math.round(progress * 100);
+                        indicator.textContent = `${percent}%`;
+                    }
+
+                    // تحديث تحويلات الألواح (اللوحة العلوية ثابتة)
+                    const DOOR_HEIGHT = 200; // يجب أن يتطابق مع CSS
+                    const PANEL_COUNT = 8;
+                    const GAP = 2;
+                    const PANEL_HEIGHT = (DOOR_HEIGHT / PANEL_COUNT) - GAP;
+                    const TOTAL_SHIFT = PANEL_HEIGHT + GAP;
+                    // نريد أن تصل اللوحة السفلية إلى أسفل اللوحة العلوية
+                    // أقصى تقدم: 6 * PANEL_HEIGHT / (8 * TOTAL_SHIFT)
+                    const MAX_PROGRESS = (6 * PANEL_HEIGHT) / (8 * TOTAL_SHIFT);
+                    const effectiveProgress = Math.min(progress, 1) * MAX_PROGRESS;
+
+                    panels.forEach((panel, i) => {
+                        if (i === 0) {
+                            panel.style.transform = 'translateY(0px)';
+                        } else {
+                            const offset = (i + 1) * TOTAL_SHIFT;
+                            const y = -offset * effectiveProgress;
+                            panel.style.transform = `translateY(${y}px)`;
+                        }
+                    });
+
+                    // تحديث حالة الحركة (نضع class moving على الباب)
+                    const isMoving = state.doorMoving.has(id);
+                    const statusLabel = container.querySelector('.door-status-label');
+                    if (statusLabel) {
+                        if (isMoving) {
+                            statusLabel.textContent = '🔄 جاري الحركة...';
+                            statusLabel.className = 'door-status-label moving';
+                        } else {
+                            const isOpen = progress >= 0.5;
+                            statusLabel.textContent = isOpen ? '🟢 مفتوح' : '🔴 مغلق';
+                            statusLabel.className = 'door-status-label ' + (isOpen ? 'open' : 'closed');
+                        }
+                    }
+                });
+            }
+
+            function triggerSweepLight(id, direction) {
+                const containers = document.querySelectorAll(`.door-html-container[data-device-id="${id}"]`);
+                containers.forEach(container => {
+                    const sweep = container.querySelector('.sweep-light-html');
+                    if (!sweep) return;
+                    sweep.classList.add('active');
+                    sweep.classList.remove('open-sweep', 'close-sweep');
+                    if (direction === 'open') {
+                        sweep.classList.add('open-sweep');
+                    } else if (direction === 'close') {
+                        sweep.classList.add('close-sweep');
+                    } else {
+                        sweep.classList.add(Math.random() > 0.5 ? 'open-sweep' : 'close-sweep');
+                    }
+                    clearTimeout(sweep._timeout);
+                    sweep._timeout = setTimeout(() => {
+                        sweep.classList.remove('active', 'open-sweep', 'close-sweep');
+                    }, 1100);
+                });
+            }
+
+            // دالة لإنشاء هيكل الباب الجديد في HTML
+            function createDoorHTML(id, doorColor) {
+                const color = doorColor || '#3b82f6';
+                // نستخدم قالب الباب الجديد
+                return `
+                    <div class="door-html-wrapper">
+                        <div class="door-html ${state.doorProgress[id] && state.doorProgress[id] > 0.05 ? 'open-shadow' : ''}">
+                            <div class="brick-wall"></div>
+                            <div class="track-left"></div>
+                            <div class="track-right"></div>
+                            <div class="cable-left"></div>
+                            <div class="cable-right"></div>
+                            <div class="ceiling-light-html" id="ceilingLight_${id}"></div>
+
+                            <div class="door-container-html">
+                                <div class="sweep-light-html" id="sweepLight_${id}"></div>
+
+                                <!-- اللوحة العلوية (ثابتة) -->
+                                <div class="door-panel-html panel-0-html" data-panel="0">
+                                    <div class="windows-html">
+                                        <div class="window-html"><div class="window-cross-html"></div></div>
+                                        <div class="window-html"><div class="window-cross-html"></div></div>
+                                        <div class="window-html"><div class="window-cross-html"></div></div>
+                                    </div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                </div>
+
+                                <div class="door-panel-html panel-1-html" data-panel="1">
+                                    <div class="panel-groove-html groove-3-html"></div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                    <div class="hinge-html hinge-left-html hinge-mid-html"></div>
+                                    <div class="hinge-html hinge-right-html hinge-mid-html"></div>
+                                </div>
+
+                                <div class="door-panel-html panel-2-html" data-panel="2">
+                                    <div class="panel-groove-html groove-3-html"></div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                </div>
+
+                                <div class="door-panel-html panel-3-html" data-panel="3">
+                                    <div class="handle-html"></div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                    <div class="hinge-html hinge-left-html hinge-mid-html"></div>
+                                    <div class="hinge-html hinge-right-html hinge-mid-html"></div>
+                                </div>
+
+                                <div class="door-panel-html panel-4-html" data-panel="4">
+                                    <div class="panel-groove-html groove-3-html"></div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                </div>
+
+                                <div class="door-panel-html panel-5-html" data-panel="5">
+                                    <div class="panel-groove-html groove-3-html"></div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                    <div class="hinge-html hinge-left-html hinge-mid-html"></div>
+                                    <div class="hinge-html hinge-right-html hinge-mid-html"></div>
+                                </div>
+
+                                <div class="door-panel-html panel-6-html" data-panel="6">
+                                    <div class="panel-groove-html groove-3-html"></div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                </div>
+
+                                <!-- اللوحة السفلية مع النص -->
+                                <div class="door-panel-html panel-7-html" data-panel="7">
+                                    <div class="brand-backdrop-html"></div>
+                                    <div class="brand-text-html">Smart General Electric</div>
+                                    <div class="panel-groove-html groove-1-html"></div>
+                                    <div class="panel-groove-html groove-2-html"></div>
+                                    <div class="hinge-html hinge-left-html hinge-mid-html"></div>
+                                    <div class="hinge-html hinge-right-html hinge-mid-html"></div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="door-status-label ${state.doorProgress[id] && state.doorProgress[id] >= 0.5 ? 'open' : 'closed'}" data-device-id="${id}">${state.doorProgress[id] && state.doorProgress[id] >= 0.5 ? '🟢 مفتوح' : '🔴 مغلق'}</div>
+                        <div class="door-progress-indicator">${Math.round((state.doorProgress[id]||0)*100)}%</div>
+                    </div>
+                `;
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  DOOR COMMAND (معدل)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function doorCommand(id, cmd) {
                 const dev = state.deviceMap.get(id);
                 if (!dev || dev.type !== 1) return;
@@ -5016,11 +5687,35 @@
                 Sound.door();
                 const labels = { 'OPEN': 'فتح', 'CLOSE': 'إغلاق', 'STOP': 'إيقاف' };
                 showToast(`🚪 ${labels[cmd]||cmd} ${dev.name}`, 'info', '🚪');
-                if (cmd === 'OPEN') { dev.open = true;
+                if (cmd === 'OPEN') {
+                    dev.open = true;
                     dev.status = true;
-                    animateDoor(id, 1); } else if (cmd === 'CLOSE') { dev.open = false;
+                    state.doorMoving.add(id);
+                    animateDoor(id, 1);
+                    // إزالة حالة الحركة بعد اكتمال الأنيميشن
+                    setTimeout(() => { state.doorMoving.delete(id);
+                        updateDoorStatusLabel(id);
+                        debouncedUpdateUI(); }, 3000);
+                } else if (cmd === 'CLOSE') {
+                    dev.open = false;
                     dev.status = false;
-                    animateDoor(id, 0); }
+                    state.doorMoving.add(id);
+                    animateDoor(id, 0);
+                    setTimeout(() => { state.doorMoving.delete(id);
+                        updateDoorStatusLabel(id);
+                        debouncedUpdateUI(); }, 3000);
+                } else if (cmd === 'STOP') {
+                    state.doorMoving.delete(id);
+                    if (state.doorAnimating[id]) {
+                        state.doorAnimating[id] = false;
+                        // نثبت التقدم الحالي
+                        const current = state.doorProgress[id] || 0;
+                        dev.open = (current >= 0.5);
+                        dev.status = dev.open;
+                        updateDoorHTML(id, current);
+                    }
+                    showToast(`⏹️ تم إيقاف الباب`, 'info', '⏹️');
+                }
                 saveDevices();
                 debouncedUpdateUI();
                 if (dom.detailPage.classList.contains('active') && state.activeDeviceId === dev.id) renderDetailPage(dev
@@ -5029,6 +5724,48 @@
                 if (cmd === 'OPEN' || cmd === 'CLOSE') processAutomations(dev);
             }
 
+            function updateDoorStatusLabel(id) {
+                const dev = state.deviceMap.get(id);
+                if (!dev) return;
+                const isMoving = state.doorMoving.has(id);
+                const progress = state.doorProgress[id] || 0;
+                const labels = document.querySelectorAll(`.door-status-label[data-device-id="${id}"]`);
+                labels.forEach(el => {
+                    if (isMoving) {
+                        el.textContent = '🔄 جاري الحركة...';
+                        el.className = 'door-status-label moving';
+                    } else {
+                        const isOpen = progress >= 0.5;
+                        el.textContent = isOpen ? '🟢 مفتوح' : '🔴 مغلق';
+                        el.className = 'door-status-label ' + (isOpen ? 'open' : 'closed');
+                    }
+                });
+                // تحديث في صفحة التفاصيل
+                const large = document.querySelector(`.detail-door-container .door-status-large`);
+                if (large) {
+                    const span = large.querySelector('span:last-child');
+                    if (span) {
+                        if (isMoving) {
+                            span.textContent = '🔄 جاري الحركة...';
+                            span.className = 'status-moving';
+                        } else {
+                            const isOpen = progress >= 0.5;
+                            span.textContent = isOpen ? '🟢 مفتوح' : '🔴 مغلق';
+                            span.className = isOpen ? 'status-open' : 'status-closed';
+                        }
+                    }
+                }
+                // تحديث مؤشر التقدم
+                const indicators = document.querySelectorAll(`.door-progress-indicator[data-device-id="${id}"]`);
+                indicators.forEach(el => {
+                    const percent = Math.round(progress * 100);
+                    el.textContent = `${percent}%`;
+                });
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  VACATION
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleVacation() {
                 const ns = !state.vacationMode;
                 state.vacationMode = ns;
@@ -5049,6 +5786,12 @@
                 state.deviceMap.delete(id);
                 state.deviceLastHb.delete(id);
                 state.deviceConnecting.delete(id);
+                state.doorMoving.delete(id);
+                delete state.doorProgress[id];
+                delete state.doorTargets[id];
+                delete state.doorAnimating[id];
+                delete state.doorStartTime[id];
+                delete state.doorStartProgress[id];
                 if (state.activeDeviceId === id) state.activeDeviceId = state.devices.length ? state.devices[0].id :
                     null;
                 state.schedules = state.schedules.filter(s => s.deviceId !== id);
@@ -5124,111 +5867,6 @@
                         showToast('✅ تم تحميل QR', 'success', '📥'); } catch (e) { showToast('⚠️ تعذر التحميل',
                         'error'); } } else { showToast('⚠️ لا يوجد QR للتحميل', 'warning'); }
             }
-
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DOOR ANIMATION (محسّن)
-            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            function animateDoor(id, target) {
-                const key = 'door_' + id;
-                if (!state.doorAnimations[key]) state.doorAnimations[key] = { current: target, target: target,
-                    running: false };
-                const anim = state.doorAnimations[key];
-                anim.target = target;
-                if (anim.running) return;
-                anim.running = true;
-                const duration = 1500,
-                    start = performance.now(),
-                    from = anim.current;
-
-                function step(now) {
-                    const p = Math.min((now - start) / duration, 1);
-                    const ease = p < 0.5 ? 4 * p * p * p : 1 - Math.pow(-2 * p + 2, 3) / 2;
-                    const val = from + (anim.target - from) * ease;
-                    anim.current = val;
-                    drawAllDoorCanvases(id, val);
-                    if (p < 1) requestAnimationFrame(step);
-                    else { anim.current = anim.target;
-                        anim.running = false;
-                        drawAllDoorCanvases(id, anim.target); }
-                }
-                requestAnimationFrame(step);
-            }
-
-            function drawAllDoorCanvases(id, progress) {
-                const dev = state.deviceMap.get(id);
-                const color = dev?.doorColor || '#3b82f6';
-                document.querySelectorAll(`canvas[data-device-id="${id}"]`).forEach(c => drawDoorCanvas(c, progress,
-                    color));
-            }
-
-            function drawDoorCanvas(canvas, progress, accent) {
-                const c = canvas.parentElement,
-                    cw = c?.clientWidth || 300,
-                    dpr = window.devicePixelRatio || 1,
-                    aspect = 1.2;
-                let w = cw * dpr,
-                    h = (cw / aspect) * dpr;
-                if (w < 100 * dpr) w = 100 * dpr;
-                if (h < 100 * dpr) h = 100 * dpr;
-                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
-                    canvas.height = h; }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, w, h);
-                const pad = 20 * dpr,
-                    ac = progress > 0.5 ? '#00E676' : accent || '#FF5252';
-                ctx.strokeStyle = ac + '99';
-                ctx.lineWidth = 3 * dpr;
-                ctx.strokeRect(pad, pad, w - 2 * pad, h - 2 * pad);
-                ctx.fillStyle = '#FF8F00';
-                ctx.beginPath();
-                ctx.moveTo(w / 2, 0);
-                ctx.lineTo(pad, pad);
-                ctx.lineTo(w - pad, pad);
-                ctx.closePath();
-                ctx.fill();
-                const ph = (h - 2 * pad) / 10,
-                    su = (h - 2 * pad) * progress;
-                for (let i = 0; i < 10; i++) {
-                    const y = pad + i * ph - su;
-                    if (y + ph < pad || y > h) continue;
-                    const cy2 = Math.max(y, pad),
-                        ch = Math.min(y + ph, h) - cy2;
-                    if (ch <= 0) continue;
-                    ctx.fillStyle = (i === 0 || i === 9) ? '#37474F' : lerpColor('#78909C', '#B0BEC5', i / 10);
-                    ctx.fillRect(pad + 1 * dpr, cy2, w - 2 * pad - 2 * dpr, ch);
-                    ctx.strokeStyle = 'rgba(0,0,0,0.2)';
-                    ctx.lineWidth = 1 * dpr;
-                    ctx.beginPath();
-                    ctx.moveTo(pad + 1 * dpr, cy2);
-                    ctx.lineTo(w - pad - 1 * dpr, cy2);
-                    ctx.stroke();
-                }
-                if (progress > 0.3) {
-                    const alpha = progress * 0.8;
-                    const grad = ctx.createRadialGradient(w / 2, 14 * dpr, 2 * dpr, w / 2, 14 * dpr, 8 * dpr + 20 * dpr *
-                        progress);
-                    const c2 = hexToRgb(ac);
-                    grad.addColorStop(0, `rgba(${c2.r},${c2.g},${c2.b},${alpha})`);
-                    grad.addColorStop(1, `rgba(${c2.r},${c2.g},${c2.b},0)`);
-                    ctx.fillStyle = grad;
-                    ctx.beginPath();
-                    ctx.arc(w / 2, 14 * dpr, 8 * dpr + 20 * dpr * progress, 0, Math.PI * 2);
-                    ctx.fill();
-                }
-            }
-
-            function drawDoorOnCard(id) {
-                const dev = state.deviceMap.get(id);
-                if (!dev || dev.type !== 1) return;
-                const key = 'door_' + id;
-                if (!state.doorAnimations[key]) state.doorAnimations[key] = { current: dev.open ? 1 : 0,
-                    target: dev.open ? 1 : 0, running: false };
-                const p = state.doorAnimations[key].current,
-                    color = dev.doorColor || '#3b82f6';
-                document.querySelectorAll(`canvas[data-device-id="${id}"]`).forEach(c => drawDoorCanvas(c, p, color));
-            }
-
-            function drawAllDoors() { for (const d of state.devices) { if (d.type === 1) drawDoorOnCard(d.id); } }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             //  WATER LEVEL GAUGE (محسّن)
@@ -5561,10 +6199,26 @@
                         state.schedules.forEach(s => { if (s.deviceId === oldId) s.deviceId = nid; });
                         if (state.activeDeviceId === oldId) { state.activeDeviceId = nid;
                             saveActiveDevice(); }
-                        const ok = 'door_' + oldId,
-                            nk = 'door_' + nid;
-                        if (state.doorAnimations[ok]) { state.doorAnimations[nk] = state.doorAnimations[ok];
-                            delete state.doorAnimations[ok]; }
+                        if (state.doorProgress[oldId] !== undefined) {
+                            state.doorProgress[nid] = state.doorProgress[oldId];
+                            delete state.doorProgress[oldId];
+                        }
+                        if (state.doorTargets[oldId] !== undefined) {
+                            state.doorTargets[nid] = state.doorTargets[oldId];
+                            delete state.doorTargets[oldId];
+                        }
+                        if (state.doorAnimating[oldId] !== undefined) {
+                            state.doorAnimating[nid] = state.doorAnimating[oldId];
+                            delete state.doorAnimating[oldId];
+                        }
+                        if (state.doorStartTime[oldId] !== undefined) {
+                            state.doorStartTime[nid] = state.doorStartTime[oldId];
+                            delete state.doorStartTime[oldId];
+                        }
+                        if (state.doorStartProgress[oldId] !== undefined) {
+                            state.doorStartProgress[nid] = state.doorStartProgress[oldId];
+                            delete state.doorStartProgress[oldId];
+                        }
                         if (state.voiceCommands[oldId]) { state.voiceCommands[nid] = state.voiceCommands[oldId];
                             delete state.voiceCommands[oldId]; }
                         addLog(`🔄 تغيير معرف: ${oldId} → ${nid}`, 'warning');
@@ -5591,7 +6245,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE (محسّن)
+            //  DETAIL PAGE (محسّن – باستخدام الباب الجديد)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(id) {
                 state.activeDeviceId = id;
@@ -5675,21 +6329,59 @@
                         if (hc) drawHumidityGauge(hc, h);
                     }, 50);
                 } else if (dev.type === 1) {
-                    const p = dev.open ? 1 : 0,
-                        key = 'door_' + dev.id;
-                    if (!state.doorAnimations[key]) state.doorAnimations[key] = { current: p, target: p,
-                        running: false };
-                    const cur = state.doorAnimations[key].current,
-                        color = dev.doorColor || '#3b82f6';
-                    main =
-                        `<div class="detail-door-canvas"><canvas data-device-id="${dev.id}"></canvas></div><div class="detail-door-controls"><div class="door-controls-modern"><button class="door-btn door-btn-open" data-id="${dev.id}" data-cmd="OPEN"><span class="emoji">🔼</span><span class="label">فتح</span><span class="sub-label">رفع الباب</span></button><button class="door-btn door-btn-stop" data-id="${dev.id}" data-cmd="STOP"><span class="emoji">⏹</span><span class="label">إيقاف</span><span class="sub-label">تعليق</span></button><button class="door-btn door-btn-close" data-id="${dev.id}" data-cmd="CLOSE"><span class="emoji">🔽</span><span class="label">إغلاق</span><span class="sub-label">خفض</span></button></div><div class="door-status-large"><span>الحالة:</span><span class="${dev.open?'status-open':'status-closed'}">${dev.open?'🟢 مفتوح':'🔴 مغلق'}</span></div><div class="door-color-picker"><label>🎨 لون الباب</label><input type="color" id="doorColorPicker" value="${color}" data-id="${dev.id}" /></div></div>`;
+                    // استخدام الباب الجديد
+                    const progress = state.doorProgress[id] !== undefined ? state.doorProgress[id] : (dev.open ? 1 : 0);
+                    const isMoving = state.doorMoving.has(id);
+                    const color = dev.doorColor || '#3b82f6';
+                    const statusText = isMoving ? '🔄 جاري الحركة...' : (progress >= 0.5 ? '🟢 مفتوح' : '🔴 مغلق');
+                    const statusClass = isMoving ? 'status-moving' : (progress >= 0.5 ? 'status-open' : 'status-closed');
+                    // ننشئ هيكل الباب داخل حاوية التفاصيل
+                    main = `
+                        <div class="detail-door-container door-html-container" data-device-id="${dev.id}">
+                            ${createDoorHTML(dev.id, color)}
+                        </div>
+                        <div class="detail-door-controls">
+                            <div class="door-controls-modern">
+                                <button class="door-btn door-btn-open" data-id="${dev.id}" data-cmd="OPEN"><span class="emoji">🔼</span><span class="label">فتح</span></button>
+                                <button class="door-btn door-btn-stop" data-id="${dev.id}" data-cmd="STOP"><span class="emoji">⏹</span><span class="label">إيقاف</span></button>
+                                <button class="door-btn door-btn-close" data-id="${dev.id}" data-cmd="CLOSE"><span class="emoji">🔽</span><span class="label">إغلاق</span></button>
+                            </div>
+                            <div class="door-status-large">
+                                <span>الحالة:</span>
+                                <span class="${statusClass}">${statusText}</span>
+                            </div>
+                            <div class="door-color-picker">
+                                <label>🎨 لون الباب</label>
+                                <input type="color" id="doorColorPicker" value="${color}" data-id="${dev.id}" />
+                            </div>
+                        </div>
+                    `;
                     controls = '';
+                    // تأكد من تحديث الباب بعد التركيب
                     setTimeout(() => {
-                        const c = document.querySelector(
-                            `.detail-door-canvas canvas[data-device-id="${dev.id}"]`);
-                        if (c) drawDoorCanvas(c, cur, color);
+                        updateDoorHTML(dev.id, progress);
+                        // ربط أزرار التحكم
+                        document.querySelectorAll('.detail-door-controls .door-btn').forEach(b => {
+                            b.addEventListener('click', () => doorCommand(b.dataset.id, b.dataset
+                            .cmd));
+                        });
+                        // ربط منتقي اللون
+                        const picker = document.getElementById('doorColorPicker');
+                        if (picker) {
+                            picker.addEventListener('input', function() {
+                                const did = this.dataset.id;
+                                const d = state.deviceMap.get(did);
+                                if (d && d.type === 1) {
+                                    d.doorColor = this.value;
+                                    saveDevices();
+                                    // إعادة إنشاء الباب باللون الجديد
+                                    renderDetailPage(did);
+                                }
+                            });
+                        }
                     }, 50);
                 } else {
+                    // باقي الأجهزة (نفس الكود السابق)
                     const isLight = dev.type === 3 || dev.type === 2;
                     const isFaucet = dev.type === 8;
                     let iconHtml =
@@ -5732,17 +6424,9 @@
                     ${controls}
                 `;
 
+                // ربط الأحداث للأجهزة الأخرى
                 const iconToggle = document.querySelector('.big-icon[data-action="toggle-icon"]');
                 if (iconToggle) iconToggle.addEventListener('click', () => toggleDevice(iconToggle.dataset.id));
-
-                const dp = document.getElementById('doorColorPicker');
-                if (dp) dp.addEventListener('input', e => { const did = e.target.dataset.id;
-                    const d = state.deviceMap.get(did); if (d && d.type === 1) { d.doorColor = e.target.value;
-                        saveDevices();
-                        renderDetailPage(did); } });
-
-                document.querySelectorAll('.door-controls-modern .door-btn').forEach(b => b.addEventListener('click',
-                    () => doorCommand(b.dataset.id, b.dataset.cmd)));
 
                 const tgl = document.getElementById('detailToggle');
                 if (tgl) tgl.addEventListener('click', () => toggleDevice(tgl.dataset.id));
@@ -5762,19 +6446,6 @@
                 const clr = document.getElementById('detailColor');
                 if (clr) clr.addEventListener('click', () => { pickColor(clr.dataset.id);
                     setTimeout(() => renderDetailPage(clr.dataset.id), 100); });
-
-                const dc = document.querySelector('.detail-door-canvas canvas');
-                if (dc) {
-                    const obs = new ResizeObserver(() => {
-                        const did = dc.dataset.deviceId,
-                            d = state.deviceMap.get(did),
-                            color = d?.doorColor || '#3b82f6',
-                            key = 'door_' + did,
-                            p = state.doorAnimations[key]?.current || (d?.open ? 1 : 0);
-                        drawDoorCanvas(dc, p, color);
-                    });
-                    obs.observe(dc.parentElement);
-                }
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -5812,7 +6483,14 @@
                     });
                 });
                 attachDeviceControls(dom.roomDetailDevices);
-                setTimeout(() => { for (const d of devs) { if (d.type === 1) drawDoorOnCard(d.id); } }, 100);
+                setTimeout(() => {
+                    for (const d of devs) {
+                        if (d.type === 1) {
+                            updateDoorHTML(d.id, state.doorProgress[d.id] || 0);
+                            updateDoorStatusLabel(d.id);
+                        }
+                    }
+                }, 100);
             }
 
             function openRoomEditModal(room) {
@@ -5976,6 +6654,12 @@
                 state.deviceMap.set(id, dev);
                 state.deviceLastHb.set(id, null);
                 state.deviceConnecting.set(id, true);
+                // تهيئة حالة الباب الجديد
+                if (type === 1) {
+                    state.doorProgress[id] = 0;
+                    state.doorTargets[id] = 0;
+                    state.doorAnimating[id] = false;
+                }
                 saveDevices();
                 state.activeDeviceId = id;
                 saveActiveDevice();
@@ -6012,7 +6696,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE CARD (محسّن)
+            //  DEVICE CARD (محسّن – باستخدام الباب الجديد)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function renderDeviceCardHtml(dev) {
                 const ti = DEVICE_TYPES[dev.type] || DEVICE_TYPES[2];
@@ -6058,21 +6742,34 @@
                         `<div style="display:flex;gap:4px;justify-content:center;margin:4px 0;"><span style="font-size:0.7rem;background:var(--primary-light);padding:2px 8px;border-radius:12px;">🌡️ ${Math.round(t)}°C</span><span style="font-size:0.7rem;background:var(--primary-light);padding:2px 8px;border-radius:12px;">💧 ${Math.round(h)}%</span></div>`;
                     controls = '';
                 } else if (dev.type === 1) {
-                    const key = 'door_' + dev.id;
-                    if (!state.doorAnimations[key]) state.doorAnimations[key] = { current: dev.open ? 1 : 0,
-                        target: dev.open ? 1 : 0, running: false };
-                    const p = state.doorAnimations[key].current,
-                        color = dev.doorColor || '#3b82f6';
-                    extra =
-                        `<div class="door-canvas-wrap"><canvas data-device-id="${dev.id}"></canvas></div>`;
-                    requestAnimationFrame(() => {
-                        const c = document.querySelector(`.door-canvas-wrap canvas[data-device-id="${dev.id}"]`);
-                        if (c) drawDoorCanvas(c, p, color);
-                    });
-                    controls =
-                        `<div class="door-controls-modern" style="margin-top:6px;"><button class="door-btn door-btn-open" data-id="${dev.id}" data-cmd="OPEN"><span class="emoji">🔼</span><span class="label">فتح</span></button><button class="door-btn door-btn-stop" data-id="${dev.id}" data-cmd="STOP"><span class="emoji">⏹</span><span class="label">إيقاف</span></button><button class="door-btn door-btn-close" data-id="${dev.id}" data-cmd="CLOSE"><span class="emoji">🔽</span><span class="label">إغلاق</span></button></div><div class="door-status-label ${dev.open?'open':'closed'}">${dev.open?'🟢 مفتوح':'🔴 مغلق'}</div>`;
-                    statusText = dev.open ? 'مفتوح' : 'مغلق';
-                    statusColor = dev.open ? 'var(--success)' : 'var(--danger)';
+                    // استخدام الباب الجديد
+                    const progress = state.doorProgress[dev.id] !== undefined ? state.doorProgress[dev.id] : (dev.open ?
+                        1 : 0);
+                    const isMoving = state.doorMoving.has(dev.id);
+                    const color = dev.doorColor || '#3b82f6';
+                    // نضيف الباب داخل البطاقة
+                    extra = `
+                        <div class="door-html-container" data-device-id="${dev.id}">
+                            ${createDoorHTML(dev.id, color)}
+                        </div>
+                    `;
+                    const statusLabel = isMoving ? '🔄 جاري الحركة...' : (progress >= 0.5 ? '🟢 مفتوح' : '🔴 مغلق');
+                    const statusCls = isMoving ? 'moving' : (progress >= 0.5 ? 'open' : 'closed');
+                    controls = `
+                        <div class="door-controls-modern" style="margin-top:6px;">
+                            <button class="door-btn door-btn-open" data-id="${dev.id}" data-cmd="OPEN"><span class="emoji">🔼</span><span class="label">فتح</span></button>
+                            <button class="door-btn door-btn-stop" data-id="${dev.id}" data-cmd="STOP"><span class="emoji">⏹</span><span class="label">إيقاف</span></button>
+                            <button class="door-btn door-btn-close" data-id="${dev.id}" data-cmd="CLOSE"><span class="emoji">🔽</span><span class="label">إغلاق</span></button>
+                        </div>
+                        <div class="door-status-label ${statusCls}" data-device-id="${dev.id}">${statusLabel}</div>
+                        <div class="door-progress-indicator" data-device-id="${dev.id}">${Math.round(progress*100)}%</div>
+                    `;
+                    statusText = isMoving ? 'جاري الحركة...' : (progress >= 0.5 ? 'مفتوح' : 'مغلق');
+                    statusColor = isMoving ? 'var(--warning)' : (progress >= 0.5 ? 'var(--success)' : 'var(--danger)');
+                    // تأكد من تحديث الباب بعد التركيب
+                    setTimeout(() => {
+                        updateDoorHTML(dev.id, progress);
+                    }, 50);
                 } else {
                     statusText = dev.status ? 'تشغيل' : 'إيقاف';
                     statusColor = dev.status ? 'var(--success)' : 'var(--text-muted)';
@@ -6678,6 +7375,11 @@
                         state.deviceMap.set(id, dev);
                         state.deviceLastHb.set(id, Date.now());
                         state.deviceConnecting.set(id, false);
+                        if (t === 1) {
+                            state.doorProgress[id] = dev.open ? 1 : 0;
+                            state.doorTargets[id] = dev.open ? 1 : 0;
+                            state.doorAnimating[id] = false;
+                        }
                         saveDevices();
                         showToast(`✅ تم إضافة ${name}`, 'success');
                         addLog(`➕ إضافة عبر BLE: ${name} (${id})`, 'success');
@@ -6740,6 +7442,11 @@
                     state.deviceMap.set(devId, dev);
                     state.deviceLastHb.set(devId, Date.now());
                     state.deviceConnecting.set(devId, false);
+                    if (t === 1) {
+                        state.doorProgress[devId] = 0;
+                        state.doorTargets[devId] = 0;
+                        state.doorAnimating[devId] = false;
+                    }
                     saveDevices();
                     showToast(`✅ تم إضافة ${devName}`, 'success');
                     addLog(`➕ إضافة عبر BLE: ${devName} (${devId})`, 'success');
@@ -6816,6 +7523,11 @@
                         state.deviceMap.set(id, dev);
                         state.deviceLastHb.set(id, null);
                         state.deviceConnecting.set(id, true);
+                        if (type === 1) {
+                            state.doorProgress[id] = 0;
+                            state.doorTargets[id] = 0;
+                            state.doorAnimating[id] = false;
+                        }
                         saveDevices();
                         showToast(`✅ تم إضافة ${id}`, 'success');
                         debouncedUpdateUI();
@@ -7038,7 +7750,17 @@
                                     resetCustomSound(k); }));
                     }, 100);
                 }
-                requestAnimationFrame(drawAllDoors);
+                // تحديث الأبواب بعد التحميل
+                setTimeout(() => {
+                    for (const d of state.devices) {
+                        if (d.type === 1) {
+                            const progress = state.doorProgress[d.id] !== undefined ? state.doorProgress[d.id] :
+                                (d.open ? 1 : 0);
+                            updateDoorHTML(d.id, progress);
+                            updateDoorStatusLabel(d.id);
+                        }
+                    }
+                }, 150);
                 updateLogBadge();
                 if (dom.roomOverlay.classList.contains('active') && state._currentRoom) renderRoomDetail(state
                     ._currentRoom);
@@ -7491,7 +8213,14 @@
 
                 let resizeTO;
                 window.addEventListener('resize', () => { clearTimeout(resizeTO);
-                    resizeTO = setTimeout(drawAllDoors, 300); });
+                    resizeTO = setTimeout(() => {
+                        for (const d of state.devices) {
+                            if (d.type === 1) {
+                                const progress = state.doorProgress[d.id] || 0;
+                                updateDoorHTML(d.id, progress);
+                            }
+                        }
+                    }, 300); });
 
                 window.addEventListener('beforeunload', () => {
                     stopHeartbeatMonitor();
@@ -7505,7 +8234,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ SGE v8.2.0 – محسّن مع BLE + QR Fixed');
+                console.log('⚡ SGE v8.2.0 – محسّن مع BLE + QR Fixed + Door HTML');
                 console.log(
                     `📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`
                     );
