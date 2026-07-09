@@ -1449,7 +1449,7 @@
             }
         }
 
-        /* ── Door Controls (موجودة سابقاً) ── */
+        /* ── Door Controls ── */
         .door-controls-modern {
             display: flex;
             gap: 8px;
@@ -1640,7 +1640,8 @@
             font-size: 0.7rem;
             font-family: inherit;
         }
-        /* ── Gauges ── */
+
+        /* ── Gauges المحسّنة مع توهج احترافي ── */
         .gauge-container {
             position: relative;
             width: 100%;
@@ -1685,6 +1686,58 @@
             font-size: 0.85rem;
             color: var(--text-secondary);
         }
+
+        /* حاوية مخصصة للدوائر المتوهجة */
+        .gauge-glow-container {
+            position: relative;
+            width: 100%;
+            max-width: 220px;
+            margin: 0 auto;
+            aspect-ratio: 1/1;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05), transparent 70%);
+            box-shadow: 0 0 40px rgba(0,0,0,0.2), inset 0 0 30px rgba(255,255,255,0.02);
+        }
+        .gauge-glow-container canvas {
+            width: 100% !important;
+            height: 100% !important;
+            display: block;
+            border-radius: 50%;
+        }
+        .gauge-glow-container .gauge-value {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            font-weight: 700;
+            color: #ffffff;
+            line-height: 1.2;
+            z-index: 2;
+            text-shadow: 0 0 20px rgba(0,0,0,0.5);
+        }
+        .gauge-glow-container .gauge-value .main {
+            font-size: 2rem;
+            font-weight: 800;
+        }
+        .gauge-glow-container .gauge-value .unit {
+            font-size: 0.9rem;
+            color: rgba(255,255,255,0.6);
+            font-weight: 500;
+        }
+        .gauge-glow-container .gauge-value .sub {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.5);
+            margin-top: 2px;
+        }
+        .gauge-glow-container .gauge-value .status-label {
+            font-size: 0.7rem;
+            font-weight: 600;
+            margin-top: 2px;
+            display: block;
+        }
+
         .water-level-container {
             position: relative;
             width: 100%;
@@ -1748,7 +1801,7 @@
             max-width: 180px;
             position: relative;
         }
-        .dual-gauge-item .gauge-container {
+        .dual-gauge-item .gauge-glow-container {
             max-width: 100%;
         }
         .dual-gauge-item .gauge-label {
@@ -1758,6 +1811,7 @@
             margin-top: 4px;
             font-weight: 600;
         }
+
         /* ── Modals ── */
         .modal-overlay {
             display: none;
@@ -3421,7 +3475,7 @@
                 bottom: calc(var(--fab-bottom) + 5px);
                 right: 16px;
             }
-            .gauge-container {
+            .gauge-glow-container {
                 max-width: 180px;
             }
             .water-level-container {
@@ -3508,7 +3562,7 @@
                 bottom: calc(var(--fab-bottom) + 2px);
                 right: 12px;
             }
-            .gauge-container {
+            .gauge-glow-container {
                 max-width: 150px;
             }
             .water-level-container {
@@ -3679,7 +3733,7 @@
                 width: 10px;
                 height: 16px;
             }
-            .gauge-container {
+            .gauge-glow-container {
                 max-width: 120px;
             }
             .water-level-container {
@@ -3739,7 +3793,7 @@
                 bottom: calc(var(--fab-bottom) - 4px);
                 right: 8px;
             }
-            .gauge-container {
+            .gauge-glow-container {
                 max-width: 100px;
             }
             .water-level-container {
@@ -4246,7 +4300,7 @@
                 automations: [],
                 rooms: [],
                 schedules: [],
-                doorAnimations: {}, // سنستخدمها لتخزين حالة التقدم للباب الجديد
+                doorAnimations: {},
                 pendingDeleteId: null,
                 pendingDeleteCallback: null,
                 notifications: [],
@@ -4298,14 +4352,13 @@
                 tempCurrent: 0,
                 humidityCurrent: 0,
                 bleScanning: false,
-                doorMoving: new Set(), // track doors currently in motion
-                // متغيرات الباب الجديد
-                doorProgress: {}, // progress لكل باب (0-1)
-                doorTargets: {}, // الهدف المطلوب
-                doorAnimating: {}, // هل الباب يتحرك حاليًا
+                doorMoving: new Set(),
+                doorProgress: {},
+                doorTargets: {},
+                doorAnimating: {},
                 doorStartTime: {},
                 doorStartProgress: {},
-                DOOR_DURATION: 7000, // مدة الأنيميشن
+                DOOR_DURATION: 7000,
             };
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -4874,7 +4927,7 @@
                 if (suffix === 'vacation') return id + '/system/vacation';
                 if (suffix === 'heartbeat') return id + '/system/heartbeat';
                 if (type === 13) return id + '/water/level';
-                if (type === 14) return id + '/temp_humid/data';
+                if (type === 14) return id + '/sensor/data'; // <-- صيغة JSON الجديدة
                 return id + '/' + base + '/' + suffix;
             }
 
@@ -4939,7 +4992,11 @@
                             if (dev.type === 5) client.subscribe(dev.id + '/fan/speed', { qos: 1 });
                             if (dev.type === 6) client.subscribe(dev.id + '/ac/temp', { qos: 1 });
                             if (dev.type === 13) client.subscribe(dev.id + '/water/level', { qos: 1 });
-                            if (dev.type === 14) client.subscribe(dev.id + '/temp_humid/data', { qos: 1 });
+                            if (dev.type === 14) {
+                                client.subscribe(dev.id + '/sensor/data', { qos: 1 });
+                                // دعم الصيغة القديمة أيضاً للتوافق
+                                client.subscribe(dev.id + '/temp_humid/data', { qos: 1 });
+                            }
                             client.subscribe(dev.id + '/system/vacation', { qos: 1 });
                             client.subscribe(dev.id + '/system/heartbeat', { qos: 1 });
                         });
@@ -5082,18 +5139,15 @@
             function markAllDevicesUnknown() {
                 let changed = false;
                 for (const dev of state.devices) {
-                    // إذا كان الجهاز باب جراج (type 1) ويفتقد الاتصال، نعتبره مفتوحاً
                     if (dev.type === 1) {
                         if (!dev.online || dev._connecting) {
                             dev.open = true;
                             dev.status = true;
-                            // تحديث الأنيميشن لفتح الباب (progress = 1)
                             animateDoor(dev.id, 1);
                             addLog(`🚪 ${dev.name}: تم فتحه تلقائياً (انقطاع الاتصال)`, 'warning');
                             changed = true;
                         }
                     }
-                    // تحديث حالة الاتصال للأجهزة الأخرى
                     if (dev.online || !dev._connecting) {
                         dev.online = false;
                         dev._connecting = true;
@@ -5152,7 +5206,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  MQTT MESSAGE HANDLER
+            //  MQTT MESSAGE HANDLER (محسّن لدعم JSON)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function resolveDeviceFromTopic(topic) {
                 let matched = null;
@@ -5230,11 +5284,8 @@
                         processAutomations(device);
                     } else if (msg === 'stopped') {
                         state.doorMoving.delete(device.id);
-                        // إيقاف الأنيميشن عند الوضع الحالي
                         const id = device.id;
-                        if (state.doorAnimating[id]) {
-                            state.doorAnimating[id] = false;
-                        }
+                        if (state.doorAnimating[id]) { state.doorAnimating[id] = false; }
                         addLog(`🚪 ${device.name}: متوقف`, 'info');
                     }
                 } else if (['light/status', 'plug/status', 'fan/status', 'ac/status', 'pump/status', 'faucet/status',
@@ -5266,16 +5317,38 @@
                                 .liters = l; }
                         addLog(`💧 ${device.name}: مستوى الماء ${Math.round(level)}%`, 'info');
                     }
-                } else if (sub === 'temp_humid/data') {
-                    const parts = msg.split(/[|,]/);
-                    const t = parseFloat(parts[0]),
-                        h = parseFloat(parts[1]);
-                    if (!isNaN(t)) { device.temp = t;
-                        device.status = t;
-                        state.tempCurrent = t;
-                        updated = true; if (!isNaN(h)) { device.humidity = h;
-                            state.humidityCurrent = h; }
-                        addLog(`🌡️ ${device.name}: ${t}°C / ${h}%`, 'info'); }
+                } else if (sub === 'sensor/data' || sub === 'temp_humid/data') {
+                    // محاولة تحليل JSON أولاً
+                    try {
+                        const data = JSON.parse(msg);
+                        if (data.temperature !== undefined && data.humidity !== undefined) {
+                            device.temp = data.temperature;
+                            device.humidity = data.humidity;
+                            device.status = data.temperature;
+                            device.lastHeartbeat = Date.now();
+                            updated = true;
+                            addLog(`🌡️ ${device.name}: ${data.temperature}°C / ${data.humidity}%`, 'info');
+                            // تحديث المتغيرات العامة
+                            state.tempCurrent = data.temperature;
+                            state.humidityCurrent = data.humidity;
+                        }
+                    } catch (e) {
+                        // الصيغة القديمة (نص عادي)
+                        const parts = msg.split(/[|,]/);
+                        const t = parseFloat(parts[0]),
+                            h = parseFloat(parts[1]);
+                        if (!isNaN(t)) {
+                            device.temp = t;
+                            device.status = t;
+                            state.tempCurrent = t;
+                            updated = true;
+                        }
+                        if (!isNaN(h)) {
+                            device.humidity = h;
+                            state.humidityCurrent = h;
+                        }
+                        if (updated) addLog(`🌡️ ${device.name}: ${t}°C / ${h}%`, 'info');
+                    }
                 }
 
                 if (updated) {
@@ -5346,7 +5419,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DEVICE ACTIONS (محسّنة) – باستخدام الباب الجديد
+            //  DEVICE ACTIONS (محسّنة)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function toggleDevice(id) {
                 const dev = state.deviceMap.get(id);
@@ -5416,25 +5489,15 @@
             //  DOOR ANIMATION (الجديد – HTML/CSS)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function animateDoor(id, target) {
-                // target: 0 = مغلق, 1 = مفتوح
                 const dev = state.deviceMap.get(id);
                 if (!dev || dev.type !== 1) return;
 
-                // تهيئة المتغيرات
-                if (state.doorProgress[id] === undefined) {
-                    state.doorProgress[id] = dev.open ? 1 : 0;
-                }
-                if (state.doorTargets[id] === undefined) {
-                    state.doorTargets[id] = state.doorProgress[id];
-                }
-                if (state.doorAnimating[id] === undefined) {
-                    state.doorAnimating[id] = false;
-                }
+                if (state.doorProgress[id] === undefined) state.doorProgress[id] = dev.open ? 1 : 0;
+                if (state.doorTargets[id] === undefined) state.doorTargets[id] = state.doorProgress[id];
+                if (state.doorAnimating[id] === undefined) state.doorAnimating[id] = false;
 
-                // إذا كان الهدف مطابقاً للقيمة الحالية ولا توجد حركة، نوقف
                 const current = state.doorProgress[id];
                 if (Math.abs(current - target) < 0.001 && !state.doorAnimating[id]) {
-                    // نحدث حالة الباب في الجهاز
                     dev.open = (target >= 0.5);
                     dev.status = dev.open;
                     state.doorMoving.delete(id);
@@ -5442,65 +5505,46 @@
                     return;
                 }
 
-                // تحديث الهدف
                 state.doorTargets[id] = target;
+                if (state.doorAnimating[id]) return;
 
-                // إذا كانت الحركة قيد التنفيذ، نكتفي بتحديث الهدف
-                if (state.doorAnimating[id]) {
-                    return;
-                }
-
-                // بدء حركة جديدة
                 state.doorAnimating[id] = true;
                 state.doorStartTime[id] = performance.now();
                 state.doorStartProgress[id] = current;
                 state.doorMoving.add(id);
-
-                // تشغيل مؤثر الضوء
                 triggerSweepLight(id, target > current ? 'open' : 'close');
 
-                // دالة التحديث
                 function step(timestamp) {
                     if (!state.doorAnimating[id]) {
-                        // إذا تم إيقاف الحركة، ننهي
                         updateDoorHTML(id, state.doorProgress[id]);
                         return;
                     }
-
                     const elapsed = timestamp - state.doorStartTime[id];
                     const duration = state.DOOR_DURATION || 7000;
                     const progress = Math.min(elapsed / duration, 1);
-                    // دالة easing (easeInOutQuad)
                     const ease = progress < 0.5 ? 2 * progress * progress : 1 - Math.pow(-2 * progress + 2, 2) / 2;
                     const startVal = state.doorStartProgress[id];
                     const targetVal = state.doorTargets[id];
                     const newVal = startVal + (targetVal - startVal) * ease;
                     state.doorProgress[id] = Math.max(0, Math.min(1, newVal));
-
-                    // تحديث HTML
                     updateDoorHTML(id, state.doorProgress[id]);
-
                     if (progress < 1 && state.doorAnimating[id]) {
                         requestAnimationFrame(step);
                     } else {
-                        // انتهت الحركة
                         state.doorProgress[id] = targetVal;
                         state.doorAnimating[id] = false;
                         state.doorMoving.delete(id);
                         updateDoorHTML(id, targetVal);
-                        // تحديث حالة الجهاز
                         dev.open = (targetVal >= 0.5);
                         dev.status = dev.open;
                         saveDevices();
                         debouncedUpdateUI();
                     }
                 }
-
                 requestAnimationFrame(step);
             }
 
             function updateDoorHTML(id, progress) {
-                // تحديث جميع عناصر الباب لهذا المعرف
                 const containers = document.querySelectorAll(`.door-html-container[data-device-id="${id}"]`);
                 containers.forEach(container => {
                     const garage = container.querySelector('.door-html');
@@ -5508,13 +5552,7 @@
                     const sweep = container.querySelector('.sweep-light-html');
                     const light = container.querySelector('.ceiling-light-html');
                     const indicator = container.querySelector('.door-progress-indicator');
-
-                    // تحديث وضع الظل
-                    if (garage) {
-                        garage.classList.toggle('open-shadow', progress > 0.05);
-                    }
-
-                    // تحديث إضاءة السقف
+                    if (garage) garage.classList.toggle('open-shadow', progress > 0.05);
                     if (light) {
                         if (progress > 0.1) {
                             light.style.boxShadow =
@@ -5524,24 +5562,17 @@
                                 '0 0 40px rgba(255, 220, 140, 0.12), inset 0 1px 8px rgba(255, 255, 240, 0.6)';
                         }
                     }
-
-                    // تحديث تقدم الباب
                     if (indicator) {
                         const percent = Math.round(progress * 100);
                         indicator.textContent = `${percent}%`;
                     }
-
-                    // تحديث تحويلات الألواح (اللوحة العلوية ثابتة)
-                    const DOOR_HEIGHT = 200; // يجب أن يتطابق مع CSS
+                    const DOOR_HEIGHT = 200;
                     const PANEL_COUNT = 8;
                     const GAP = 2;
                     const PANEL_HEIGHT = (DOOR_HEIGHT / PANEL_COUNT) - GAP;
                     const TOTAL_SHIFT = PANEL_HEIGHT + GAP;
-                    // نريد أن تصل اللوحة السفلية إلى أسفل اللوحة العلوية
-                    // أقصى تقدم: 6 * PANEL_HEIGHT / (8 * TOTAL_SHIFT)
                     const MAX_PROGRESS = (6 * PANEL_HEIGHT) / (8 * TOTAL_SHIFT);
                     const effectiveProgress = Math.min(progress, 1) * MAX_PROGRESS;
-
                     panels.forEach((panel, i) => {
                         if (i === 0) {
                             panel.style.transform = 'translateY(0px)';
@@ -5551,8 +5582,6 @@
                             panel.style.transform = `translateY(${y}px)`;
                         }
                     });
-
-                    // تحديث حالة الحركة (نضع class moving على الباب)
                     const isMoving = state.doorMoving.has(id);
                     const statusLabel = container.querySelector('.door-status-label');
                     if (statusLabel) {
@@ -5575,13 +5604,9 @@
                     if (!sweep) return;
                     sweep.classList.add('active');
                     sweep.classList.remove('open-sweep', 'close-sweep');
-                    if (direction === 'open') {
-                        sweep.classList.add('open-sweep');
-                    } else if (direction === 'close') {
-                        sweep.classList.add('close-sweep');
-                    } else {
-                        sweep.classList.add(Math.random() > 0.5 ? 'open-sweep' : 'close-sweep');
-                    }
+                    if (direction === 'open') sweep.classList.add('open-sweep');
+                    else if (direction === 'close') sweep.classList.add('close-sweep');
+                    else sweep.classList.add(Math.random() > 0.5 ? 'open-sweep' : 'close-sweep');
                     clearTimeout(sweep._timeout);
                     sweep._timeout = setTimeout(() => {
                         sweep.classList.remove('active', 'open-sweep', 'close-sweep');
@@ -5589,10 +5614,8 @@
                 });
             }
 
-            // دالة لإنشاء هيكل الباب الجديد في HTML
             function createDoorHTML(id, doorColor) {
                 const color = doorColor || '#3b82f6';
-                // نستخدم قالب الباب الجديد
                 return `
                     <div class="door-html-wrapper">
                         <div class="door-html ${state.doorProgress[id] && state.doorProgress[id] > 0.05 ? 'open-shadow' : ''}">
@@ -5602,11 +5625,8 @@
                             <div class="cable-left"></div>
                             <div class="cable-right"></div>
                             <div class="ceiling-light-html" id="ceilingLight_${id}"></div>
-
                             <div class="door-container-html">
                                 <div class="sweep-light-html" id="sweepLight_${id}"></div>
-
-                                <!-- اللوحة العلوية (ثابتة) -->
                                 <div class="door-panel-html panel-0-html" data-panel="0">
                                     <div class="windows-html">
                                         <div class="window-html"><div class="window-cross-html"></div></div>
@@ -5616,7 +5636,6 @@
                                     <div class="panel-groove-html groove-1-html"></div>
                                     <div class="panel-groove-html groove-2-html"></div>
                                 </div>
-
                                 <div class="door-panel-html panel-1-html" data-panel="1">
                                     <div class="panel-groove-html groove-3-html"></div>
                                     <div class="panel-groove-html groove-1-html"></div>
@@ -5624,13 +5643,11 @@
                                     <div class="hinge-html hinge-left-html hinge-mid-html"></div>
                                     <div class="hinge-html hinge-right-html hinge-mid-html"></div>
                                 </div>
-
                                 <div class="door-panel-html panel-2-html" data-panel="2">
                                     <div class="panel-groove-html groove-3-html"></div>
                                     <div class="panel-groove-html groove-1-html"></div>
                                     <div class="panel-groove-html groove-2-html"></div>
                                 </div>
-
                                 <div class="door-panel-html panel-3-html" data-panel="3">
                                     <div class="handle-html"></div>
                                     <div class="panel-groove-html groove-1-html"></div>
@@ -5638,13 +5655,11 @@
                                     <div class="hinge-html hinge-left-html hinge-mid-html"></div>
                                     <div class="hinge-html hinge-right-html hinge-mid-html"></div>
                                 </div>
-
                                 <div class="door-panel-html panel-4-html" data-panel="4">
                                     <div class="panel-groove-html groove-3-html"></div>
                                     <div class="panel-groove-html groove-1-html"></div>
                                     <div class="panel-groove-html groove-2-html"></div>
                                 </div>
-
                                 <div class="door-panel-html panel-5-html" data-panel="5">
                                     <div class="panel-groove-html groove-3-html"></div>
                                     <div class="panel-groove-html groove-1-html"></div>
@@ -5652,14 +5667,11 @@
                                     <div class="hinge-html hinge-left-html hinge-mid-html"></div>
                                     <div class="hinge-html hinge-right-html hinge-mid-html"></div>
                                 </div>
-
                                 <div class="door-panel-html panel-6-html" data-panel="6">
                                     <div class="panel-groove-html groove-3-html"></div>
                                     <div class="panel-groove-html groove-1-html"></div>
                                     <div class="panel-groove-html groove-2-html"></div>
                                 </div>
-
-                                <!-- اللوحة السفلية مع النص -->
                                 <div class="door-panel-html panel-7-html" data-panel="7">
                                     <div class="brand-backdrop-html"></div>
                                     <div class="brand-text-html">Smart General Electric</div>
@@ -5668,7 +5680,6 @@
                                     <div class="hinge-html hinge-left-html hinge-mid-html"></div>
                                     <div class="hinge-html hinge-right-html hinge-mid-html"></div>
                                 </div>
-
                             </div>
                         </div>
                         <div class="door-status-label ${state.doorProgress[id] && state.doorProgress[id] >= 0.5 ? 'open' : 'closed'}" data-device-id="${id}">${state.doorProgress[id] && state.doorProgress[id] >= 0.5 ? '🟢 مفتوح' : '🔴 مغلق'}</div>
@@ -5692,7 +5703,6 @@
                     dev.status = true;
                     state.doorMoving.add(id);
                     animateDoor(id, 1);
-                    // إزالة حالة الحركة بعد اكتمال الأنيميشن
                     setTimeout(() => { state.doorMoving.delete(id);
                         updateDoorStatusLabel(id);
                         debouncedUpdateUI(); }, 3000);
@@ -5708,7 +5718,6 @@
                     state.doorMoving.delete(id);
                     if (state.doorAnimating[id]) {
                         state.doorAnimating[id] = false;
-                        // نثبت التقدم الحالي
                         const current = state.doorProgress[id] || 0;
                         dev.open = (current >= 0.5);
                         dev.status = dev.open;
@@ -5740,7 +5749,6 @@
                         el.className = 'door-status-label ' + (isOpen ? 'open' : 'closed');
                     }
                 });
-                // تحديث في صفحة التفاصيل
                 const large = document.querySelector(`.detail-door-container .door-status-large`);
                 if (large) {
                     const span = large.querySelector('span:last-child');
@@ -5755,12 +5763,177 @@
                         }
                     }
                 }
-                // تحديث مؤشر التقدم
                 const indicators = document.querySelectorAll(`.door-progress-indicator[data-device-id="${id}"]`);
                 indicators.forEach(el => {
                     const percent = Math.round(progress * 100);
                     el.textContent = `${percent}%`;
                 });
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  GAUGES المحسّنة (مع توهج احترافي)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            function drawTempGauge(canvas, temp, humidity) {
+                if (!canvas) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const size = Math.min(rect.width || 200, rect.height || 200);
+                const dpr = window.devicePixelRatio || 1;
+                const w = size * dpr,
+                    h = size * dpr;
+                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
+                    canvas.height = h; }
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, w, h);
+
+                const cx = w / 2,
+                    cy = h / 2;
+                const radius = (Math.min(w, h) / 2) - 14 * dpr;
+                const lineWidth = 12 * dpr;
+
+                const minTemp = -10,
+                    maxTemp = 50;
+                const clamped = Math.min(Math.max(temp, minTemp), maxTemp);
+                const percent = (clamped - minTemp) / (maxTemp - minTemp);
+                const startAngle = -Math.PI * 0.75;
+                const endAngle = Math.PI * 0.75;
+                const angleRange = endAngle - startAngle;
+                const currentAngle = startAngle + angleRange * percent;
+
+                const hue = 200 - percent * 200;
+                const mainColor = `hsl(${hue}, 85%, 55%)`;
+                const glowColor = `hsla(${hue}, 100%, 65%, 0.3)`;
+
+                // الخلفية
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+                ctx.lineWidth = lineWidth;
+                ctx.stroke();
+
+                // التوهج
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 30 * dpr;
+
+                // القوس الرئيسي المتدرج
+                const grad = ctx.createConicGradient(0, cx, cy);
+                for (let i = 0; i <= 1; i += 0.05) {
+                    const h = 200 - i * 200;
+                    grad.addColorStop(i, `hsl(${h}, 85%, 55%)`);
+                }
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, startAngle, currentAngle);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = lineWidth;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                // نقطة النهاية المتوهجة
+                ctx.beginPath();
+                ctx.arc(cx + radius * Math.cos(currentAngle), cy + radius * Math.sin(currentAngle), 6 * dpr, 0, Math.PI *
+                    2);
+                ctx.fillStyle = mainColor;
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 20 * dpr;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                // النص
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `bold ${28*dpr}px 'Cairo', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 10 * dpr;
+                ctx.fillText(`${Math.round(temp)}°C`, cx, cy - 8 * dpr);
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.font = `${12*dpr}px 'Cairo', sans-serif`;
+                ctx.fillText(`💧 ${Math.round(humidity)}%`, cx, cy + 28 * dpr);
+
+                const status = temp < 15 ? 'بارد' : temp < 25 ? 'معتدل' : temp < 35 ? 'دافئ' : 'حار';
+                ctx.fillStyle = `hsl(${hue}, 80%, 70%)`;
+                ctx.font = `${11*dpr}px 'Cairo', sans-serif`;
+                ctx.fillText(status, cx, cy + 52 * dpr);
+            }
+
+            function drawHumidityGauge(canvas, humidity) {
+                if (!canvas) return;
+                const rect = canvas.parentElement.getBoundingClientRect();
+                const size = Math.min(rect.width || 200, rect.height || 200);
+                const dpr = window.devicePixelRatio || 1;
+                const w = size * dpr,
+                    h = size * dpr;
+                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
+                    canvas.height = h; }
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, w, h);
+
+                const cx = w / 2,
+                    cy = h / 2;
+                const radius = (Math.min(w, h) / 2) - 14 * dpr;
+                const lineWidth = 12 * dpr;
+
+                const clamped = Math.min(Math.max(humidity, 0), 100);
+                const percent = clamped / 100;
+                const startAngle = -Math.PI * 0.75;
+                const endAngle = Math.PI * 0.75;
+                const angleRange = endAngle - startAngle;
+                const currentAngle = startAngle + angleRange * percent;
+
+                const hue = 200 - percent * 120;
+                const mainColor = `hsl(${hue}, 80%, 55%)`;
+                const glowColor = `hsla(${hue}, 100%, 60%, 0.3)`;
+
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+                ctx.strokeStyle = 'rgba(255,255,255,0.08)';
+                ctx.lineWidth = lineWidth;
+                ctx.stroke();
+
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 30 * dpr;
+
+                const grad = ctx.createConicGradient(0, cx, cy);
+                for (let i = 0; i <= 1; i += 0.05) {
+                    const h = 200 - i * 120;
+                    grad.addColorStop(i, `hsl(${h}, 80%, 55%)`);
+                }
+                ctx.beginPath();
+                ctx.arc(cx, cy, radius, startAngle, currentAngle);
+                ctx.strokeStyle = grad;
+                ctx.lineWidth = lineWidth;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+                ctx.shadowBlur = 0;
+
+                ctx.beginPath();
+                ctx.arc(cx + radius * Math.cos(currentAngle), cy + radius * Math.sin(currentAngle), 6 * dpr, 0, Math.PI *
+                    2);
+                ctx.fillStyle = mainColor;
+                ctx.shadowColor = glowColor;
+                ctx.shadowBlur = 20 * dpr;
+                ctx.fill();
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `bold ${28*dpr}px 'Cairo', sans-serif`;
+                ctx.textAlign = 'center';
+                ctx.textBaseline = 'middle';
+                ctx.shadowColor = 'rgba(0,0,0,0.5)';
+                ctx.shadowBlur = 10 * dpr;
+                ctx.fillText(`${Math.round(humidity)}%`, cx, cy - 8 * dpr);
+                ctx.shadowBlur = 0;
+
+                ctx.fillStyle = 'rgba(255,255,255,0.6)';
+                ctx.font = `${12*dpr}px 'Cairo', sans-serif`;
+                ctx.fillText('رطوبة', cx, cy + 28 * dpr);
+
+                const status = humidity < 30 ? 'جاف' : humidity < 60 ? 'معتدل' : humidity < 80 ? 'رطب' : 'رطب جداً';
+                ctx.fillStyle = `hsl(${hue}, 80%, 70%)`;
+                ctx.font = `${11*dpr}px 'Cairo', sans-serif`;
+                ctx.fillText(status, cx, cy + 52 * dpr);
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -5869,7 +6042,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  WATER LEVEL GAUGE (محسّن)
+            //  WATER LEVEL GAUGE
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function initWaterLevelAnimation() {
                 if (window.DeviceOrientationEvent) window.addEventListener('deviceorientation', e => { state.gyroBeta = e
@@ -5959,119 +6132,6 @@
                 ctx.fillStyle = 'var(--text-muted)';
                 ctx.font = `${14*dpr}px 'Cairo', sans-serif`;
                 ctx.fillText(`${Math.round(liters)}/${Math.round(capacity)} لتر`, cx, cy + 26 * dpr);
-            }
-
-            function drawTempGauge(canvas, temp, humidity) {
-                if (!canvas) return;
-                const rect = canvas.parentElement.getBoundingClientRect(),
-                    size = Math.min(rect.width || 200, rect.height || 200),
-                    dpr = window.devicePixelRatio || 1,
-                    w = size * dpr,
-                    h = size * dpr;
-                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
-                    canvas.height = h; }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, w, h);
-                const cx = w / 2,
-                    cy = h / 2,
-                    r = (Math.min(w, h) / 2) - 12 * dpr;
-                const tn = clamp((temp - (-10)) / 50, 0, 1),
-                    hue = 200 - tn * 200,
-                    tc = `hsl(${hue}, 90%, 55%)`;
-                const sa = -Math.PI * 0.75,
-                    ea = Math.PI * 0.75,
-                    range = ea - sa,
-                    ta = sa + range * tn;
-
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.strokeStyle = 'var(--border-color)';
-                ctx.lineWidth = 4 * dpr;
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.arc(cx, cy, r - 4 * dpr, sa, ta);
-                ctx.strokeStyle = tc;
-                ctx.lineWidth = 8 * dpr;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-
-                ctx.fillStyle = 'var(--text-primary)';
-                ctx.font = `bold ${26*dpr}px 'Cairo', sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(`${Math.round(temp)}°C`, cx, cy - 10 * dpr);
-                ctx.fillStyle = 'var(--text-muted)';
-                ctx.font = `${12*dpr}px 'Cairo', sans-serif`;
-                ctx.fillText(`💧 ${Math.round(humidity)}%`, cx, cy + 28 * dpr);
-
-                const hn = clamp(humidity / 100, 0, 1),
-                    ha = sa + range * hn;
-                ctx.beginPath();
-                ctx.arc(cx, cy, r - 18 * dpr, sa, ha);
-                ctx.strokeStyle = '#42a5f5';
-                ctx.lineWidth = 4 * dpr;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.strokeStyle = 'var(--primary)';
-                ctx.lineWidth = 2 * dpr;
-                ctx.stroke();
-            }
-
-            function drawHumidityGauge(canvas, humidity) {
-                if (!canvas) return;
-                const rect = canvas.parentElement.getBoundingClientRect(),
-                    size = Math.min(rect.width || 200, rect.height || 200),
-                    dpr = window.devicePixelRatio || 1,
-                    w = size * dpr,
-                    h = size * dpr;
-                if (canvas.width !== w || canvas.height !== h) { canvas.width = w;
-                    canvas.height = h; }
-                const ctx = canvas.getContext('2d');
-                ctx.clearRect(0, 0, w, h);
-                const cx = w / 2,
-                    cy = h / 2,
-                    r = (Math.min(w, h) / 2) - 12 * dpr;
-                const hn = clamp(humidity / 100, 0, 1),
-                    sa = -Math.PI * 0.75,
-                    ea = Math.PI * 0.75,
-                    range = ea - sa,
-                    ha = sa + range * hn;
-
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.strokeStyle = 'var(--border-color)';
-                ctx.lineWidth = 4 * dpr;
-                ctx.stroke();
-
-                const grad = ctx.createLinearGradient(cx - r, cy, cx + r, cy);
-                grad.addColorStop(0, '#42a5f5');
-                grad.addColorStop(0.5, '#1e88e5');
-                grad.addColorStop(1, '#0d47a1');
-                ctx.beginPath();
-                ctx.arc(cx, cy, r - 4 * dpr, sa, ha);
-                ctx.strokeStyle = grad;
-                ctx.lineWidth = 8 * dpr;
-                ctx.lineCap = 'round';
-                ctx.stroke();
-
-                ctx.fillStyle = 'var(--text-primary)';
-                ctx.font = `bold ${26*dpr}px 'Cairo', sans-serif`;
-                ctx.textAlign = 'center';
-                ctx.textBaseline = 'middle';
-                ctx.fillText(`${Math.round(humidity)}%`, cx, cy - 8 * dpr);
-                ctx.fillStyle = 'var(--text-muted)';
-                ctx.font = `${12*dpr}px 'Cairo', sans-serif`;
-                ctx.fillText('💧 رطوبة', cx, cy + 28 * dpr);
-
-                ctx.beginPath();
-                ctx.arc(cx, cy, r, 0, Math.PI * 2);
-                ctx.strokeStyle = 'var(--primary)';
-                ctx.lineWidth = 2 * dpr;
-                ctx.stroke();
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -6245,7 +6305,7 @@
             }
 
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-            //  DETAIL PAGE (محسّن – باستخدام الباب الجديد)
+            //  DETAIL PAGE (محسّن – باستخدام الباب الجديد والغوجات المحسّنة)
             // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
             function openDetailPage(id) {
                 state.activeDeviceId = id;
@@ -6314,14 +6374,43 @@
                         }
                     }, 50);
                 } else if (dev.type === 14) {
+                    // عرض الحرارة والرطوبة باستخدام دوائر متوهجة
                     const t = dev.temp || 0,
                         h = dev.humidity || 0;
                     state.tempCurrent = t;
                     state.humidityCurrent = h;
-                    main =
-                        `<div class="dual-gauge-container"><div class="dual-gauge-item"><div class="gauge-container" id="tempGaugeContainer"><canvas id="tempGaugeCanvas" data-device-id="${dev.id}"></canvas><div class="gauge-value"><div class="main">${Math.round(t)}°C</div><div class="extra">🌡️ درجة الحرارة</div></div></div></div><div class="dual-gauge-item"><div class="gauge-container" id="humidGaugeContainer"><canvas id="humidGaugeCanvas" data-device-id="${dev.id}"></canvas><div class="gauge-value"><div class="main">${Math.round(h)}%</div><div class="extra">💧 الرطوبة</div></div></div></div></div>`;
-                    controls =
-                        `<div class="detail-controls"><div class="ctrl-title"><i class="fas fa-thermometer-half"></i> الحرارة والرطوبة</div><div class="ctrl-row"><span class="label">درجة الحرارة</span><span style="font-weight:700;font-size:1.2rem;">${Math.round(t)}°C</span></div><div class="ctrl-row"><span class="label">الرطوبة</span><span style="font-weight:700;font-size:1.2rem;">${Math.round(h)}%</span></div><div class="ctrl-row"><span class="label">الحالة</span><span class="${t<40?'status-on':'status-off'}">${t<40?'🟢 معتدل':'🔴 مرتفع'}</span></div></div>`;
+                    main = `
+                        <div class="dual-gauge-container">
+                            <div class="dual-gauge-item">
+                                <div class="gauge-glow-container" id="tempGaugeContainer">
+                                    <canvas id="tempGaugeCanvas" data-device-id="${dev.id}"></canvas>
+                                    <div class="gauge-value">
+                                        <div class="main">${Math.round(t)}°C</div>
+                                        <div class="sub">${t < 15 ? 'بارد' : t < 25 ? 'معتدل' : t < 35 ? 'دافئ' : 'حار'}</div>
+                                    </div>
+                                </div>
+                                <div class="gauge-label">🌡️ درجة الحرارة</div>
+                            </div>
+                            <div class="dual-gauge-item">
+                                <div class="gauge-glow-container" id="humidGaugeContainer">
+                                    <canvas id="humidGaugeCanvas" data-device-id="${dev.id}"></canvas>
+                                    <div class="gauge-value">
+                                        <div class="main">${Math.round(h)}%</div>
+                                        <div class="sub">${h < 30 ? 'جاف' : h < 60 ? 'معتدل' : h < 80 ? 'رطب' : 'رطب جداً'}</div>
+                                    </div>
+                                </div>
+                                <div class="gauge-label">💧 الرطوبة</div>
+                            </div>
+                        </div>
+                    `;
+                    controls = `
+                        <div class="detail-controls">
+                            <div class="ctrl-title"><i class="fas fa-thermometer-half"></i> الحرارة والرطوبة</div>
+                            <div class="ctrl-row"><span class="label">درجة الحرارة</span><span style="font-weight:700;font-size:1.2rem;">${Math.round(t)}°C</span></div>
+                            <div class="ctrl-row"><span class="label">الرطوبة</span><span style="font-weight:700;font-size:1.2rem;">${Math.round(h)}%</span></div>
+                            <div class="ctrl-row"><span class="label">الحالة</span><span class="${t<40?'status-on':'status-off'}">${t<40?'🟢 معتدل':'🔴 مرتفع'}</span></div>
+                        </div>
+                    `;
                     setTimeout(() => {
                         const tc = document.getElementById('tempGaugeCanvas');
                         const hc = document.getElementById('humidGaugeCanvas');
@@ -6329,13 +6418,12 @@
                         if (hc) drawHumidityGauge(hc, h);
                     }, 50);
                 } else if (dev.type === 1) {
-                    // استخدام الباب الجديد
+                    // باب جراج
                     const progress = state.doorProgress[id] !== undefined ? state.doorProgress[id] : (dev.open ? 1 : 0);
                     const isMoving = state.doorMoving.has(id);
                     const color = dev.doorColor || '#3b82f6';
                     const statusText = isMoving ? '🔄 جاري الحركة...' : (progress >= 0.5 ? '🟢 مفتوح' : '🔴 مغلق');
                     const statusClass = isMoving ? 'status-moving' : (progress >= 0.5 ? 'status-open' : 'status-closed');
-                    // ننشئ هيكل الباب داخل حاوية التفاصيل
                     main = `
                         <div class="detail-door-container door-html-container" data-device-id="${dev.id}">
                             ${createDoorHTML(dev.id, color)}
@@ -6357,15 +6445,12 @@
                         </div>
                     `;
                     controls = '';
-                    // تأكد من تحديث الباب بعد التركيب
                     setTimeout(() => {
                         updateDoorHTML(dev.id, progress);
-                        // ربط أزرار التحكم
                         document.querySelectorAll('.detail-door-controls .door-btn').forEach(b => {
                             b.addEventListener('click', () => doorCommand(b.dataset.id, b.dataset
                             .cmd));
                         });
-                        // ربط منتقي اللون
                         const picker = document.getElementById('doorColorPicker');
                         if (picker) {
                             picker.addEventListener('input', function() {
@@ -6374,14 +6459,13 @@
                                 if (d && d.type === 1) {
                                     d.doorColor = this.value;
                                     saveDevices();
-                                    // إعادة إنشاء الباب باللون الجديد
                                     renderDetailPage(did);
                                 }
                             });
                         }
                     }, 50);
                 } else {
-                    // باقي الأجهزة (نفس الكود السابق)
+                    // باقي الأجهزة
                     const isLight = dev.type === 3 || dev.type === 2;
                     const isFaucet = dev.type === 8;
                     let iconHtml =
@@ -6654,7 +6738,6 @@
                 state.deviceMap.set(id, dev);
                 state.deviceLastHb.set(id, null);
                 state.deviceConnecting.set(id, true);
-                // تهيئة حالة الباب الجديد
                 if (type === 1) {
                     state.doorProgress[id] = 0;
                     state.doorTargets[id] = 0;
@@ -6676,7 +6759,10 @@
                     if (type === 5) c.subscribe(id + '/fan/speed', { qos: 1 });
                     if (type === 6) c.subscribe(id + '/ac/temp', { qos: 1 });
                     if (type === 13) c.subscribe(id + '/water/level', { qos: 1 });
-                    if (type === 14) c.subscribe(id + '/temp_humid/data', { qos: 1 });
+                    if (type === 14) {
+                        c.subscribe(id + '/sensor/data', { qos: 1 });
+                        c.subscribe(id + '/temp_humid/data', { qos: 1 });
+                    }
                     c.subscribe(id + '/system/vacation', { qos: 1 });
                     c.subscribe(id + '/system/heartbeat', { qos: 1 });
                 }
@@ -6738,16 +6824,68 @@
                         h = dev.humidity || 0;
                     statusText = `${Math.round(t)}°C · ${Math.round(h)}%`;
                     statusColor = t < 40 ? 'var(--success)' : 'var(--danger)';
-                    extra =
-                        `<div style="display:flex;gap:4px;justify-content:center;margin:4px 0;"><span style="font-size:0.7rem;background:var(--primary-light);padding:2px 8px;border-radius:12px;">🌡️ ${Math.round(t)}°C</span><span style="font-size:0.7rem;background:var(--primary-light);padding:2px 8px;border-radius:12px;">💧 ${Math.round(h)}%</span></div>`;
+                    // عرض دوائر مصغرة في البطاقة
+                    extra = `
+                        <div style="display:flex;gap:8px;justify-content:center;margin:4px 0;">
+                            <div style="flex:1;max-width:80px;position:relative;aspect-ratio:1/1;">
+                                <canvas data-device-id="${dev.id}" class="mini-temp-canvas" style="width:100%;height:100%;border-radius:50%;"></canvas>
+                                <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:0.5rem;font-weight:700;color:#fff;text-shadow:0 0 10px rgba(0,0,0,0.8);pointer-events:none;text-align:center;line-height:1.2;">
+                                    <div>${Math.round(t)}°</div>
+                                    <div style="font-size:0.4rem;opacity:0.7;">${h}%</div>
+                                </div>
+                            </div>
+                        </div>
+                    `;
                     controls = '';
+                    // رسم الدوائر المصغرة
+                    setTimeout(() => {
+                        const miniCanvas = document.querySelector(`.mini-temp-canvas[data-device-id="${dev.id}"]`);
+                        if (miniCanvas) {
+                            const rect = miniCanvas.parentElement.getBoundingClientRect();
+                            const size = Math.min(rect.width || 80, rect.height || 80);
+                            miniCanvas.width = size * 2;
+                            miniCanvas.height = size * 2;
+                            // رسم دائرة بسيطة للحرارة
+                            const ctx = miniCanvas.getContext('2d');
+                            const cx = miniCanvas.width / 2,
+                                cy = miniCanvas.height / 2;
+                            const r2 = (Math.min(miniCanvas.width, miniCanvas.height) / 2) - 6;
+                            const percentT = Math.min(Math.max((t + 10) / 60, 0), 1);
+                            const hueT = 200 - percentT * 200;
+                            ctx.clearRect(0, 0, miniCanvas.width, miniCanvas.height);
+                            // خلفية
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, r2, 0, Math.PI * 2);
+                            ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                            ctx.fill();
+                            // قوس
+                            const startA = -Math.PI * 0.75;
+                            const endA = Math.PI * 0.75;
+                            const range = endA - startA;
+                            const currentA = startA + range * percentT;
+                            ctx.beginPath();
+                            ctx.arc(cx, cy, r2 - 2, startA, currentA);
+                            ctx.strokeStyle = `hsl(${hueT}, 85%, 55%)`;
+                            ctx.lineWidth = 4;
+                            ctx.lineCap = 'round';
+                            ctx.stroke();
+                            // نقطة
+                            ctx.beginPath();
+                            ctx.arc(cx + (r2 - 2) * Math.cos(currentA), cy + (r2 - 2) * Math.sin(currentA), 3, 0, Math.PI *
+                                2);
+                            ctx.fillStyle = `hsl(${hueT}, 85%, 65%)`;
+                            ctx.shadowColor = `hsla(${hueT}, 100%, 65%, 0.5)`;
+                            ctx.shadowBlur = 10;
+                            ctx.fill();
+                            ctx.shadowBlur = 0;
+                        }
+                    }, 50);
                 } else if (dev.type === 1) {
-                    // استخدام الباب الجديد
+                    // باب جراج
                     const progress = state.doorProgress[dev.id] !== undefined ? state.doorProgress[dev.id] : (dev.open ?
                         1 : 0);
                     const isMoving = state.doorMoving.has(dev.id);
                     const color = dev.doorColor || '#3b82f6';
-                    // نضيف الباب داخل البطاقة
                     extra = `
                         <div class="door-html-container" data-device-id="${dev.id}">
                             ${createDoorHTML(dev.id, color)}
@@ -6766,10 +6904,7 @@
                     `;
                     statusText = isMoving ? 'جاري الحركة...' : (progress >= 0.5 ? 'مفتوح' : 'مغلق');
                     statusColor = isMoving ? 'var(--warning)' : (progress >= 0.5 ? 'var(--success)' : 'var(--danger)');
-                    // تأكد من تحديث الباب بعد التركيب
-                    setTimeout(() => {
-                        updateDoorHTML(dev.id, progress);
-                    }, 50);
+                    setTimeout(() => { updateDoorHTML(dev.id, progress); }, 50);
                 } else {
                     statusText = dev.status ? 'تشغيل' : 'إيقاف';
                     statusColor = dev.status ? 'var(--success)' : 'var(--text-muted)';
@@ -7750,7 +7885,6 @@
                                     resetCustomSound(k); }));
                     }, 100);
                 }
-                // تحديث الأبواب بعد التحميل
                 setTimeout(() => {
                     for (const d of state.devices) {
                         if (d.type === 1) {
@@ -7758,6 +7892,46 @@
                                 (d.open ? 1 : 0);
                             updateDoorHTML(d.id, progress);
                             updateDoorStatusLabel(d.id);
+                        }
+                        // تحديث دوائر الحرارة المصغرة
+                        if (d.type === 14) {
+                            const miniCanvas = document.querySelector(`.mini-temp-canvas[data-device-id="${d.id}"]`);
+                            if (miniCanvas) {
+                                const rect = miniCanvas.parentElement.getBoundingClientRect();
+                                const size = Math.min(rect.width || 80, rect.height || 80);
+                                miniCanvas.width = size * 2;
+                                miniCanvas.height = size * 2;
+                                const ctx = miniCanvas.getContext('2d');
+                                const cx = miniCanvas.width / 2,
+                                    cy = miniCanvas.height / 2;
+                                const r2 = (Math.min(miniCanvas.width, miniCanvas.height) / 2) - 6;
+                                const t = d.temp || 0;
+                                const percentT = Math.min(Math.max((t + 10) / 60, 0), 1);
+                                const hueT = 200 - percentT * 200;
+                                ctx.clearRect(0, 0, miniCanvas.width, miniCanvas.height);
+                                ctx.beginPath();
+                                ctx.arc(cx, cy, r2, 0, Math.PI * 2);
+                                ctx.fillStyle = 'rgba(255,255,255,0.05)';
+                                ctx.fill();
+                                const startA = -Math.PI * 0.75;
+                                const endA = Math.PI * 0.75;
+                                const range = endA - startA;
+                                const currentA = startA + range * percentT;
+                                ctx.beginPath();
+                                ctx.arc(cx, cy, r2 - 2, startA, currentA);
+                                ctx.strokeStyle = `hsl(${hueT}, 85%, 55%)`;
+                                ctx.lineWidth = 4;
+                                ctx.lineCap = 'round';
+                                ctx.stroke();
+                                ctx.beginPath();
+                                ctx.arc(cx + (r2 - 2) * Math.cos(currentA), cy + (r2 - 2) * Math.sin(currentA), 3, 0,
+                                    Math.PI * 2);
+                                ctx.fillStyle = `hsl(${hueT}, 85%, 65%)`;
+                                ctx.shadowColor = `hsla(${hueT}, 100%, 65%, 0.5)`;
+                                ctx.shadowBlur = 10;
+                                ctx.fill();
+                                ctx.shadowBlur = 0;
+                            }
                         }
                     }
                 }, 150);
@@ -8234,7 +8408,7 @@
                 });
 
                 setInterval(updateConnectionBanner, 5000);
-                console.log('⚡ SGE v8.2.0 – محسّن مع BLE + QR Fixed + Door HTML');
+                console.log('⚡ SGE v8.2.0 – محسّن مع BLE + QR + Door HTML + Gauges Pro');
                 console.log(
                     `📦 ${state.devices.length} devices · 🎬 ${state.scenes.length} scenes · 🤖 ${state.automations.length} automations`
                     );
